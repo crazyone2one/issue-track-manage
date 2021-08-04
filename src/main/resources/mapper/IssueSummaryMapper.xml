@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.master.track.mapper.IssueSummaryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.master.track.entity.IssueSummary">
+        <id column="id" property="id" />
+        <result column="project_name" property="projectName" />
+        <result column="job_desc" property="jobDesc" />
+        <result column="create_case_count" property="createCaseCount" />
+        <result column="execute_case_count" property="executeCaseCount" />
+        <result column="bug_doc" property="bugDoc" />
+        <result column="report_doc" property="reportDoc" />
+        <result column="has_doc" property="hasDoc" />
+        <result column="job_status" property="jobStatus" />
+        <result column="delivery_status" property="deliveryStatus" />
+        <result column="owner" property="owner" />
+        <result column="remark" property="remark" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_name, job_desc, create_case_count, execute_case_count, bug_doc, report_doc, has_doc, job_status, delivery_status, owner, remark, create_date, update_date
+    </sql>
+
+</mapper>
