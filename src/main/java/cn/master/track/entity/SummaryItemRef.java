@@ -1,15 +1,18 @@
 package cn.master.track.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 11's papa
@@ -18,6 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("summary_item_ref")
+@Builder
 public class SummaryItemRef implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +29,7 @@ public class SummaryItemRef implements Serializable {
     /**
      * 主键id
      */
-    @TableId("id")
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     /**

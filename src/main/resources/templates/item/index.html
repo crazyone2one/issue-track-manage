@@ -14,7 +14,7 @@
         <input type="text" class="form-control input-lg"><span class="input-group-addon btn btn-primary">搜索</span>
 
     </div>
-    <button><a th:href="@{/items/goAdd}" rel="external nofollow" >添加</a></button>
+    <button><a th:href="@{/items/goAdd}" rel="external nofollow">添加</a></button>
 </div>
 <div class="container">
     <div class="row">
@@ -45,9 +45,30 @@
                     <td th:text="${tempItem.getModule()}"></td>
                     <td th:text="${tempItem.getFunctionDesc()}"></td>
                     <td th:text="${tempItem.getTitleDesc()}">
-                    <td th:text="${tempItem.getSeverity()}"></td>
-                    <td th:text="${tempItem.getOwner()}"></td>
-                    <td th:text="${tempItem.getStatus()}"></td>
+                    <td>
+                        <span th:switch="${tempItem.getSeverity()}">
+                            <span th:case="1">轻微</span>
+                            <span th:case="2">一般</span>
+                            <span th:case="3">严重</span>
+                            <span th:case="4">致命</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span th:switch="${tempItem.getOwner()}">
+                            <span th:case="lijinglin">李敬林</span>
+                            <span th:case="zhangkun">张坤</span>
+                            <span th:case="shaodan">邵丹</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span th:switch="${tempItem.getStatus()}">
+                            <span th:case="1">新建</span>
+                            <span th:case="2">挂起</span>
+                            <span th:case="3">已提交</span>
+                            <span th:case="4">已解决</span>
+                            <span th:case="5">非bug</span>
+                        </span>
+                    </td>
                     <td th:text="${tempItem.getRemark()}"></td>
                     <td th:text="${tempItem.getData()}"></td>
                     <td>

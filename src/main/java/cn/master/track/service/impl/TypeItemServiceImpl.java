@@ -6,6 +6,8 @@ import cn.master.track.service.TypeItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class TypeItemServiceImpl extends ServiceImpl<TypeItemMapper, TypeItem> implements TypeItemService {
 
+    @Override
+    public void addType(Map<String, String> param) {
+        baseMapper.insert(TypeItem.builder().typeCode(param.get("type_code"))
+                .typeName(param.get("type_name")).typeGroup(param.get("type_group")).build());
+    }
 }

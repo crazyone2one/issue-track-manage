@@ -3,7 +3,8 @@ server:
 spring:
   thymeleaf:
     cache: false
-    prefix: classpath:/templates
+    prefix: classpath:/templates/
+    suffix: .html
   datasource:
     url: jdbc:mysql://localhost:3306/issuetrack?useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,4 +18,11 @@ spring:
       max-active: 20
       # 配置获取连接等待超时的时间
       max-wait: 60000
-
+mybatis-plus:
+  type-aliases-package: cn.master.track.entity
+logging:
+  level:
+    cn:
+      master:
+        track:
+          mapper: debug

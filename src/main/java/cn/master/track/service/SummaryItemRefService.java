@@ -1,5 +1,7 @@
 package cn.master.track.service;
 
+import cn.master.track.entity.IssueItem;
+import cn.master.track.entity.IssueSummary;
 import cn.master.track.entity.SummaryItemRef;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SummaryItemRefService extends IService<SummaryItemRef> {
 
+    void addReference(IssueItem item, IssueSummary summary);
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ISSUE | TRACK</title>
+</head>
+<body>
+<!--顶部导航栏-->
+<nav class="navbar navbar-inverse bg-info" th:fragment="topbar">
+    <div class="row ms-auto">
+        <div class="nav col-sm-12 justify-content-center">
+            <header class="d-flex justify-content-center py-3">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/summary/list}" class="nav-link text-white">issue-summary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/items/list}" class="nav-link text-white">issue-items</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-white">FAQS</a>
+                    </li>
+                </ul>
+            </header>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>
