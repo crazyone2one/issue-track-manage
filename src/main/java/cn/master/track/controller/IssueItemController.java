@@ -2,7 +2,6 @@ package cn.master.track.controller;
 
 
 import cn.master.track.config.Constants;
-import cn.master.track.service.CommonService;
 import cn.master.track.service.IssueItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +27,27 @@ import java.util.Map;
 public class IssueItemController {
 
     private final IssueItemService itemService;
-    private final CommonService commonService;
 
     @Autowired
-    public IssueItemController(IssueItemService itemService, CommonService commonService) {
+    public IssueItemController(IssueItemService itemService) {
         this.itemService = itemService;
-        this.commonService = commonService;
     }
 
     @GetMapping("/list")
     public String itemList(Model model,
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
+        model.addAttribute("issueStatusList", Constants.allTypes.get("issue_status"));
         model.addAttribute("issueList", itemService.pageItems(pn, pc));
         return "item/index";
     }
 
     @GetMapping("/goAdd")
     public String goAdd(Model model) {
-        commonService.initTypeGroup();
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
         model.addAttribute("severityList", Constants.allTypes.get("severity_level"));
         model.addAttribute("statusList", Constants.allTypes.get("issue_status"));
-        model.addAttribute("monthList", Constants.monthList);
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "item/addIssue";
     }
 
@@ -61,7 +58,7 @@ public class IssueItemController {
                            @RequestParam(value = "pc", defaultValue = "10") Integer length) {
         itemService.addIssueItem(params);
         model.addAttribute("issueList", itemService.pageItems(start, length));
-        return "item/index";
+        return "redirect:/items/list";
     }
 
 }
