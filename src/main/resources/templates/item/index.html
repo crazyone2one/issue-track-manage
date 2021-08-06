@@ -9,58 +9,86 @@
 <body class="bg-light">
 <!-- 顶部导航 -->
 <div th:replace="~{common/common::topbar}"></div>
-<div class="row col-sm-4">
-    <div class="input-group">
-        <input type="text" class="form-control input-lg"><span class="input-group-addon btn btn-primary">搜索</span>
+<div class="section-body mt-4">
+    <div class="container-fluid">
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="card">
+                    <form th:action="@{/summary/search}" class="row g-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label for="projectName" class="form-label" style="display: none">项目名称</label>
+                                    <input name="projectName" class="form-control" id="projectName" type="text"
+                                           placeholder="请输入项目名称"/>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <label for="jobStatus" class="form-label" style="display: none">状态</label>
+                                    <select id="jobStatus" name="jobStatus" class="form-select">
+                                        <option selected>选择问题单严重程度</option>
+                                        <option th:each="temp:${issueStatusList}" th:value="${temp.getTypeCode()}"
+                                                th:text="${temp.getTypeName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <button type="submit" class="btn btn-primary">search</button>
+                                </div>
+                            </div>
+                        </div>
 
-    </div>
-    <button><a th:href="@{/items/goAdd}" rel="external nofollow">添加</a></button>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-striped table-advance table-hover">
-                <thead>
-                <tr>
-                    <th>序号</th>
-                    <th>项目名称</th>
-                    <th>所属模块</th>
-                    <th>功能点</th>
-                    <th class="align-content-center">问题描述</th>
-                    <th>严重程度</th>
-                    <th>测试人员</th>
-                    <th>状态</th>
-                    <th>备注</th>
-                    <th>月份</th>
-                    <th><i class="icon_cogs">
-                    </i>操作
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="tempItem,stat:${issueList.records}">
-                    <input name="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
-                    <td th:text="${stat.index+1}"></td>
-                    <td th:text="${tempItem.getProjectName()}"></td>
-                    <td th:text="${tempItem.getModule()}"></td>
-                    <td th:text="${tempItem.getFunctionDesc()}"></td>
-                    <td th:text="${tempItem.getTitleDesc()}">
-                    <td>
+                    </form>
+                    <div class="col-lg-3 col-xl-2">
+                        <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0">
+                            <i class="bx bxs-plus-square">添加问题单</i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive active">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table table-striped table-advance table-hover">
+                                <thead>
+                                <tr>
+                                    <th>issue#</th>
+                                    <th>项目名称</th>
+                                    <th>所属模块</th>
+                                    <th>功能点</th>
+                                    <th class="align-content-center">问题描述</th>
+                                    <th>严重程度</th>
+                                    <th>测试人员</th>
+                                    <th>状态</th>
+                                    <th>备注</th>
+                                    <th>月份</th>
+                                    <th><i class="icon_cogs">
+                                    </i>操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="tempItem,stat:${issueList.records}">
+                                    <input name="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${tempItem.getProjectName()}"></td>
+                                    <td th:text="${tempItem.getModule()}"></td>
+                                    <td th:text="${tempItem.getFunctionDesc()}"></td>
+                                    <td th:text="${tempItem.getTitleDesc()}">
+                                    <td>
                         <span th:switch="${tempItem.getSeverity()}">
                             <span th:case="1">轻微</span>
                             <span th:case="2">一般</span>
                             <span th:case="3">严重</span>
                             <span th:case="4">致命</span>
                         </span>
-                    </td>
-                    <td>
+                                    </td>
+                                    <td>
                         <span th:switch="${tempItem.getOwner()}">
                             <span th:case="lijinglin">李敬林</span>
                             <span th:case="zhangkun">张坤</span>
                             <span th:case="shaodan">邵丹</span>
                         </span>
-                    </td>
-                    <td>
+                                    </td>
+                                    <td>
                         <span th:switch="${tempItem.getStatus()}">
                             <span th:case="1">新建</span>
                             <span th:case="2">挂起</span>
@@ -68,21 +96,29 @@
                             <span th:case="4">已解决</span>
                             <span th:case="5">非bug</span>
                         </span>
-                    </td>
-                    <td th:text="${tempItem.getRemark()}"></td>
-                    <td th:text="${tempItem.getData()}"></td>
-                    <td>
-                        <div class="btn-group">
-                            <a class="btn btn-primary" href="#"><i class="bi bi-wrench"></i>修改</a>
+                                    </td>
+                                    <td th:text="${tempItem.getRemark()}"></td>
+                                    <td th:text="${tempItem.getData()}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-secondary bg-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 </body>
 </html>
