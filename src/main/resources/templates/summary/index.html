@@ -116,18 +116,18 @@
                             <td th:text="${modifyIssueLevel.get('count')}"></td>
                             <!--bug文档-->
                             <td>
-                                <span th:if="${#strings.isEmpty(tempItem.getBugDoc())}" class="tag tag-warning">无</span>
-                                <span th:text="${tempItem.getBugDoc()}" class="tag tag-success"></span>
+                                <span th:if="${#strings.equals('0',tempItem.bugDoc)}" class="tag tag-warning">无文档</span>
+                                <span th:if="${#strings.equals('1',tempItem.bugDoc)}" class="tag tag-success">有文档</span>
                             </td>
                             <!--测试报告-->
                             <td>
-                                <span th:if="${#strings.isEmpty(tempItem.getReportDoc())}">无</span>
-                                <span th:text="${tempItem.getReportDoc()}"></span>
+                                <span th:if="${#strings.equals('0',tempItem.getReportDoc())}">无报告</span>
+                                <span th:if="${#strings.equals('1',tempItem.getReportDoc())}">有报告</span>
                             </td>
                             <!--是否有需求-->
                             <td>
-                                <span th:if="${#strings.isEmpty(tempItem.getHasDoc())}">无</span>
-                                <span th:text="${tempItem.getHasDoc()}"></span>
+                                <span th:if="${#strings.equals('0',tempItem.getHasDoc())}">无需求</span>
+                                <span th:if="${#strings.equals('1',tempItem.getHasDoc())}">有需求</span>
                             </td>
                             <!--完成状态-->
                             <td>
@@ -142,8 +142,9 @@
                             </td>
                             <!--是否交付-->
                             <td>
-                                <span th:if="${#strings.isEmpty(tempItem.getDeliveryStatus())}">无</span>
-                                <span th:text="${tempItem.deliveryStatus}"></span>
+                                <span th:if="${#strings.equals('0',tempItem.deliveryStatus)}">未交付</span>
+                                <span th:if="${#strings.equals('1',tempItem.deliveryStatus)}">已交付</span>
+                                <span th:if="${#strings.equals('2',tempItem.deliveryStatus)}">不确定</span>
                             </td>
                             <!--测试人员-->
                             <td th:text="${tempItem.getOwner()}"></td>
