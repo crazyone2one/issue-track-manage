@@ -15,7 +15,7 @@ public class Constants {
 
     public static Map<String, List<TypeItem>> allTypes = new LinkedHashMap<>();
 
-    public static final List<String> monthList = new LinkedList<String>() {{
+    public static final List<String> MONTH_LIST = new LinkedList<String>() {{
         add("2021-01");
         add("2021-02");
         add("2021-03");
@@ -33,4 +33,5 @@ public class Constants {
     public static final String SEVERITY_LEVEL = "severity_level";
     public static final String OWNER_LIST = "owner_list";
     public static final String ISSUE_STATUS = "issue_status";
+    public static final String JOB_STATUS = "job_status";
 }
