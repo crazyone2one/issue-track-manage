@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import java.util.List;
 public class CommonServiceImpl implements CommonService {
 
 
-
     private final TypeItemMapper typeItemMapper;
 
     @Autowired
@@ -28,11 +28,13 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
+    @PostConstruct
     public void initTypeGroup() {
         final List<TypeItem> typeItems = typeItemMapper.selectList(new QueryWrapper<TypeItem>().lambda());
         List<TypeItem> temp1 = new LinkedList<>();
         List<TypeItem> temp2 = new LinkedList<>();
         List<TypeItem> temp3 = new LinkedList<>();
+        List<TypeItem> temp4 = new LinkedList<>();
         for (TypeItem typeItem : typeItems) {
             if (Constants.SEVERITY_LEVEL.equals(typeItem.getTypeGroup())) {
                 temp1.add(typeItem);
@@ -43,9 +45,13 @@ public class CommonServiceImpl implements CommonService {
             if (Constants.ISSUE_STATUS.equals(typeItem.getTypeGroup())) {
                 temp3.add(typeItem);
             }
+            if (Constants.JOB_STATUS.equals(typeItem.getTypeGroup())) {
+                temp4.add(typeItem);
+            }
         }
         Constants.allTypes.put("severity_level", temp1);
         Constants.allTypes.put("owner_list", temp2);
         Constants.allTypes.put("issue_status", temp3);
+        Constants.allTypes.put("job_status", temp4);
     }
 }
