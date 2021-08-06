@@ -1,6 +1,7 @@
 package cn.master.track.service.impl;
 
 import cn.master.track.entity.IssueItem;
+import cn.master.track.entity.IssueSummary;
 import cn.master.track.mapper.IssueItemMapper;
 import cn.master.track.service.IssueItemService;
 import cn.master.track.service.IssueSummaryService;
@@ -8,13 +9,12 @@ import cn.master.track.service.SummaryItemRefService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -63,7 +63,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         // 保存任务汇总数据
         summaryService.addIssueSummary(item);
         // 保存关系数据
-        refService.addReference(item, summaryService.findIssueById(item.getId()));
+        refService.addReference(item, summaryService.findIssueByProjectId(item.getId()));
     }
 
     @Override
@@ -101,5 +101,21 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
             result.put(temp.getId(), temp);
         });
         return result;
+    }
+
+    @Override
+    public List<IssueItem> fuzzyQueryByProjectName(String projectName) {
+        return baseMapper.selectList(new QueryWrapper<IssueItem>().lambda().like(IssueItem::getProjectName, projectName));
+    }
+
+    @Override
+    public Page<IssueSummary> searchSummary(Map<String, Object> params, Integer pageIndex, Integer pageCount) {
+        final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
+        if (MapUtils.isNotEmpty(params)) {
+            List<String> issueIds = new ArrayList<>();
+            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getId()));
+            wrapper.lambda().in(IssueSummary::getProjectName, issueIds);
+        }
+        return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 }
