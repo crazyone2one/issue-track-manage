@@ -49,13 +49,13 @@ public class IssueSummary implements Serializable {
      * 编写用例数量
      */
     @TableField("create_case_count")
-    private String createCaseCount;
+    private int createCaseCount;
 
     /**
      * 执行测试用例数量
      */
     @TableField("execute_case_count")
-    private String executeCaseCount;
+    private int executeCaseCount;
 
     /**
      * bug文档
@@ -99,6 +99,8 @@ public class IssueSummary implements Serializable {
     @TableField("remark")
     private String remark;
 
+    @TableField("issue_date")
+    private String issueDate;
     /**
      * 创建时间
      */
