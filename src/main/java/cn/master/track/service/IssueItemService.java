@@ -21,11 +21,13 @@ public interface IssueItemService extends IService<IssueItem> {
     /**
      * 分页查询
      *
+     *
+     * @param params
      * @param pageIndex
      * @param pageCount
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueItem>
      */
-    Page<IssueItem> pageItems(Integer pageIndex, Integer pageCount);
+    Page<IssueItem> pageItems(Map<String, Object> params, Integer pageIndex, Integer pageCount);
 
     /**
      * 添加issue数据
@@ -34,21 +36,19 @@ public interface IssueItemService extends IService<IssueItem> {
      */
     void addIssueItem(Map<String, Object> params);
 
+    IssueItem getIssueById(String id);
+
     /**
      * 查询issue
      *
-     * @param status
-     * @param data
+     *
+     * @param level 严重程度
+     * @param status 状态
+     * @param data 月份
+     * @param review
      * @return java.util.Map<java.lang.String, java.lang.Object>
      */
-    Map<String, Object> searchIssueMaps(String status, String data);
-
-    /**
-     * issue map
-     *
-     * @return java.util.Map<java.lang.String, cn.master.track.entity.IssueItem>
-     */
-    Map<String, IssueItem> issuesMap();
+    Map<String, String> searchIssueMaps(String level, String status, String data, boolean review);
 
     /**
      * 按照项目名称查询
@@ -67,4 +67,11 @@ public interface IssueItemService extends IService<IssueItem> {
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueSummary>
      */
     Page<IssueSummary> searchSummary(Map<String, Object> params, Integer pageIndex, Integer pageCount);
+
+    /**
+     * 更新issue
+     *
+     * @param params 参数
+     */
+    void modifyIssue(Map<String, Object> params);
 }
