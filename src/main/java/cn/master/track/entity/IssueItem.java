@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * <p>
- *
+ * 问题单表
  * </p>
  *
  * @author 11's papa
@@ -36,8 +36,8 @@ public class IssueItem implements Serializable {
     /**
      * 项目名称
      */
-    @TableField("project_name")
-    private String projectName;
+    @TableField("project_id")
+    private String projectId;
 
     /**
      * 所属模块
@@ -78,8 +78,8 @@ public class IssueItem implements Serializable {
     /**
      * 月份
      */
-    @TableField("data")
-    private String data;
+    @TableField("issue_date")
+    private String issueDate;
 
     /**
      * 备注
