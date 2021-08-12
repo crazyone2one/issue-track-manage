@@ -6,12 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 </head>
-<body>
+<script type="application/javascript">
+    function showDate() {
+        var date = new Date();
+        var y = date.getFullYear();
+
+        function add_zero(value) {
+            if (value < 10) {
+                return "0" + value;
+            }
+            return value;
+        }
+
+        var d = add_zero(date.getMonth() + 1);
+        var result = y + d;
+        var divT = document.getElementById("monthDate");
+        $("#monthDate").attr("value", result);
+    }
+</script>
+<body onload="showDate()">
 <!-- 顶部导航 -->
 <div th:replace="~{common/common::topbar}"></div>
-<div class="card mb-3 bg-light">
+<div class="container"
+     style="background-color: #86b7fe;box-shadow: inset 1px -1px 1px #e8c8c8, inset -1px 1px 1px #664e4e;">
     <div class="card-header py-3 d-flex justify-content-between bg-light border-bottom-0">
-        <h6 class="mb-0 fw-bold">问题单</h6>
+        <h6 class="mb-0 fw-bold" style="background-color: #86b7fe">问题单</h6>
     </div>
     <div class="card-body">
         <form class="needs-validation" th:action="@{/items/addIssue}" method="post">
@@ -41,7 +60,7 @@
                 <div class="col-md-3">
                     <label for="severity" class="form-label">严重程度</label>
                     <select class="form-select" name="severity" id="severity" required>
-                        <option value="">请选择</option>
+                        <option value="">--请选择--</option>
                         <option th:each="temp:${severityList}"
                                 th:value="${temp.getTypeCode()}"
                                 th:text="${temp.getTypeName()}"
@@ -53,7 +72,7 @@
                 <div class="col-md-3">
                     <label for="owner" class="form-label">测试人员</label>
                     <select class="form-select" name="owner" id="owner" required>
-                        <option value="">请选择</option>
+                        <option value="">--请选择--</option>
                         <option th:each="temp:${ownerList}"
                                 th:value="${temp.getTypeCode()}"
                                 th:text="${temp.getTypeName()}"
@@ -64,7 +83,7 @@
                 <div class="col-md-3">
                     <label for="status" class="form-label">状态</label>
                     <select class="form-select" name="status" id="status" required>
-                        <option value="">请选择</option>
+                        <option value="">--请选择--</option>
                         <option th:each="temp:${statusList}"
                                 th:value="${temp.getTypeCode()}"
                                 th:text="${temp.getTypeName()}"
@@ -73,12 +92,12 @@
                     <div class="invalid-feedback">选择状态</div>
                 </div>
                 <div class="col-md-3">
-                    <label for="data" class="form-label">月份</label>
-                    <select class="form-select" name="date" id="data" required>
-                        <option value="">请选择</option>
+                    <label for="monthDate" class="form-label">月份</label>
+                    <select class="form-select" name="monthDate" id="monthDate" required>
+                        <option value="">--请选择--</option>
                         <option th:each="temp:${monthList}"
-                                th:value="${temp.toString()}"
-                                th:text="${temp.toString()}"
+                                th:value="${temp}"
+                                th:text="${temp}"
                         >
                     </select>
                     <div class="invalid-feedback">选择月份</div>

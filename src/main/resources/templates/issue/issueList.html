@@ -50,9 +50,9 @@
                             <table class="table table-striped table-advance table-hover">
                                 <thead>
                                 <tr>
-                                    <th>issue#</th>
-                                    <th>项目名称</th>
-                                    <th>所属模块</th>
+                                    <th th:width="60px">issue#</th>
+                                    <th th:width="130px">项目名称</th>
+                                    <th th:width="100px">所属模块</th>
                                     <th>功能点</th>
                                     <th class="align-content-center">问题描述</th>
                                     <th>严重程度</th>
@@ -98,10 +98,10 @@
                         </span>
                                     </td>
                                     <td th:text="${tempItem.getRemark()}"></td>
-                                    <td th:text="${tempItem.getData()}"></td>
+                                    <td th:text="${tempItem.getIssueDate()}"></td>
                                     <td>
-                                        <a th:href="@{/summary/goModify(id=${tempItem.getId()})}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        <a th:href="@{/items/goModify(id=${tempItem.getId()})}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                  stroke-linecap="round" stroke-linejoin="round"
                                                  class="feather feather-edit-2 align-middle">

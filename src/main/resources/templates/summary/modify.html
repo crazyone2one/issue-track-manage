@@ -15,7 +15,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">编辑任务</h3>
+                <h3 class="page-title">编辑任务汇总信息</h3>
             </div>
         </div>
     </div>
@@ -29,32 +29,55 @@
                                 <h5 class="form-title">任务信息</h5>
                             </div>
                             <input name="id" type="hidden" class="form-control" th:value="*{id}">
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
-                                    <label for="proName" class="form-label">项目名称：</label>
-                                    <input name="proName" id="proName" readonly
-                                           th:value="${issueMap.get(summaryVo.getProjectName()).getProjectName()}">
+                                    <span class="input-group-text">项目名称</span>
                                 </div>
+                                <input th:type="text" th:class="form-control" name="project_id" id="proName" readonly
+                                       th:value="${proMap.get(summaryVo.getProjectName()).projectName}">
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
-                                    <label for="jobDesc" class="form-label">任务描述：</label>
-                                    <input name="jobDesc" id="jobDesc" th:value="*{jobDesc}">
+                                    <span class="input-group-text">任务描述</span>
                                 </div>
+                                <input th:type="text" th:class="form-control" name="jobDesc" id="jobDesc"
+                                       th:value="*{jobDesc}">
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 25%">
                                 <div class="form-group">
-                                    <label for="createCase" class="form-label">编写用例：</label>
-                                    <input name="createCase" id="createCase" th:value="*{createCaseCount}">
+                                    <span class="input-group-text">编写用例</span>
                                 </div>
+                                <input th:type="text" th:class="form-control" name="createCase" id="createCase"
+                                       th:value="*{createCaseCount}">
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 25%">
                                 <div class="form-group">
-                                    <label for="executeCase" class="form-label">编写用例：</label>
-                                    <input name="executeCase" id="executeCase" th:value="*{executeCaseCount}">
+                                    <span class="input-group-text">执行用例</span>
                                 </div>
+                                <input th:type="text" th:class="form-control" name="executeCase" id="executeCase"
+                                       th:value="*{executeCaseCount}">
                             </div>
-                            <div class="col-12 col-sm-6 border">
+                            <div class="input-group mb-3" style="width: 25%">
+                                <div class="form-group">
+                                    <span class="input-group-text">完成状态</span>
+                                </div>
+                                <select class="form-select" name="jobStatus" id="jobStatus" required>
+                                    <option th:each="temp:${jobStatusList}" th:value="${temp.getTypeCode()}"
+                                            th:selected="${summaryVo.jobStatus eq temp.getTypeCode()}"
+                                            th:text="${temp.getTypeName()}">
+                                </select>
+                            </div>
+                            <div class="input-group mb-3" style="width: 25%">
+                                <div class="form-group">
+                                    <span class="input-group-text">测试人员</span>
+                                </div>
+                                <select class="form-select" name="owner" id="owner" required>
+                                    <option th:each="temp:${ownerList}" th:value="${temp.getTypeCode()}"
+                                            th:selected="${summaryVo.owner eq temp.getTypeCode()}"
+                                            th:text="${temp.getTypeName()}">
+                                </select>
+                            </div>
+                            <div class="input-group mb-3" style="width: 25%">
                                 <span th:switch="*{bugDoc}">
                                     <label class="radio-inline">
                                     <span th:case="0">
@@ -68,7 +91,7 @@
                                 </label>
                                 </span>
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 25%">
                                 <span th:switch="*{reportDoc}">
                                     <label class="radio-inline">
                                         <span th:case="0">
@@ -82,7 +105,7 @@
                                 </label>
                                 </span>
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 25%">
                                 <span th:switch="*{hasDoc}">
                                     <label class="radio-inline">
                                         <span th:case="0">
@@ -96,13 +119,7 @@
                                 </label>
                                 </span>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="jobStatus" class="form-label">完成状态：</label>
-                                    <input name="jobStatus" id="jobStatus" th:value="*{jobStatus}">
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3" style="width: 25%">
                                 <span th:switch="*{deliveryStatus}">
                                     <label class="radio-inline">
                                    <span th:case="0">
@@ -123,23 +140,15 @@
                                 </label>
                                 </span>
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="input-group mb-3">
                                 <div class="form-group">
-                                    <label for="owner" class="form-label">负责人：</label>
-                                    <input name="owner" id="owner" th:value="*{owner}">
+                                    <span class="input-group-text">备注</span>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="remark" class="form-label">备注</label>
-                                    <input name="remark" id="remark" th:value="*{remark}">
-                                </div>
+                                <input th:type="text" th:class="form-control" name="remark" id="remark"
+                                       th:value="*{remark}">
                             </div>
                             <div class="col-12">
                                 <button type="submit" id="modifySummary" class="btn btn-primary">保存</button>
-                            </div>
-                            <div class="alert alert-warning alert-dismissible">
-                                <div class="message"></div>
                             </div>
                         </div>
                     </form>
