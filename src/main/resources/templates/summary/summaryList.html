@@ -5,25 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ISSUE | SUMMARY</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/common.css}" rel="stylesheet">
-    <style>
-        .tag-warning {
-            background-color: #d5be79;
-            color: #fff
-        }
-
-        .tag-success {
-            background-color: #79c98c;
-            color: #fff
-        }
-
-        .demo-o {
-            /*超出部分隐藏*/
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-    </style>
+    <link th:href="@{/common/common.css}" rel="stylesheet">
 </head>
 <body>
 <!-- 顶部导航 -->
@@ -31,7 +13,7 @@
 <div class="section-body mt-4">
     <div class="container-fluid">
         <div class="tab-content">
-            <div class="tab-pane active" id="summary-all">
+            <div class="tab-pane active">
                 <!--搜索-->
                 <div class="card">
                     <form th:action="@{/summary/list}">
@@ -63,7 +45,7 @@
                     </form>
                 </div>
                 <div class="table-responsive card">
-                    <table class="table table-bordered table-striped table-advance table-hover">
+                    <table class="table table-striped table-advance table-hover">
                         <thead>
                         <tr>
                             <th rowspan="2" th:width="60px">#</th>
@@ -105,7 +87,7 @@
                             <td th:text="${stat.count}"></td>
                             <td th:text="${proMap.get(tempItem.getProjectName()).getProjectName()}"
                                 class="overflow-hidden"></td>
-                            <td th:text="${tempItem.jobDesc}" class="demo-o"></td>
+                            <td th:text="${tempItem.jobDesc}"></td>
                             <!--编写用例-->
                             <td>
                                 <span th:if="${#strings.isEmpty(tempItem.getCreateCaseCount())}">0</span>
@@ -139,7 +121,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${level3.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${level3.get(level)}"
                                           th:text="${level3.get(level)}"></span>
@@ -165,7 +147,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${level1.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${level1.get(level)}"
                                           th:text="${level1.get(level)}"></span>
@@ -190,7 +172,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${modifyLevel4.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${modifyLevel4.get(level)}"
                                           th:text="${modifyLevel4.get(level)}"></span>
@@ -202,7 +184,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${modifyLevel3.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${modifyLevel3.get(level)}"
                                           th:text="${modifyLevel3.get(level)}"></span>
@@ -214,7 +196,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${modifyLevel2.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${modifyLevel2.get(level)}"
                                           th:text="${modifyLevel2.get(level)}"></span>
@@ -226,7 +208,7 @@
                                     <span th:text="0"></span>
                                 </span>
                                 <span th:each="level:${modifyLevel1.keySet()}" th:value="${tempItem.projectName}">
-                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>
+<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
                                 <span th:switch="${tempItem.projectName}">
                                     <span th:case="${level}" th:value="${modifyLevel1.get(level)}"
                                           th:text="${modifyLevel1.get(level)}"></span>

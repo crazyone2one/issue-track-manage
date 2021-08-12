@@ -83,10 +83,10 @@
                 <div class="col-md-3">
                     <label for="status" class="form-label">状态</label>
                     <select class="form-select" name="status" id="status" required>
-                        <option value="">--请选择--</option>
                         <option th:each="temp:${statusList}"
                                 th:value="${temp.getTypeCode()}"
                                 th:text="${temp.getTypeName()}"
+                                th:selected="${temp.getTypeCode() eq '1'}"
                         >
                     </select>
                     <div class="invalid-feedback">选择状态</div>
