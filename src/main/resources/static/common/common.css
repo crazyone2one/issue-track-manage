@@ -1,0 +1,19 @@
+@charset "UTF-8";
+th {
+    text-align: center;
+    vertical-align: middle!important;
+}
+tr {
+    height: 10px;
+}
+td{
+    text-align: center;
+}
+table{
+    table-layout: fixed; /*固定表格布局*/
+}
+table td,table th{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
