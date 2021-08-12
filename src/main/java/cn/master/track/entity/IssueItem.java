@@ -63,6 +63,9 @@ public class IssueItem implements Serializable {
     @TableField("severity")
     private String severity;
 
+    @TableField("severity_update")
+    private String severityUpdate;
+
     /**
      * 测试人员
      */
@@ -74,6 +77,8 @@ public class IssueItem implements Serializable {
      */
     @TableField("status")
     private String status;
+    @TableField("status_update")
+    private String statusUpdate;
 
     /**
      * 月份
