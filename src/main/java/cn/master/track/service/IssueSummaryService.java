@@ -18,19 +18,12 @@ import java.util.Map;
  */
 public interface IssueSummaryService extends IService<IssueSummary> {
     /**
-     * 添加问题单时自动创建任务汇总数据
+     * 添加问题单时自动创建任务汇总数据，返回汇总数据主键id
      *
      * @param item 问题单
+     * @return java.lang.String
      */
-    void addIssueSummary(IssueItem item);
-
-    /**
-     * 通过问题单的主键id查询任务汇总数据
-     *
-     * @param id 问题单主键id
-     * @return cn.master.track.entity.IssueSummary
-     */
-    IssueSummary findIssueByProjectId(String id);
+    String addIssueSummary(IssueItem item);
 
     /**
      * 通过主键id查询任务汇总数据
@@ -40,13 +33,11 @@ public interface IssueSummaryService extends IService<IssueSummary> {
      */
     IssueSummary findSummaryById(String id);
 
-    Page<IssueSummary> pageSummary(Integer pageIndex, Integer pageCount);
-
     /**
      * 查询任务汇总数据
      *
-     * @param page
-     * @param wrapper
+     * @param page 分页参数
+     * @param wrapper 查询条件
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueSummary>
      */
     Page<IssueSummary> searchSummaryPage(Page<IssueSummary> page, QueryWrapper<IssueSummary> wrapper);
@@ -54,7 +45,18 @@ public interface IssueSummaryService extends IService<IssueSummary> {
     /**
      * 修改任务汇总数据
      *
-     * @param params
+     * @param params 前端传来的参数
      */
     void modifySummary(Map<String, Object> params);
+
+    /**
+     * 统计总数
+     *
+     * @param m1
+     * @param m2
+     * @param m3
+     * @param m4
+     * @return java.util.Map<java.lang.String, java.lang.String>
+     */
+    Map<String, String> totalCount(Map<String, String> m1, Map<String, String> m2, Map<String, String> m3, Map<String, String> m4);
 }
