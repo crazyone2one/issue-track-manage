@@ -2,6 +2,7 @@ package cn.master.track.mapper;
 
 import cn.master.track.entity.IssueProject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author 11's papa
  * @since 2021-08-10
  */
+@Mapper
 public interface IssueProjectMapper extends BaseMapper<IssueProject> {
 
 }

@@ -31,5 +31,12 @@ public interface IssueProjectService extends IService<IssueProject> {
      */
     IssueProject getProjectByName(String name);
 
+    IssueProject getProjectById(String id);
+
+    /**
+     * 项目信息map
+     *
+     * @return java.util.Map<java.lang.String, cn.master.track.entity.IssueProject>
+     */
     Map<String, IssueProject> projectsMap();
 }

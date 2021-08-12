@@ -23,21 +23,26 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     @Override
     public String addProjectByName(String name) {
         final IssueProject project = baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name));
+                .eq(IssueProject::getProjectName, name.trim()));
         if (Objects.nonNull(project)) {
             return project.getId();
         }
         final IssueProject.IssueProjectBuilder builder = IssueProject.builder();
-        builder.projectName(name).projectCode("").createData(new Date());
+        builder.projectName(name.trim()).projectCode("").createData(new Date());
         baseMapper.insert(builder.build());
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name)).getId();
+                .eq(IssueProject::getProjectName, name.trim())).getId();
     }
 
     @Override
     public IssueProject getProjectByName(String name) {
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name));
+                .eq(IssueProject::getProjectName, name.trim()));
+    }
+
+    @Override
+    public IssueProject getProjectById(String id) {
+        return baseMapper.selectById(id);
     }
 
     @Override
