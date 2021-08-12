@@ -5,6 +5,25 @@ package cn.master.track.service;
  * @version 1.0.0
  */
 public interface CommonService {
-
+    /**
+     * 数据字典缓存
+     */
     void initTypeGroup();
+
+    /**
+     * 初始化当前年月
+     */
+    void monthListCurrentYear();
+
+    /**
+     * 初始化项目id数据
+     *
+     */
+    void initProjectId();
+
+    /**
+     * 刷新项目id数据
+     *
+     */
+    void refreshProjectId();
 }
