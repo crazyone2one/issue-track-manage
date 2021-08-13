@@ -2,13 +2,16 @@ package cn.master.track.controller;
 
 
 import cn.master.track.config.Constants;
+import cn.master.track.entity.IssueSummary;
 import cn.master.track.service.IssueItemService;
 import cn.master.track.service.IssueProjectService;
 import cn.master.track.service.IssueSummaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,20 +43,20 @@ public class IssueSummaryController {
     /**
      * 列表数据
      *
-     * @param params 页面上的搜素条件
+     * @param summary 页面上的搜素条件
      * @param model
      * @param pn
      * @param pc
      * @return java.lang.String
      */
     @RequestMapping(value = "/list")
-    public String listSummary(@RequestParam Map<String, Object> params,
+    public String listSummary(@ModelAttribute @Validated IssueSummary summary,
                               Model model,
                               @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                               @RequestParam(value = "pc", defaultValue = "15") Integer pc) {
         model.addAttribute("jobStatusList", Constants.allTypes.get("job_status"));
-        model.addAttribute("summaryPage", itemService.searchSummary(params, pn, pc));
-        model.addAttribute("summaryList", itemService.summaryList(params));
+        model.addAttribute("summaryPage", itemService.searchSummary(summary, pn, pc));
+        model.addAttribute("summaryList", itemService.summaryList(summary));
         model.addAttribute("proMap", projectService.projectsMap());
         Map<String, String> level1Map = itemService.searchIssueMaps("1", "1", "2021-08", false);
         final Map<String, String> level2Map = itemService.searchIssueMaps("2", "1", "2021-08", false);
@@ -88,8 +91,8 @@ public class IssueSummaryController {
     }
 
     @RequestMapping("/modifySummary")
-    public String modifySummary(@RequestParam Map<String, Object> params) {
-        summaryService.modifySummary(params);
+    public String modifySummary(@ModelAttribute @Validated IssueSummary summary) {
+        summaryService.modifySummary(summary);
         return "redirect:/summary/list";
     }
 }

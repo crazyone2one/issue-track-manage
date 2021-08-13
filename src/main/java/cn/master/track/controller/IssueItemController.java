@@ -2,17 +2,18 @@ package cn.master.track.controller;
 
 
 import cn.master.track.config.Constants;
+import cn.master.track.entity.IssueItem;
 import cn.master.track.service.IssueItemService;
 import cn.master.track.service.IssueProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
 
 /**
  * <p>
@@ -37,12 +38,14 @@ public class IssueItemController {
     }
 
     @GetMapping("/list")
-    public String itemList(@RequestParam Map<String, Object> params,Model model,
+    public String itemList(@ModelAttribute @Validated IssueItem issueItem,Model model,
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
-                           @RequestParam(value = "pc", defaultValue = "15") Integer pc) {
+                           @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
         model.addAttribute("issueStatusList", Constants.allTypes.get("issue_status"));
-        model.addAttribute("issueListPage", itemService.pageItems(params, pn, pc));
-        model.addAttribute("issueList", itemService.issueItems(params));
+        model.addAttribute("severityList", Constants.allTypes.get("severity_level"));
+        model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
+        model.addAttribute("issueListPage", itemService.pageItems(issueItem, pn, pc));
+        model.addAttribute("issueList", itemService.issueItems(issueItem));
         model.addAttribute("proMap", projectService.projectsMap());
         return "issue/issueList";
     }
@@ -63,12 +66,8 @@ public class IssueItemController {
     }
 
     @RequestMapping(value = "/addIssue")
-    public String addIssue(@RequestParam Map<String, Object> params,
-                           Model model,
-                           @RequestParam(value = "pn", defaultValue = "1") Integer start,
-                           @RequestParam(value = "pc", defaultValue = "15") Integer length) {
-        itemService.addIssueItem(params);
-        model.addAttribute("issueList", itemService.pageItems(params, start, length));
+    public String addIssue(@ModelAttribute @Validated IssueItem issueItem) {
+        itemService.saveIssueItem(issueItem);
         return "redirect:/items/list";
     }
 
@@ -83,8 +82,8 @@ public class IssueItemController {
     }
 
     @RequestMapping("/modifyIssue")
-    public String modifyIssue(@RequestParam Map<String, Object> params) {
-        itemService.modifyIssue(params);
+    public String modifyIssue(@ModelAttribute @Validated IssueItem issueItem) {
+        itemService.modifyIssue(issueItem);
         return "redirect:/items/list";
     }
 }
