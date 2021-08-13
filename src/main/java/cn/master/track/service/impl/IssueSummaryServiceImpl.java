@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,6 +53,11 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
     @Override
     public Page<IssueSummary> searchSummaryPage(Page<IssueSummary> page, QueryWrapper<IssueSummary> wrapper) {
         return baseMapper.selectPage(page, wrapper);
+    }
+
+    @Override
+    public List<IssueSummary> listSummary(QueryWrapper<IssueSummary> wrapper) {
+        return baseMapper.selectList(wrapper);
     }
 
     @Override

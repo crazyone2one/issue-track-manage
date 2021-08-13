@@ -58,6 +58,17 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
+    public List<IssueItem> issueItems(Map<String, Object> params) {
+        final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
+        if (MapUtils.isNotEmpty(params)) {
+            List<String> issueIds = new ArrayList<>();
+            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            wrapper.lambda().in(IssueItem::getProjectId, issueIds).orderByDesc(IssueItem::getProjectId);
+        }
+        return baseMapper.selectList(wrapper);
+    }
+
+    @Override
     public void addIssueItem(Map<String, Object> params) {
         // 保存项目
         final String projectNameId = projectService.addProjectByName(params.get("projectName").toString());
@@ -124,6 +135,18 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         }
         wrapper.lambda().groupBy(IssueSummary::getProjectName);
         return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
+    }
+
+    @Override
+    public List<IssueSummary> summaryList(Map<String, Object> params) {
+        final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
+        if (MapUtils.isNotEmpty(params)) {
+            List<String> issueIds = new ArrayList<>();
+            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            wrapper.lambda().in(IssueSummary::getProjectName, issueIds).orderByDesc(IssueSummary::getProjectName);
+        }
+        wrapper.lambda().groupBy(IssueSummary::getProjectName);
+        return summaryService.listSummary(wrapper);
     }
 
     @Override

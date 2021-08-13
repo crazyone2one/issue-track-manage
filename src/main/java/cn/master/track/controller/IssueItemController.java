@@ -41,7 +41,8 @@ public class IssueItemController {
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "pc", defaultValue = "15") Integer pc) {
         model.addAttribute("issueStatusList", Constants.allTypes.get("issue_status"));
-        model.addAttribute("issueList", itemService.pageItems(params, pn, pc));
+        model.addAttribute("issueListPage", itemService.pageItems(params, pn, pc));
+        model.addAttribute("issueList", itemService.issueItems(params));
         model.addAttribute("proMap", projectService.projectsMap());
         return "issue/issueList";
     }

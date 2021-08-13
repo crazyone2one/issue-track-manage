@@ -82,7 +82,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="tempItem,stat:${summaryList.records}">
+                        <tr th:each="tempItem,stat:${summaryList}">
                             <input name="id" id="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
                             <td th:text="${stat.count}"></td>
                             <td th:text="${proMap.get(tempItem.getProjectName()).getProjectName()}"

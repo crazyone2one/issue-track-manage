@@ -94,7 +94,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="tempItem,stat:${issueList.records}">
+                        <tr th:each="tempItem,stat:${issueList}">
                             <input name="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
                             <td th:text="${stat.index+1}"></td>
                             <td th:text="${proMap.get(tempItem.getProjectId()).projectName}"></td>

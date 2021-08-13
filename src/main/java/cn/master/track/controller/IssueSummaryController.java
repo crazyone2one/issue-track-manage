@@ -52,7 +52,8 @@ public class IssueSummaryController {
                               @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                               @RequestParam(value = "pc", defaultValue = "15") Integer pc) {
         model.addAttribute("jobStatusList", Constants.allTypes.get("job_status"));
-        model.addAttribute("summaryList", itemService.searchSummary(params, pn, pc));
+        model.addAttribute("summaryPage", itemService.searchSummary(params, pn, pc));
+        model.addAttribute("summaryList", itemService.summaryList(params));
         model.addAttribute("proMap", projectService.projectsMap());
         Map<String, String> level1Map = itemService.searchIssueMaps("1", "1", "2021-08", false);
         final Map<String, String> level2Map = itemService.searchIssueMaps("2", "1", "2021-08", false);
