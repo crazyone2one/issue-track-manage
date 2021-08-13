@@ -1,149 +1,180 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TRACKING|PROJECT</title>
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/common/common.css}" rel="stylesheet">
-</head>
-<body>
-<!-- 顶部导航 -->
-<div th:replace="~{common/common::topbar}"></div>
-<div class="section-body mt-4">
-    <div class="container-fluid">
-        <div class="tab-content">
-            <div class="tab-pane active">
-                <div class="card">
-                    <form th:action="@{/items/list}" class="row g-3" style="width: 75%">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="input-group mb-3" style="width: 30%">
-                                    <div class="form-group">
-                                        <span class="input-group-text">项目名称</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>TRACKING|PROJECT</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/common/common.css}" rel="stylesheet">
+    </head>
+    <body>
+        <!-- 顶部导航 -->
+        <div th:replace="~{common/common::topbar}"></div>
+        <div class="section-body mt-4">
+            <div class="container-fluid">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <!--查询-->
+                        <div class="card">
+                            <form th:action="@{/items/list}" class="row g-3" style="width: 75%">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="input-group mb-3" style="width: 20%">
+                                            <div class="form-group">
+                                                <span class="input-group-text">项目名称</span>
+                                            </div>
+                                            <input name="projectId" class="form-control" id="projectName" type="text"
+                                                   placeholder="请输入项目名称"/>
+                                        </div>
+                                        <div class="input-group mb-3" style="width: 16%">
+                                            <div class="form-group">
+                                                <span class="input-group-text">严重程度</span>
+                                            </div>
+                                            <select id="jobStatus" name="severity" class="form-select">
+                                                <option selected>--选择--</option>
+                                                <option th:each="temp:${issueStatusList}"
+                                                        th:value="${temp.getTypeCode()}"
+                                                        th:text="${temp.getTypeName()}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-4 col-sm-6">
+                                            <button type="submit" class="btn btn-primary">search</button>
+                                        </div>
                                     </div>
-                                    <input name="projectName" class="form-control" id="projectName" type="text"
-                                           placeholder="请输入项目名称"/>
                                 </div>
-                                <div class="input-group mb-3" style="width: 16%">
-                                    <div class="form-group">
-                                        <span class="input-group-text">严重程度</span>
-                                    </div>
-                                    <select id="jobStatus" name="jobStatus" class="form-select">
-                                        <option selected>--选择--</option>
-                                        <option th:each="temp:${issueStatusList}" th:value="${temp.getTypeCode()}"
-                                                th:text="${temp.getTypeName()}">
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-2 col-md-4 col-sm-6">
-                                    <button type="submit" class="btn btn-primary">search</button>
-                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0">
+                                    <i class="bx bxs-plus-square">添加问题单</i>
+                                </a>
+                                <a href="#" class="btn btn-light mb-3 mb-lg-0">
+                                    <i class="bx bxs-plus-square">
+                                        <del>导出</del>
+                                    </i>
+                                </a>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="row">
-                    <div class="col-sm-10">
-                        <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0">
-                            <i class="bx bxs-plus-square">添加问题单</i>
-                        </a>
-                        <a href="#" class="btn btn-light mb-3 mb-lg-0">
-                            <i class="bx bxs-plus-square">
-                                <del>导出</del>
-                            </i>
-                        </a>
+                        <div class="table-responsive card">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="border-end" th:width="80px">issue#</th>
+                                    <th class="border-end" th:width="150px">项目名称</th>
+                                    <th class="border-end" th:width="100px">所属模块</th>
+                                    <th class="border-end" th:width="100px">功能点</th>
+                                    <th class="border-end align-content-center" th:width="200px">问题描述</th>
+                                    <th class="border-end" th:width="100px">严重程度</th>
+                                    <th class="border-end" th:width="100px">测试人员</th>
+                                    <th class="border-end" th:width="100px">状态</th>
+                                    <th class="border-end" th:width="200px">备注</th>
+                                    <th class="border-end" th:width="100px">月份</th>
+                                    <th class="border-end" th:width="50px"><i class="icon_cogs">
+                                    </i>操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="tempItem,stat:${issueListPage.records}">
+                                    <input name="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
+                                    <td th:text="${stat.index+1}"></td>
+                                    <td th:text="${proMap.get(tempItem.getProjectId()).projectName}"></td>
+                                    <td th:text="${tempItem.getModule()}"></td>
+                                    <td th:text="${tempItem.getFunctionDesc()}"></td>
+                                    <td th:text="${tempItem.getTitleDesc()}">
+                                    <td>
+                            <span th:each="c:${severityList}">
+                                <span th:if="${#strings.isEmpty(tempItem.severityUpdate)}">
+                                    <span th:if="${#strings.equals(tempItem.severity,c.typeCode)}"
+                                          th:value="${c.typeCode}" th:text="${c.typeName}"></span>
+                                </span>
+                                <span th:if="${!#strings.isEmpty(tempItem.severityUpdate)}">
+                                    <span th:if="${#strings.equals(tempItem.severityUpdate,c.typeCode)}"
+                                          th:value="${c.typeCode}" th:text="${c.typeName}"></span>
+                                </span>
+                        </span>
+                                    </td>
+                                    <td>
+                                <span th:each="c:${ownerList}">
+                                    <span th:if="${#strings.equals(tempItem.owner,c.typeCode)}"
+                                          th:value="${c.typeCode}" th:text="${c.typeName}"></span>
+                        </span>
+                                    </td>
+                                    <td>
+                        <span th:each="c:${issueStatusList}">
+                            <span th:if="${!#strings.isEmpty(tempItem.statusUpdate)}">
+                                        <span th:if="${#strings.equals(tempItem.statusUpdate,c.typeCode)}"
+                                              th:value="${c.typeCode}" th:text="${c.typeName}"></span>
+                                    </span>
+                                    <span th:if="${#strings.isEmpty(tempItem.statusUpdate)}">
+                                        <span th:if="${#strings.equals(tempItem.status,c.typeCode)}"
+                                              th:value="${c.typeCode}" th:text="${c.typeName}"></span>
+                                    </span>
+                        </span>
+                                    </td>
+                                    <td th:text="${tempItem.getRemark()}"></td>
+                                    <td th:text="${tempItem.getIssueDate()}"></td>
+                                    <td>
+                                        <a th:href="@{/items/goModify(id=${tempItem.getId()})}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg>
+                                        </a>
+                                        <a href="#">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
-<!--                    <div class="col-sm-2" style="overflow: auto">-->
-<!--                        &lt;!&ndash;分页&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div style="display: inline-block">Showing 1 to 10 of 11 entries</div>&ndash;&gt;-->
-<!--                        <div style="display: inline-block">-->
-<!--                            <nav aria-label="Page navigation example">-->
-<!--                                <ul class="pagination pagination-sm">-->
-<!--                                    <li class="page-item disabled">-->
-<!--                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-<!--                                    </li>-->
-<!--                                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                                    <li class="page-item">-->
-<!--                                        <a class="page-link" href="#">Next</a>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </nav>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
-                <div class="table-responsive card">
-                    <table class="table table-striped table-advance table-hover">
-                        <thead>
-                        <tr>
-                            <th th:width="80px">issue#</th>
-                            <th th:width="150px">项目名称</th>
-                            <th th:width="100px">所属模块</th>
-                            <th th:width="100px">功能点</th>
-                            <th th:width="200px" class="align-content-center">问题描述</th>
-                            <th th:width="100px">严重程度</th>
-                            <th th:width="100px">测试人员</th>
-                            <th th:width="100px">状态</th>
-                            <th th:width="200px">备注</th>
-                            <th th:width="100px">月份</th>
-                            <th th:width="50px"><i class="icon_cogs">
-                            </i>操作
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="tempItem,stat:${issueList}">
-                            <input name="id" type="hidden" class="form-control" th:value="${tempItem.getId()}">
-                            <td th:text="${stat.index+1}"></td>
-                            <td th:text="${proMap.get(tempItem.getProjectId()).projectName}"></td>
-                            <td th:text="${tempItem.getModule()}"></td>
-                            <td th:text="${tempItem.getFunctionDesc()}"></td>
-                            <td th:text="${tempItem.getTitleDesc()}">
-                            <td>
-                        <span th:switch="${tempItem.getSeverity()}">
-                            <span th:case="1">轻微</span>
-                            <span th:case="2">一般</span>
-                            <span th:case="3">严重</span>
-                            <span th:case="4">致命</span>
-                        </span>
-                            </td>
-                            <td>
-                        <span th:switch="${tempItem.getOwner()}">
-                            <span th:case="lijinglin">李敬林</span>
-                            <span th:case="zhangkun">张坤</span>
-                            <span th:case="shaodan">邵丹</span>
-                        </span>
-                            </td>
-                            <td>
-                        <span th:switch="${tempItem.getStatus()}">
-                            <span th:case="1">新建</span>
-                            <span th:case="2">挂起</span>
-                            <span th:case="3">已提交</span>
-                            <span th:case="4">已解决</span>
-                            <span th:case="5">非bug</span>
-                        </span>
-                            </td>
-                            <td th:text="${tempItem.getRemark()}"></td>
-                            <td th:text="${tempItem.getIssueDate()}"></td>
-                            <td>
-                                <a th:href="@{/items/goModify(id=${tempItem.getId()})}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                         stroke-linecap="round" stroke-linejoin="round"
-                                         class="feather feather-edit-2 align-middle">
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
+        <!--        分页-->
+        <div class="row">
+            <div class="col-sm-12 col-md-7">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${issueListPage.hasPrevious()}">
+                            <a class="page-link" th:href="@{/items/list(pn=${issueListPage.getCurrent()-1})}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <!--遍历页码，只显示3页，点击下一页之后，每次多遍历两个页码-->
+                        <th:block th:if="${issueListPage.getCurrent()<=2}" th:each="i:${#numbers.sequence(1,3)}">
+                            <!--加判断是不是当前页，如果是 高亮显示，并且取消超链接，这样避免了点击当前页重复发送请求查询数据-->
+                            <th:block th:if="${issueListPage.getCurrent()==i}">
+                                <li class="page-item active">
+                                    <a class="page-link" th:text="${i}"></a>
+                                </li>
+                            </th:block>
+                            <th:block th:if="${issueListPage.getCurrent()!=i}">
+                                <li class="page-item">
+                                    <a class="page-link" th:text="${i}" th:href="@{/items/list(pn=${i})}"></a>
+                                </li>
+                            </th:block>
+                        </th:block>
+                        <li class="page-item" th:if="${issueListPage.hasNext()}">
+                            <a class="page-link" th:href="@{/items/list(pn=${issueListPage.getCurrent()+1})}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </body>
 </html>

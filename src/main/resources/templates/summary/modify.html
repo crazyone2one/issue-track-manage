@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <span class="input-group-text">项目名称</span>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="project_id" id="proName" readonly
+                                <input th:type="text" th:class="form-control" name="projectName" id="proName" readonly
                                        th:value="${proMap.get(summaryVo.getProjectName()).projectName}">
                             </div>
                             <div class="input-group mb-3" style="width: 50%">
@@ -47,14 +47,14 @@
                                 <div class="form-group">
                                     <span class="input-group-text">编写用例</span>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="createCase" id="createCase"
+                                <input th:type="text" th:class="form-control" name="createCaseCount" id="createCase"
                                        th:value="*{createCaseCount}">
                             </div>
                             <div class="input-group mb-3" style="width: 25%">
                                 <div class="form-group">
                                     <span class="input-group-text">执行用例</span>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="executeCase" id="executeCase"
+                                <input th:type="text" th:class="form-control" name="executeCaseCount" id="executeCase"
                                        th:value="*{executeCaseCount}">
                             </div>
                             <div class="input-group mb-3" style="width: 25%">

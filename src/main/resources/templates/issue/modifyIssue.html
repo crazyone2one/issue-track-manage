@@ -1,115 +1,127 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TRACKING | ISSUE</title>
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <meta name="author" content="11‘s papa">
-</head>
-<body>
-<!-- 顶部导航 -->
-<div th:replace="~{common/common::topbar}"></div>
-<div class="content container-fluid">
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">编辑问题单信息</h3>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>TRACKING | ISSUE</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <!-- 顶部导航 -->
+        <div th:replace="~{common/common::topbar}"></div>
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">编辑问题单信息</h3>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <form th:action="@{/items/modifyIssue}" method="post" th:object="${issueVo}">
-                        <div class="row">
-                            <div class="col-12">
-                                <h5 class="form-title">任务信息</h5>
-                            </div>
-                            <input name="id" type="hidden" class="form-control" th:value="*{id}">
-                            <div class="input-group mb-3">
-                                <div class="form-group">
-                                    <span class="input-group-text">项目名称</span>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/items/modifyIssue}" method="post" th:object="${issueVo}">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5 class="form-title">任务信息</h5>
+                                    </div>
+                                    <input name="id" type="hidden" class="form-control" th:value="*{id}">
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">项目名称</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="projectId" id="proName"
+                                               readonly
+                                               th:value="${proVo.projectName}">
+                                    </div>
+                                    <br>
+                                    <div class="input-group mb-3" style="width: 50%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">模块</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="module" id="jobDesc"
+                                               th:value="*{module}">
+                                    </div>
+                                    <div class="input-group mb-3" style="width: 50%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">功能点</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="functionDesc"
+                                               id="functionDesc"
+                                               th:value="*{functionDesc}">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">标题(问题描述)</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="titleDesc" id="titleDesc"
+                                               th:value="*{titleDesc}">
+                                    </div>
+                                    <div class="input-group mb-3" style="width: 25%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">严重程度</span>
+                                        </div>
+                                        <select class="form-select" name="severityUpdate" id="severity" required>
+                                            <option th:if="${#strings.isEmpty(issueVo.severityUpdate)}"
+                                                    th:each="temp:${severityList}" th:value="${temp.getTypeCode()}"
+                                                    th:selected="${issueVo.severity eq temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                            <option th:if="${!#strings.isEmpty(issueVo.severityUpdate)}"
+                                                    th:each="temp:${severityList}" th:value="${temp.getTypeCode()}"
+                                                    th:selected="${issueVo.severityUpdate eq temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3" style="width: 25%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">测试人员</span>
+                                        </div>
+                                        <select class="form-select" name="owner" id="owner" required>
+                                            <option th:each="temp:${ownerList}" th:value="${temp.getTypeCode()}"
+                                                    th:selected="${issueVo.owner eq temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3" style="width: 25%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">状态</span>
+                                        </div>
+                                        <select class="form-select" name="statusUpdate" id="status" required>
+                                            <option th:if="${#strings.isEmpty(issueVo.statusUpdate)}"
+                                                    th:each="temp:${statusList}" th:value="${temp.getTypeCode()}"
+                                                    th:selected="${issueVo.status eq temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                            <option th:if="${!#strings.isEmpty(issueVo.statusUpdate)}"
+                                                    th:each="temp:${statusList}" th:value="${temp.getTypeCode()}"
+                                                    th:selected="${issueVo.statusUpdate eq temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3" style="width: 25%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">时间</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="issueDate" id="issueDate"
+                                               th:value="*{issueDate}">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">备注</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="remark" id="remark"
+                                               th:value="*{remark}">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" id="modifySummary" class="btn btn-primary">保存</button>
+                                    </div>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="project_id" id="proName" readonly
-                                       th:value="${proVo.projectName}">
-                            </div>
-                            <br>
-                            <div class="input-group mb-3" style="width: 50%">
-                                <div class="form-group">
-                                    <span class="input-group-text">模块</span>
-                                </div>
-                                <input th:type="text" th:class="form-control" name="module" id="jobDesc"
-                                       th:value="*{module}">
-                            </div>
-                            <div class="input-group mb-3" style="width: 50%">
-                                <div class="form-group">
-                                    <span class="input-group-text">功能点</span>
-                                </div>
-                                <input th:type="text" th:class="form-control" name="function_desc" id="functionDesc"
-                                       th:value="*{functionDesc}">
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="form-group">
-                                    <span class="input-group-text">标题(问题描述)</span>
-                                </div>
-                                <input th:type="text" th:class="form-control" name="title_desc" id="titleDesc"
-                                       th:value="*{titleDesc}">
-                            </div>
-                            <div class="input-group mb-3" style="width: 25%">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">严重程度</span>
-                                </div>
-                                <select class="form-select" name="severity" id="severity" required>
-                                    <option th:each="temp:${severityList}" th:value="${temp.getTypeCode()}"
-                                            th:selected="${issueVo.severity eq temp.getTypeCode()}"
-                                            th:text="${temp.getTypeName()}">
-                                </select>
-                            </div>
-                            <div class="input-group mb-3" style="width: 25%">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">测试人员</span>
-                                </div>
-                                <select class="form-select" name="owner" id="owner" required>
-                                    <option th:each="temp:${ownerList}" th:value="${temp.getTypeCode()}"
-                                            th:selected="${issueVo.owner eq temp.getTypeCode()}"
-                                            th:text="${temp.getTypeName()}">
-                                </select>
-                            </div>
-                            <div class="input-group mb-3" style="width: 25%">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">状态</span>
-                                </div>
-                                <select class="form-select" name="status" id="status" required>
-                                    <option th:each="temp:${statusList}" th:value="${temp.getTypeCode()}"
-                                            th:selected="${issueVo.status eq temp.getTypeCode()}"
-                                            th:text="${temp.getTypeName()}">
-                                </select>
-                            </div>
-                            <div class="input-group mb-3" style="width: 25%">
-                                <div class="form-group">
-                                    <span class="input-group-text">时间</span>
-                                </div>
-                                <input th:type="text" th:class="form-control" name="issueDate" id="issueDate"
-                                       th:value="*{issueDate}">
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="form-group">
-                                    <span class="input-group-text">备注</span>
-                                </div>
-                                <input th:type="text" th:class="form-control" name="remark" id="remark"
-                                       th:value="*{remark}">
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" id="modifySummary" class="btn btn-primary">保存</button>
-                            </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>
