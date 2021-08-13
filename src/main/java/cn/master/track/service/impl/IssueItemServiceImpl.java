@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,22 +47,22 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
-    public Page<IssueItem> pageItems(Map<String, Object> params, Integer pageIndex, Integer pageCount) {
+    public Page<IssueItem> pageItems(IssueItem issueItem, Integer pageIndex, Integer pageCount) {
         final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
-        if (MapUtils.isNotEmpty(params)) {
-            List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueItem::getProjectId, issueIds).orderByDesc(IssueItem::getProjectId);
+        List<String> issueIds = new ArrayList<>();
+        if (StringUtils.isNotEmpty(issueItem.getProjectId())) {
+            fuzzyQueryByProjectName(issueItem.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            wrapper.lambda().in(IssueItem::getProjectId, issueIds);
         }
         return baseMapper.selectPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
     @Override
-    public List<IssueItem> issueItems(Map<String, Object> params) {
+    public List<IssueItem> issueItems(IssueItem issueItem) {
         final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
-        if (MapUtils.isNotEmpty(params)) {
+        if (StringUtils.isNotEmpty(issueItem.getProjectId())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            fuzzyQueryByProjectName(issueItem.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
             wrapper.lambda().in(IssueItem::getProjectId, issueIds).orderByDesc(IssueItem::getProjectId);
         }
         return baseMapper.selectList(wrapper);
@@ -111,24 +111,30 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
-    public Page<IssueSummary> searchSummary(Map<String, Object> params, Integer pageIndex, Integer pageCount) {
+    public Page<IssueSummary> searchSummary(IssueSummary summary, Integer pageIndex, Integer pageCount) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        if (MapUtils.isNotEmpty(params)) {
+        if (StringUtils.isNotEmpty(summary.getProjectName())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            fuzzyQueryByProjectName(summary.getProjectName()).forEach(temp -> issueIds.add(temp.getProjectId()));
             wrapper.lambda().in(IssueSummary::getProjectName, issueIds).orderByDesc(IssueSummary::getProjectName);
+        }
+        if (StringUtils.isNotEmpty(summary.getJobStatus())) {
+            wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
         wrapper.lambda().groupBy(IssueSummary::getProjectName);
         return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
     @Override
-    public List<IssueSummary> summaryList(Map<String, Object> params) {
+    public List<IssueSummary> summaryList(IssueSummary summary) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        if (MapUtils.isNotEmpty(params)) {
-            List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(params.get("projectName").toString()).forEach(temp -> issueIds.add(temp.getProjectId()));
+        List<String> issueIds = new ArrayList<>();
+        if (StringUtils.isNotEmpty(summary.getProjectName())) {
+            fuzzyQueryByProjectName(summary.getProjectName()).forEach(temp -> issueIds.add(temp.getProjectId()));
             wrapper.lambda().in(IssueSummary::getProjectName, issueIds).orderByDesc(IssueSummary::getProjectName);
+        }
+        if (StringUtils.isNotEmpty(summary.getJobStatus())) {
+            wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
         wrapper.lambda().groupBy(IssueSummary::getProjectName);
         return summaryService.listSummary(wrapper);
@@ -137,6 +143,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     @Override
     public void modifyIssue(IssueItem issueItem) {
         issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getId());
+        issueItem.setUpdateDate(new Date());
         baseMapper.update(issueItem, new QueryWrapper<IssueItem>().lambda().eq(IssueItem::getId, issueItem.getId()));
     }
 }

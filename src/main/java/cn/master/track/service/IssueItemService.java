@@ -17,18 +17,23 @@ import java.util.Map;
  * @since 2021-08-04
  */
 public interface IssueItemService extends IService<IssueItem> {
-
     /**
      * 分页查询
      *
-     * @param params
+     * @param issueItem IssueItem
      * @param pageIndex
      * @param pageCount
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueItem>
      */
-    Page<IssueItem> pageItems(Map<String, Object> params, Integer pageIndex, Integer pageCount);
+    Page<IssueItem> pageItems(IssueItem issueItem, Integer pageIndex, Integer pageCount);
 
-    List<IssueItem> issueItems(Map<String, Object> params);
+    /**
+     * 查询数据
+     *
+     * @param issueItem IssueItem
+     * @return java.util.List<cn.master.track.entity.IssueItem>
+     */
+    List<IssueItem> issueItems(IssueItem issueItem);
 
     /**
      * 保存issue
@@ -59,22 +64,22 @@ public interface IssueItemService extends IService<IssueItem> {
     List<IssueItem> fuzzyQueryByProjectName(String projectName);
 
     /**
-     * 任务汇总分页查询
+     * 分页查询汇总数据
      *
-     * @param params    查询参数
+     * @param summary   IssueSummary
      * @param pageIndex
      * @param pageCount
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueSummary>
      */
-    Page<IssueSummary> searchSummary(Map<String, Object> params, Integer pageIndex, Integer pageCount);
+    Page<IssueSummary> searchSummary(IssueSummary summary, Integer pageIndex, Integer pageCount);
 
     /**
-     * 任务汇总
+     * 查询汇总数据
      *
-     * @param params 查询参数
+     * @param summary IssueSummary
      * @return java.util.List<cn.master.track.entity.IssueSummary>
      */
-    List<IssueSummary> summaryList(Map<String, Object> params);
+    List<IssueSummary> summaryList(IssueSummary summary);
 
     /**
      * 更新issue
