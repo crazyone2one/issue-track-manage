@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @TableName("issue_summary")
 @Builder
+@AllArgsConstructor
 public class IssueSummary implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,13 +51,13 @@ public class IssueSummary implements Serializable {
      * 编写用例数量
      */
     @TableField("create_case_count")
-    private int createCaseCount;
+    private Integer createCaseCount;
 
     /**
      * 执行测试用例数量
      */
     @TableField("execute_case_count")
-    private int executeCaseCount;
+    private Integer executeCaseCount;
 
     /**
      * bug文档
