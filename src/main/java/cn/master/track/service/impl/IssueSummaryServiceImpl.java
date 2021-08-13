@@ -8,6 +8,7 @@ import cn.master.track.service.IssueSummaryService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @author 11's papa
  * @since 2021-08-04
  */
+@Slf4j
 @Service
 public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, IssueSummary> implements IssueSummaryService {
 
@@ -52,32 +54,21 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
 
     @Override
     public Page<IssueSummary> searchSummaryPage(Page<IssueSummary> page, QueryWrapper<IssueSummary> wrapper) {
+        log.debug("分页查询汇总数据");
         return baseMapper.selectPage(page, wrapper);
     }
 
     @Override
     public List<IssueSummary> listSummary(QueryWrapper<IssueSummary> wrapper) {
+        log.debug("查询汇总数据");
         return baseMapper.selectList(wrapper);
     }
 
     @Override
-    public void modifySummary(Map<String, Object> params) {
-        final String tempId = params.get("id").toString();
-        final IssueSummary.IssueSummaryBuilder builder = IssueSummary.builder();
-        builder.id(tempId)
-                .projectName(findSummaryById(tempId).getProjectName())
-                .jobDesc(params.get("jobDesc").toString())
-                .createCaseCount(Integer.parseInt(params.get("createCase").toString()))
-                .executeCaseCount(Integer.parseInt(params.get("executeCase").toString()))
-                .bugDoc(params.get("bugDoc").toString())
-                .reportDoc(params.get("reportDoc").toString())
-                .hasDoc(params.get("hasDoc").toString())
-                .jobStatus(params.get("jobStatus").toString())
-                .deliveryStatus(params.get("deliveryStatus").toString())
-                .owner(params.get("owner").toString())
-                .remark(params.get("remark").toString())
-                .updateDate(new Date());
-        baseMapper.update(builder.build(), new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getId, tempId));
+    public void modifySummary(IssueSummary summary) {
+        summary.setProjectName(findSummaryById(summary.getId()).getProjectName());
+        summary.setUpdateDate(new Date());
+        baseMapper.update(summary, new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getId, summary.getId()));
     }
 
     @Override

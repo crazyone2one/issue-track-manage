@@ -35,21 +35,28 @@ public interface IssueSummaryService extends IService<IssueSummary> {
     IssueSummary findSummaryById(String id);
 
     /**
-     * 查询任务汇总数据
+     * 分页查询任务汇总数据
      *
-     * @param page 分页参数
+     * @param page    分页参数
      * @param wrapper 查询条件
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueSummary>
      */
     Page<IssueSummary> searchSummaryPage(Page<IssueSummary> page, QueryWrapper<IssueSummary> wrapper);
+
+    /**
+     * 查询任务汇总数据
+     *
+     * @param wrapper 查询条件
+     * @return java.util.List<cn.master.track.entity.IssueSummary>
+     */
     List<IssueSummary> listSummary(QueryWrapper<IssueSummary> wrapper);
 
     /**
-     * 修改任务汇总数据
+     * 更新汇总数据
      *
-     * @param params 前端传来的参数
+     * @param summary IssueSummary
      */
-    void modifySummary(Map<String, Object> params);
+    void modifySummary(IssueSummary summary);
 
     /**
      * 统计总数
