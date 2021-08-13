@@ -27,14 +27,15 @@ public interface IssueItemService extends IService<IssueItem> {
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.IssueItem>
      */
     Page<IssueItem> pageItems(Map<String, Object> params, Integer pageIndex, Integer pageCount);
+
     List<IssueItem> issueItems(Map<String, Object> params);
 
     /**
-     * 添加issue数据
+     * 保存issue
      *
-     * @param params
+     * @param item IssueItem
      */
-    void addIssueItem(Map<String, Object> params);
+    void saveIssueItem(IssueItem item);
 
     IssueItem getIssueById(String id);
 
@@ -78,7 +79,7 @@ public interface IssueItemService extends IService<IssueItem> {
     /**
      * 更新issue
      *
-     * @param params 参数
+     * @param issueItem IssueItem
      */
-    void modifyIssue(Map<String, Object> params);
+    void modifyIssue(IssueItem issueItem);
 }

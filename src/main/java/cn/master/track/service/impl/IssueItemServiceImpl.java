@@ -69,24 +69,9 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
-    public void addIssueItem(Map<String, Object> params) {
-        // 保存项目
-        final String projectNameId = projectService.addProjectByName(params.get("projectName").toString());
-        final IssueItem.IssueItemBuilder builder = IssueItem.builder();
-        builder
-//                .id(UuidUtils.generate())
-                .projectId(projectNameId)
-                .module(params.get("module").toString())
-                .functionDesc(params.get("function").toString())
-                .titleDesc(params.get("title").toString())
-                .severity(params.get("severity").toString())
-                .owner(params.get("owner").toString())
-                .status(params.get("status").toString())
-                .issueDate(params.get("monthDate").toString())
-                .remark(params.get("remark").toString())
-                .createDate(new Date());
-        final IssueItem item = builder.build();
-        // 保存issue
+    public void saveIssueItem(IssueItem item) {
+        final String projectNameId = projectService.addProjectByName(item.getProjectId());
+        item.setProjectId(projectNameId);
         baseMapper.insert(item);
         // 保存任务汇总数据
         final String summaryId = summaryService.addIssueSummary(item);
@@ -150,20 +135,8 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
-    public void modifyIssue(Map<String, Object> params) {
-        final String tempId = params.get("id").toString();
-        final IssueItem.IssueItemBuilder builder = IssueItem.builder();
-        builder.id(tempId)
-                .projectId(projectService.getProjectByName(params.get("project_id").toString()).getId())
-                .module(params.get("module").toString())
-                .functionDesc(params.get("function_desc").toString())
-                .titleDesc(params.get("title_desc").toString())
-                .severityUpdate(params.get("severity").toString())
-                .owner(params.get("owner").toString())
-                .statusUpdate(params.get("status").toString())
-                .remark(params.get("remark").toString())
-                .issueDate(params.get("issueDate").toString())
-                .updateDate(new Date());
-        baseMapper.updateById(builder.build());
+    public void modifyIssue(IssueItem issueItem) {
+        issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getId());
+        baseMapper.update(issueItem, new QueryWrapper<IssueItem>().lambda().eq(IssueItem::getId, issueItem.getId()));
     }
 }
