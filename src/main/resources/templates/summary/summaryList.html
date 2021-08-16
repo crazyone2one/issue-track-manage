@@ -47,7 +47,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="table-responsive card">
+                        <div class="table-responsive card" style="overflow-x: auto">
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
@@ -63,6 +63,7 @@
                                     <th class="border-end" rowspan="2" th:width="100px">是否交付</th>
                                     <th class="border-end" rowspan="2" th:width="100px">测试人员</th>
                                     <th class="border-end" rowspan="2" th:width="100px">备注</th>
+                                    <th class="border-end" rowspan="2" th:width="100px">hijian</th>
                                     <th class="border-end" rowspan="2" th:width="50px"><i class="icon_cogs">
                                     </i>操作
                                     </th>
@@ -312,6 +313,7 @@
                                     </td>
                                     <!--测试人员-->
                                     <td th:text="${tempItem.getRemark()}"></td>
+                                    <td th:text="${tempItem.issueDate}"></td>
                                     <td>
                                         <a th:href="@{/summary/goModify(id=${tempItem.getId()})}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"

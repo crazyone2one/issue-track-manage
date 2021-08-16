@@ -131,12 +131,12 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         List<String> issueIds = new ArrayList<>();
         if (StringUtils.isNotEmpty(summary.getProjectName())) {
             fuzzyQueryByProjectName(summary.getProjectName()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueSummary::getProjectName, issueIds).orderByDesc(IssueSummary::getProjectName);
+            wrapper.lambda().in(IssueSummary::getProjectName, issueIds);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
-        wrapper.lambda().groupBy(IssueSummary::getProjectName);
+        wrapper.lambda().groupBy(IssueSummary::getProjectName,IssueSummary::getIssueDate).orderByDesc(IssueSummary::getProjectName);
         return summaryService.listSummary(wrapper);
     }
 
