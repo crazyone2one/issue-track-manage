@@ -58,6 +58,7 @@ public class IssueSummaryController {
         model.addAttribute("summaryPage", itemService.searchSummary(summary, pn, pc));
         model.addAttribute("summaryList", itemService.summaryList(summary));
         model.addAttribute("proMap", projectService.projectsMap());
+        model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
         Map<String, String> level1Map = itemService.searchIssueMaps("1", "1", "2021-08", false);
         final Map<String, String> level2Map = itemService.searchIssueMaps("2", "1", "2021-08", false);
         final Map<String, String> level3Map = itemService.searchIssueMaps("3", "1", "2021-08", false);

@@ -303,7 +303,13 @@
                                         <span th:if="${#strings.equals('2',tempItem.deliveryStatus)}">不确定</span>
                                     </td>
                                     <!--测试人员-->
-                                    <td th:text="${tempItem.getOwner()}"></td>
+                                    <td>
+                                        <span th:each="o:${ownerList}">
+                                            <span th:if="${tempItem.owner eq o.getTypeCode()}">
+                                                <span th:value="${o.getTypeCode()}" th:text="${o.getTypeName()}"></span>
+                                            </span>
+                                        </span>
+                                    </td>
                                     <!--测试人员-->
                                     <td th:text="${tempItem.getRemark()}"></td>
                                     <td>
