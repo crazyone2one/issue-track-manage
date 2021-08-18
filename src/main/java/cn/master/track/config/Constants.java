@@ -22,4 +22,9 @@ public class Constants {
     public static final String OWNER_LIST = "owner_list";
     public static final String ISSUE_STATUS = "issue_status";
     public static final String JOB_STATUS = "job_status";
+
+    public static final String BUG_LEVEL_1 = "1";
+    public static final String BUG_LEVEL_2 = "2";
+    public static final String BUG_LEVEL_3 = "3";
+    public static final String BUG_LEVEL_4 = "4";
 }

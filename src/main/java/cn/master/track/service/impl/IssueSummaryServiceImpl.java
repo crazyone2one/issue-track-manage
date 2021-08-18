@@ -1,6 +1,5 @@
 package cn.master.track.service.impl;
 
-import cn.master.track.config.Constants;
 import cn.master.track.entity.IssueItem;
 import cn.master.track.entity.IssueSummary;
 import cn.master.track.mapper.IssueSummaryMapper;
@@ -11,10 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -30,20 +26,38 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
 
     @Override
     public String addIssueSummary(IssueItem item) {
-        final IssueSummary summary = IssueSummary.builder()
-//                .id(UuidUtils.generate())
-                .projectName(item.getProjectId())
-                .createCaseCount(0)
-                .executeCaseCount(0)
-                .bugDoc("0")
-                .reportDoc("0")
-                .hasDoc("0")
-                .deliveryStatus("0")
-                .issueDate(item.getIssueDate())
-                .createDate(new Date())
-                .build();
-        baseMapper.insert(summary);
-        return summary.getId();
+        final IssueSummary issueSummary = findIssueSummary(item);
+        final IssueSummary.IssueSummaryBuilder builder = IssueSummary.builder();
+        if (Objects.isNull(issueSummary)) {
+            final IssueSummary summary = builder.projectName(item.getProjectId())
+                    .createCaseCount(0)
+                    .executeCaseCount(0)
+                    .bugDoc("0")
+                    .reportDoc("0")
+                    .hasDoc("0")
+                    .deliveryStatus("0")
+                    .issueDate(item.getIssueDate())
+                    .createDate(new Date())
+                    .build();
+            baseMapper.insert(summary);
+            return summary.getId();
+        } else {
+            builder.projectName(item.getProjectId()).issueDate(item.getIssueDate()).updateDate(new Date());
+            baseMapper.updateById(builder.build());
+            return issueSummary.getId();
+        }
+    }
+
+    @Override
+    public IssueSummary findIssueSummary(IssueItem issueItem) {
+        return baseMapper.selectOne(new QueryWrapper<IssueSummary>().lambda()
+                .eq(IssueSummary::getProjectName,issueItem.getProjectId())
+                .eq(IssueSummary::getIssueDate,issueItem.getIssueDate()));
+    }
+
+    @Override
+    public IssueSummary findIssueSummary(QueryWrapper<IssueSummary> wrapper) {
+        return baseMapper.selectOne(wrapper);
     }
 
     @Override
@@ -71,28 +85,4 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
         baseMapper.update(summary, new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getId, summary.getId()));
     }
 
-    @Override
-    public Map<String, String> totalCount(Map<String, String> m1, Map<String, String> m2, Map<String, String> m3, Map<String, String> m4) {
-        Map<String, String> result = new LinkedHashMap<>();
-        for (String tempId : Constants.PROJECT_ID_LIST) {
-            int level1 = 0;
-            int level2 = 0;
-            int level3 = 0;
-            int level4 = 0;
-            if (m1.containsKey(tempId)) {
-                level1 += Integer.parseInt(m1.get(tempId));
-            }
-            if (m2.containsKey(tempId)) {
-                level2 += Integer.parseInt(m2.get(tempId));
-            }
-            if (m3.containsKey(tempId)) {
-                level3 += Integer.parseInt(m3.get(tempId));
-            }
-            if (m4.containsKey(tempId)) {
-                level4 += Integer.parseInt(m4.get(tempId));
-            }
-            result.put(tempId, String.valueOf(level1 + level2 + level3 + level4));
-        }
-        return result;
-    }
 }

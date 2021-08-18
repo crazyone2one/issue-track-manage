@@ -95,146 +95,61 @@
                                     <td th:text="${tempItem.jobDesc}"></td>
                                     <!--编写用例-->
                                     <td>
-<!--                                        <span th:if="${#strings.isEmpty(tempItem.getCreateCaseCount())}">0</span>-->
                                         <span th:text="${tempItem.getCreateCaseCount()}">
                                     <a href="#"></a>
                                 </span>
                                     </td>
                                     <!--执行用例-->
                                     <td>
-<!--                                        <span th:if="${#strings.isEmpty(tempItem.getExecuteCaseCount())}">0</span>-->
                                         <span th:text="${tempItem.getExecuteCaseCount()}"></span>
                                     </td>
                                     <!--提交bug部分-->
                                     <!--致命-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(level4)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${level4.keySet()}" th:value="${tempItem.projectName}">
-<!--                                    貌似存在bug，不太懂前端，慢慢优化-->
-                                            <!--                                    <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${level4.get(level)}"
-                                          th:text="${level4.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).createBugDeadly}"></span>
                                     </td>
                                     <!--严重-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(level3)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${level3.keySet()}" th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${level3.get(level)}"
-                                          th:text="${level3.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).createBugSeverity}"></span>
                                     </td>
                                     <!--一般-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(level2)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${level2.keySet()}" th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${level2.get(level)}"
-                                          th:text="${level2.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).createBugOrdinary}"></span>
                                     </td>
                                     <!--轻微-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(level1)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${level1.keySet()}" th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${level1.get(level)}"
-                                          th:text="${level1.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).createBugSlight}"></span>
                                     </td>
                                     <!--总计-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(totalCount)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="count1:${totalCount.keySet()}">
-                                    <span th:switch="${tempItem.projectName}">
-                                        <span th:case="${count1}" th:value="${totalCount.get(count1)}"
-                                              th:text="${totalCount.get(count1)}"></span>
-                                    </span>
-                                </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).createBugDeadly
+                                        + refMap.get(tempItem.id).createBugSeverity
+                                        + refMap.get(tempItem.id).createBugOrdinary
+                                        + refMap.get(tempItem.id).createBugSlight}"></span>
                                     </td>
                                     <!--回测bug-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(modifyLevel4)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${modifyLevel4.keySet()}"
-                                              th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${modifyLevel4.get(level)}"
-                                          th:text="${modifyLevel4.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <!--致命-->
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).reviewBugDeadly}"></span>
                                     </td>
-                                    <td>
-                                <span th:if="${#maps.isEmpty(modifyLevel3)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${modifyLevel3.keySet()}"
-                                              th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${modifyLevel3.get(level)}"
-                                          th:text="${modifyLevel3.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <!--严重-->
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).reviewBugSeverity}"></span>
                                     </td>
-                                    <td>
-                                <span th:if="${#maps.isEmpty(modifyLevel2)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${modifyLevel2.keySet()}"
-                                              th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${modifyLevel2.get(level)}"
-                                          th:text="${modifyLevel2.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <!--一般-->
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).reviewBugOrdinary}"></span>
                                     </td>
-                                    <td>
-                                <span th:if="${#maps.isEmpty(modifyLevel1)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="level:${modifyLevel1.keySet()}"
-                                              th:value="${tempItem.projectName}">
-<!--                                <span th:if="${!#strings.equals(level,tempItem.projectName)}" th:text="0"></span>-->
-                                <span th:switch="${tempItem.projectName}">
-                                    <span th:case="${level}" th:value="${modifyLevel1.get(level)}"
-                                          th:text="${modifyLevel1.get(level)}"></span>
-                                </span>
-                            </span>
+                                    <!--轻微-->
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).reviewBugSlight}"></span>
                                     </td>
                                     <!--总计-->
-                                    <td>
-                                <span th:if="${#maps.isEmpty(modifyTotal)}">
-                                    <span th:text="0"></span>
-                                </span>
-                                        <span th:each="count1:${modifyTotal.keySet()}">
-                                    <span th:switch="${tempItem.projectName}">
-                                        <span th:case="${count1}" th:value="${modifyTotal.get(count1)}"
-                                              th:text="${modifyTotal.get(count1)}"></span>
-                                    </span>
-                                </span>
+                                    <td th:value="${tempItem.id}">
+                                        <span th:text="${refMap.get(tempItem.id).reviewBugDeadly
+                                        + refMap.get(tempItem.id).reviewBugSeverity
+                                        + refMap.get(tempItem.id).reviewBugOrdinary
+                                        + refMap.get(tempItem.id).reviewBugSlight}"></span>
                                     </td>
                                     <!--bug文档-->
                                     <td>
@@ -333,32 +248,32 @@
             </div>
         </div>
 
-<!--        分页-->
-<!--        <div class="row">-->
-<!--            <div class="col-sm-12 col-md-5">-->
-<!--                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 11-->
-<!--                    entries-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-sm-12 col-md-7">-->
-<!--                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">-->
-<!--                    <ul class="pagination">-->
-<!--                        <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">-->
-<!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>-->
-<!--                        </li>-->
-<!--                        <li class="paginate_button page-item active">-->
-<!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a>-->
-<!--                        </li>-->
-<!--                        <li class="paginate_button page-item active">-->
-<!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a>-->
-<!--                        </li>-->
-<!--                        <li class="paginate_button page-item next" id="DataTables_Table_0_next">-->
-<!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0"-->
-<!--                               class="page-link">next</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        分页-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-sm-12 col-md-5">-->
+        <!--                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 11-->
+        <!--                    entries-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="col-sm-12 col-md-7">-->
+        <!--                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">-->
+        <!--                    <ul class="pagination">-->
+        <!--                        <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">-->
+        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>-->
+        <!--                        </li>-->
+        <!--                        <li class="paginate_button page-item active">-->
+        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a>-->
+        <!--                        </li>-->
+        <!--                        <li class="paginate_button page-item active">-->
+        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a>-->
+        <!--                        </li>-->
+        <!--                        <li class="paginate_button page-item next" id="DataTables_Table_0_next">-->
+        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0"-->
+        <!--                               class="page-link">next</a>-->
+        <!--                        </li>-->
+        <!--                    </ul>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </body>
 </html>
