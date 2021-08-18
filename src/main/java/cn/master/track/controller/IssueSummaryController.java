@@ -6,6 +6,7 @@ import cn.master.track.entity.IssueSummary;
 import cn.master.track.service.IssueItemService;
 import cn.master.track.service.IssueProjectService;
 import cn.master.track.service.IssueSummaryService;
+import cn.master.track.service.SummaryItemRefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
 
 /**
  * <p>
@@ -32,12 +31,14 @@ public class IssueSummaryController {
     private final IssueItemService itemService;
     private final IssueSummaryService summaryService;
     private final IssueProjectService projectService;
+    private final SummaryItemRefService refService;
 
     @Autowired
-    public IssueSummaryController(IssueItemService itemService, IssueSummaryService summaryService, IssueProjectService projectService) {
+    public IssueSummaryController(IssueItemService itemService, IssueSummaryService summaryService, IssueProjectService projectService, SummaryItemRefService refService) {
         this.itemService = itemService;
         this.summaryService = summaryService;
         this.projectService = projectService;
+        this.refService = refService;
     }
 
     /**
@@ -59,26 +60,7 @@ public class IssueSummaryController {
         model.addAttribute("summaryList", itemService.summaryList(summary));
         model.addAttribute("proMap", projectService.projectsMap());
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
-        Map<String, String> level1Map = itemService.searchIssueMaps("1", "1", "2021-08", false);
-        final Map<String, String> level2Map = itemService.searchIssueMaps("2", "1", "2021-08", false);
-        final Map<String, String> level3Map = itemService.searchIssueMaps("3", "1", "2021-08", false);
-        final Map<String, String> level4Map = itemService.searchIssueMaps("4", "1", "2021-08", false);
-        final Map<String, String> totalCount = summaryService.totalCount(level1Map, level2Map, level3Map, level4Map);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("level1", level1Map);
-        model.addAttribute("level2", level2Map);
-        model.addAttribute("level3", level3Map);
-        model.addAttribute("level4", level4Map);
-        final Map<String, String> modifyLevel1 = itemService.searchIssueMaps("1", "4", "2021-08", true);
-        final Map<String, String> modifyLevel2 = itemService.searchIssueMaps("2", "4", "2021-08", true);
-        final Map<String, String> modifyLevel3 = itemService.searchIssueMaps("3", "4", "2021-08", true);
-        final Map<String, String> modifyLevel4 = itemService.searchIssueMaps("4", "4", "2021-08", true);
-        final Map<String, String> modifyTotal = summaryService.totalCount(modifyLevel1, modifyLevel2, modifyLevel3, modifyLevel4);
-        model.addAttribute("modifyLevel1", modifyLevel1);
-        model.addAttribute("modifyLevel2", modifyLevel2);
-        model.addAttribute("modifyLevel3", modifyLevel3);
-        model.addAttribute("modifyLevel4", modifyLevel4);
-        model.addAttribute("modifyTotal", modifyTotal);
+        model.addAttribute("refMap", refService.refsMap());
         return "summary/summaryList";
     }
 

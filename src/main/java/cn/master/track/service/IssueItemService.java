@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -42,18 +41,13 @@ public interface IssueItemService extends IService<IssueItem> {
      */
     void saveIssueItem(IssueItem item);
 
-    IssueItem getIssueById(String id);
-
     /**
      * 查询issue
      *
-     * @param level  严重程度
-     * @param status 状态
-     * @param data   月份
-     * @param review
-     * @return java.util.Map<java.lang.String, java.lang.Object>
+     * @param id 主键id
+     * @return cn.master.track.entity.IssueItem
      */
-    Map<String, String> searchIssueMaps(String level, String status, String data, boolean review);
+    IssueItem getIssueById(String id);
 
     /**
      * 按照项目名称查询

@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -25,6 +24,10 @@ public interface IssueSummaryService extends IService<IssueSummary> {
      * @return java.lang.String
      */
     String addIssueSummary(IssueItem item);
+
+    IssueSummary findIssueSummary(IssueItem issueItem);
+
+    IssueSummary findIssueSummary(QueryWrapper<IssueSummary> wrapper);
 
     /**
      * 通过主键id查询任务汇总数据
@@ -58,14 +61,4 @@ public interface IssueSummaryService extends IService<IssueSummary> {
      */
     void modifySummary(IssueSummary summary);
 
-    /**
-     * 统计总数
-     *
-     * @param m1
-     * @param m2
-     * @param m3
-     * @param m4
-     * @return java.util.Map<java.lang.String, java.lang.String>
-     */
-    Map<String, String> totalCount(Map<String, String> m1, Map<String, String> m2, Map<String, String> m3, Map<String, String> m4);
 }

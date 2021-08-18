@@ -85,25 +85,6 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     }
 
     @Override
-    public Map<String, String> searchIssueMaps(String level, String status, String data, boolean review) {
-        QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
-        wrapper.select("project_id,COUNT(severity) count")
-                .eq("issue_date", data);
-        if (review) {
-            wrapper.eq("severity_update", level).eq("status_update", status);
-        } else {
-            wrapper.eq("severity", level).eq("status", status);
-        }
-        wrapper.groupBy("project_id").orderByDesc("project_id");
-        final List<Map<String, Object>> searchResults = baseMapper.selectMaps(wrapper);
-        Map<String, String> countMap1 = new LinkedHashMap<>();
-        for (Map<String, Object> searchResult : searchResults) {
-            countMap1.put(searchResult.get("project_id").toString(), searchResult.get("count").toString());
-        }
-        return countMap1;
-    }
-
-    @Override
     public List<IssueItem> fuzzyQueryByProjectName(String projectName) {
         String sql = "SELECT id FROM issue_project WHERE project_name LIKE '%" + projectName + "%'";
         return baseMapper.selectList(new QueryWrapper<IssueItem>().lambda()
@@ -136,7 +117,8 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
-        wrapper.lambda().groupBy(IssueSummary::getProjectName,IssueSummary::getIssueDate).orderByDesc(IssueSummary::getProjectName);
+        wrapper.groupBy("project_name", "issue_date");
+        wrapper.lambda().orderByDesc(IssueSummary::getProjectName);
         return summaryService.listSummary(wrapper);
     }
 
@@ -144,6 +126,11 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     public void modifyIssue(IssueItem issueItem) {
         issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getId());
         issueItem.setUpdateDate(new Date());
-        baseMapper.update(issueItem, new QueryWrapper<IssueItem>().lambda().eq(IssueItem::getId, issueItem.getId()));
+        QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(IssueSummary::getProjectName, issueItem.getProjectId())
+                .eq(IssueSummary::getIssueDate, issueItem.getIssueDate());
+        final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
+        baseMapper.updateById(issueItem);
+        refService.updateReference(issueItem, tempSummary);
     }
 }

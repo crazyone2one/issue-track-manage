@@ -43,6 +43,49 @@ public class SummaryItemRef implements Serializable {
      */
     @TableField("item_id")
     private String itemId;
-
-
+    /**
+     * 问题单时间
+     */
+    @TableField("issue_date")
+    private String issueDate;
+    /**
+     * 新建轻微级别问题单数量
+     */
+    @TableField("create_bug_slight")
+    private Integer createBugSlight;
+    /**
+     * 新建一般级别问题单数量
+     */
+    @TableField("create_bug_ordinary")
+    private Integer createBugOrdinary;
+    /**
+     * 新建致命级别问题单数量
+     */
+    @TableField("create_bug_deadly")
+    private Integer createBugDeadly;
+    /**
+     * 新建严重级别问题单数量
+     */
+    @TableField("create_bug_severity")
+    private Integer createBugSeverity;
+    /**
+     * 回测轻微级别问题单数量
+     */
+    @TableField("review_bug_slight")
+    private Integer reviewBugSlight;
+    /**
+     * 回测一般级别问题单数量
+     */
+    @TableField("review_bug_ordinary")
+    private Integer reviewBugOrdinary;
+    /**
+     * 回测严重级别问题单数量
+     */
+    @TableField("review_bug_severity")
+    private Integer reviewBugSeverity;
+    /**
+     * 回测致命级别问题单数量
+     */
+    @TableField("review_bug_deadly")
+    private Integer reviewBugDeadly;
 }
