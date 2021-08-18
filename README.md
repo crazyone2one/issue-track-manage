@@ -49,6 +49,10 @@ INSERT INTO `type_item` (`id`, `type_code`, `type_name`, `type_group`) VALUES ('
 
 2021/8/13
  >  完成基本功能，可实现数据的录入及简单的查询
+ 
+2021/8/18
+ >  更新任务汇总模块数
+ >  优化问题单录入时保存逻辑
 ~~~
 ## 版权信息
 该项目签署了MIT 授权许可，详情请参阅[LICENSE](https://github.com/crazyone2one/issue-track-manage/blob/main/LICENSE)
