@@ -41,12 +41,16 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <button type="submit" class="btn btn-primary">search</button>
+                                            <button type="submit" class="btn btn-primary">搜索</button>
+                                        </div>
+                                        <div class="col-lg-2 col-md-4 col-sm-6">
+                                            <a href="#" class="btn btn-primary disabled">导出</a>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
+                        <!--列表数据-->
                         <div class="table-responsive card" style="overflow-x: auto">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -63,7 +67,7 @@
                                     <th class="border-end" rowspan="2" th:width="100px">是否交付</th>
                                     <th class="border-end" rowspan="2" th:width="100px">测试人员</th>
                                     <th class="border-end" rowspan="2" th:width="100px">备注</th>
-                                    <th class="border-end" rowspan="2" th:width="100px">hijian</th>
+                                    <th class="border-end" rowspan="2" th:width="100px">月份</th>
                                     <th class="border-end" rowspan="2" th:width="50px"><i class="icon_cogs">
                                     </i>操作
                                     </th>
@@ -86,9 +90,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="tempItem,stat:${summaryList}">
+                                <tr th:each="tempItem,stat:${pages.records}">
                                     <input name="id" id="id" type="hidden" class="form-control"
-                                           th:value="${tempItem.getId()}">
+                                           th:value="${tempItem.id}">
                                     <td th:text="${stat.count}"></td>
                                     <td th:text="${proMap.get(tempItem.getProjectName()).getProjectName()}"
                                         class="overflow-hidden"></td>
@@ -243,37 +247,36 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!--分页-->
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3"></div>
+                            <div class="col-sm-12 col-md-9">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-end" th:if="${pages.getTotal()} ge 0"
+                                        th:value="${pages.getTotal()}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Previous"
+                                               th:href="@{/items/list(pn=${pages.hasPrevious()}?${pages.current}-1:1)}">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item" th:each="num:${#numbers.sequence(1,pages.getPages())}"
+                                            th:class="${num == pages.current}?'active':''">
+                                            <a class="page-link" th:href="@{/items/list(pn=${num})}">[[${num}]]</a>
+                                        </li>
+                                        <li class="page-item" th:if="${pages.hasNext()}">
+                                            <a class="page-link" href="#" aria-label="Next"
+                                               th:href="@{/items/list(pn=${pages.current}+1)}">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!--        分页-->
-        <!--        <div class="row">-->
-        <!--            <div class="col-sm-12 col-md-5">-->
-        <!--                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 11-->
-        <!--                    entries-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            <div class="col-sm-12 col-md-7">-->
-        <!--                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">-->
-        <!--                    <ul class="pagination">-->
-        <!--                        <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">-->
-        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>-->
-        <!--                        </li>-->
-        <!--                        <li class="paginate_button page-item active">-->
-        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a>-->
-        <!--                        </li>-->
-        <!--                        <li class="paginate_button page-item active">-->
-        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">2</a>-->
-        <!--                        </li>-->
-        <!--                        <li class="paginate_button page-item next" id="DataTables_Table_0_next">-->
-        <!--                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3" tabindex="0"-->
-        <!--                               class="page-link">next</a>-->
-        <!--                        </li>-->
-        <!--                    </ul>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </body>
 </html>

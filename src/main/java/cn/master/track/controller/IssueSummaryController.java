@@ -54,9 +54,9 @@ public class IssueSummaryController {
     public String listSummary(@ModelAttribute @Validated IssueSummary summary,
                               Model model,
                               @RequestParam(value = "pn", defaultValue = "1") Integer pn,
-                              @RequestParam(value = "pc", defaultValue = "15") Integer pc) {
+                              @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
         model.addAttribute("jobStatusList", Constants.allTypes.get("job_status"));
-        model.addAttribute("summaryPage", itemService.searchSummary(summary, pn, pc));
+        model.addAttribute("pages", itemService.searchSummary(summary, pn, pc));
         model.addAttribute("summaryList", itemService.summaryList(summary));
         model.addAttribute("proMap", projectService.projectsMap());
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
