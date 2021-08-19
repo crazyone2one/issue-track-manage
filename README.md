@@ -2,6 +2,8 @@
 缺陷问题单管理系统  
 ![GitHub](https://img.shields.io/github/license/crazyone2one/issue-track-manage)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/crazyone2one/issue-track-manage?include_prereleases)
+![echarts](https://img.shields.io/badge/echarts-5.1.2-green.svg)
+![bootstrap](https://img.shields.io/badge/bootstrap-5.0.2-green.svg)
 ## 技术选型
 * 后端技术栈
   > spring boot  
