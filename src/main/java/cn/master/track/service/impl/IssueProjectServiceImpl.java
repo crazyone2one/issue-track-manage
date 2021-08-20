@@ -7,7 +7,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -25,13 +28,13 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
         final IssueProject project = baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
                 .eq(IssueProject::getProjectName, name.trim()));
         if (Objects.nonNull(project)) {
-            return project.getId();
+            return project.getProjectId();
         }
         final IssueProject.IssueProjectBuilder builder = IssueProject.builder();
         builder.projectName(name.trim()).projectCode("").createData(new Date());
         baseMapper.insert(builder.build());
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name.trim())).getId();
+                .eq(IssueProject::getProjectName, name.trim())).getProjectId();
     }
 
     @Override
@@ -49,7 +52,7 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     public Map<String, IssueProject> projectsMap() {
         Map<String, IssueProject> map = new LinkedHashMap<>();
         baseMapper.selectList(new QueryWrapper<>()).forEach(temp -> {
-            map.put(temp.getId(), temp);
+            map.put(temp.getProjectId(), temp);
         });
         return map;
     }

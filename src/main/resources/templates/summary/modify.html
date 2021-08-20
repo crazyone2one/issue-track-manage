@@ -28,20 +28,20 @@
                             <div class="col-12">
                                 <h5 class="form-title">任务信息</h5>
                             </div>
-                            <input name="id" type="hidden" class="form-control" th:value="*{id}">
+                            <input name="summaryId" type="hidden" class="form-control" th:value="*{getSummaryId}">
                             <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
                                     <span class="input-group-text">项目名称</span>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="projectName" id="proName" readonly
-                                       th:value="${proMap.get(summaryVo.getProjectName()).projectName}">
+                                <input th:type="text" th:class="form-control" name="projectId" id="proName" readonly
+                                       th:value="${proMap.get(summaryVo.getProjectId()).projectName}">
                             </div>
                             <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
                                     <span class="input-group-text">任务描述</span>
                                 </div>
-                                <input th:type="text" th:class="form-control" name="jobDesc" id="jobDesc"
-                                       th:value="*{jobDesc}">
+                                <input th:type="text" th:class="form-control" name="summaryDesc" id="jobDesc"
+                                       th:value="*{getSummaryDesc}">
                             </div>
                             <div class="input-group mb-3" style="width: 25%">
                                 <div class="form-group">
@@ -78,13 +78,13 @@
                                 </select>
                             </div>
                             <div class="input-group mb-3" style="width: 25%">
-                                <span th:switch="*{bugDoc}">
+                                <span>
                                     <label class="radio-inline">
-                                    <span th:case="0">
+                                    <span th:if="${#bools.isFalse(summaryVo.bugDoc)}">
                                         <input type="radio" value="0" name="bugDoc" checked>无bug文档
                                         <input type="radio" value="1" name="bugDoc">有bug文档
                                     </span>
-                                        <span th:case="1">
+                                        <span th:if="${#bools.isTrue(summaryVo.bugDoc)}">
                                             <input type="radio" value="0" name="bugDoc">无bug文档
                                         <input type="radio" value="1" name="bugDoc" checked>有bug文档
                                         </span>
@@ -92,13 +92,13 @@
                                 </span>
                             </div>
                             <div class="input-group mb-3" style="width: 25%">
-                                <span th:switch="*{reportDoc}">
+                                <span>
                                     <label class="radio-inline">
-                                        <span th:case="0">
+                                        <span th:if="${#bools.isFalse(summaryVo.reportDoc)}">
                                         <input type="radio" value="0" name="reportDoc" checked>无测试报告
                                         <input type="radio" value="1" name="reportDoc">有测试报告
                                     </span>
-                                        <span th:case="1">
+                                        <span th:if="${#bools.isTrue(summaryVo.reportDoc)}">
                                             <input type="radio" value="0" name="reportDoc">无测试报告
                                     <input type="radio" value="1" name="reportDoc" checked>有测试报告
                                         </span>
@@ -106,13 +106,13 @@
                                 </span>
                             </div>
                             <div class="input-group mb-3" style="width: 25%">
-                                <span th:switch="*{hasDoc}">
+                                <span>
                                     <label class="radio-inline">
-                                        <span th:case="0">
+                                        <span th:if="${#bools.isFalse(summaryVo.hasDoc)}">
                                             <input type="radio" value="0" name="hasDoc" checked>无需求
                                             <input type="radio" value="1" name="hasDoc">有需求
                                         </span>
-                                    <span th:case="1">
+                                    <span th:if="${#bools.isTrue(summaryVo.hasDoc)}">
                                             <input type="radio" value="0" name="hasDoc">无需求
                                             <input type="radio" value="1" name="hasDoc" checked>有需求
                                         </span>

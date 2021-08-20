@@ -16,7 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -86,7 +88,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public List<IssueItem> fuzzyQueryByProjectName(String projectName) {
-        String sql = "SELECT id FROM issue_project WHERE project_name LIKE '%" + projectName + "%'";
+        String sql = "SELECT project_id FROM issue_project WHERE project_name LIKE '%" + projectName + "%'";
         return baseMapper.selectList(new QueryWrapper<IssueItem>().lambda()
                 .in(IssueItem::getProjectId, commonMapper.findListBySql(sql)));
     }
@@ -94,15 +96,15 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     @Override
     public Page<IssueSummary> searchSummary(IssueSummary summary, Integer pageIndex, Integer pageCount) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(summary.getProjectName())) {
+        if (StringUtils.isNotEmpty(summary.getProjectId())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(summary.getProjectName()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueSummary::getProjectName, issueIds).orderByDesc(IssueSummary::getProjectName);
+            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            wrapper.lambda().in(IssueSummary::getProjectId, issueIds).orderByDesc(IssueSummary::getProjectId);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
-        wrapper.lambda().groupBy(IssueSummary::getProjectName);
+        wrapper.lambda().groupBy(IssueSummary::getProjectId);
         return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
@@ -110,24 +112,24 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     public List<IssueSummary> summaryList(IssueSummary summary) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
         List<String> issueIds = new ArrayList<>();
-        if (StringUtils.isNotEmpty(summary.getProjectName())) {
-            fuzzyQueryByProjectName(summary.getProjectName()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueSummary::getProjectName, issueIds);
+        if (StringUtils.isNotEmpty(summary.getProjectId())) {
+            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            wrapper.lambda().in(IssueSummary::getProjectId, issueIds);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
-        wrapper.groupBy("project_name", "issue_date");
-        wrapper.lambda().orderByDesc(IssueSummary::getProjectName);
+        wrapper.groupBy("project_id", "issue_date");
+        wrapper.lambda().orderByDesc(IssueSummary::getProjectId);
         return summaryService.listSummary(wrapper);
     }
 
     @Override
     public void modifyIssue(IssueItem issueItem) {
-        issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getId());
+        issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getProjectId());
         issueItem.setUpdateDate(new Date());
         QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(IssueSummary::getProjectName, issueItem.getProjectId())
+        wrapper.lambda().eq(IssueSummary::getProjectId, issueItem.getProjectId())
                 .eq(IssueSummary::getIssueDate, issueItem.getIssueDate());
         final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
         baseMapper.updateById(issueItem);

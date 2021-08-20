@@ -11,7 +11,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -29,7 +31,7 @@ public class SummaryItemRefServiceImpl extends ServiceImpl<SummaryItemRefMapper,
         return baseMapper.selectOne(new QueryWrapper<SummaryItemRef>().lambda()
                 .eq(SummaryItemRef::getIssueDate, issueItem.getIssueDate())
                 .eq(SummaryItemRef::getItemId, issueItem.getProjectId())
-                .eq(SummaryItemRef::getSummaryId, summary.getId())
+                .eq(SummaryItemRef::getSummaryId, summary.getSummaryId())
         );
     }
 
@@ -53,7 +55,7 @@ public class SummaryItemRefServiceImpl extends ServiceImpl<SummaryItemRefMapper,
                 baseMapper.updateById(itemRef);
             } else {
                 final SummaryItemRef.SummaryItemRefBuilder builder = SummaryItemRef.builder();
-                builder.itemId(item.getProjectId()).summaryId(summary.getId()).issueDate(item.getIssueDate());
+                builder.itemId(item.getProjectId()).summaryId(summary.getSummaryId()).issueDate(item.getIssueDate());
                 if (Constants.BUG_LEVEL_1.equals(item.getSeverity())) {
                     builder.createBugSlight(1);
                 }

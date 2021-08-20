@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -29,29 +31,26 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
         final IssueSummary issueSummary = findIssueSummary(item);
         final IssueSummary.IssueSummaryBuilder builder = IssueSummary.builder();
         if (Objects.isNull(issueSummary)) {
-            final IssueSummary summary = builder.projectName(item.getProjectId())
+            final IssueSummary summary = builder.projectId(item.getProjectId())
                     .createCaseCount(0)
                     .executeCaseCount(0)
-                    .bugDoc("0")
-                    .reportDoc("0")
-                    .hasDoc("0")
                     .deliveryStatus("0")
                     .issueDate(item.getIssueDate())
                     .createDate(new Date())
                     .build();
             baseMapper.insert(summary);
-            return summary.getId();
+            return summary.getSummaryId();
         } else {
-            builder.projectName(item.getProjectId()).issueDate(item.getIssueDate()).updateDate(new Date());
+            builder.projectId(item.getProjectId()).issueDate(item.getIssueDate()).updateDate(new Date());
             baseMapper.updateById(builder.build());
-            return issueSummary.getId();
+            return issueSummary.getSummaryId();
         }
     }
 
     @Override
     public IssueSummary findIssueSummary(IssueItem issueItem) {
         return baseMapper.selectOne(new QueryWrapper<IssueSummary>().lambda()
-                .eq(IssueSummary::getProjectName,issueItem.getProjectId())
+                .eq(IssueSummary::getProjectId, issueItem.getProjectId())
                 .eq(IssueSummary::getIssueDate,issueItem.getIssueDate()));
     }
 
@@ -63,7 +62,7 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
     @Override
     public IssueSummary findSummaryById(String id) {
         return baseMapper.selectOne(new QueryWrapper<IssueSummary>().lambda()
-                .eq(IssueSummary::getId, id));
+                .eq(IssueSummary::getSummaryId, id));
     }
 
     @Override
@@ -80,9 +79,9 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
 
     @Override
     public void modifySummary(IssueSummary summary) {
-        summary.setProjectName(findSummaryById(summary.getId()).getProjectName());
+        summary.setProjectId(findSummaryById(summary.getSummaryId()).getProjectId());
         summary.setUpdateDate(new Date());
-        baseMapper.update(summary, new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getId, summary.getId()));
+        baseMapper.update(summary, new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getSummaryId, summary.getSummaryId()));
     }
 
 }

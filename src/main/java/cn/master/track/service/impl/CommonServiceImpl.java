@@ -79,7 +79,7 @@ public class CommonServiceImpl implements CommonService {
     @PostConstruct
     public void initProjectId() {
         projectMapper.selectList(new QueryWrapper<>()).forEach(temp ->
-                Constants.PROJECT_ID_LIST.add(temp.getId()));
+                Constants.PROJECT_ID_LIST.add(temp.getProjectId()));
     }
 
     @Override

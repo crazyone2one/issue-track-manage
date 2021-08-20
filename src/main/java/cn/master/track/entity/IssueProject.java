@@ -30,8 +30,8 @@ public class IssueProject implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(value = "project_id", type = IdType.ASSIGN_UUID)
+    private String projectId;
 
     /**
      * 项目名称

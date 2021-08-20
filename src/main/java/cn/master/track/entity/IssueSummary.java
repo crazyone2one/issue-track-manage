@@ -32,20 +32,20 @@ public class IssueSummary implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id",type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(value = "summary_id", type = IdType.ASSIGN_UUID)
+    private String summaryId;
 
     /**
      * 项目名称
      */
-    @TableField("project_name")
-    private String projectName;
+    @TableField("project_id")
+    private String projectId;
 
     /**
      * 任务描述
      */
-    @TableField("job_desc")
-    private String jobDesc;
+    @TableField("summary_desc")
+    private String summaryDesc;
 
     /**
      * 编写用例数量
@@ -63,19 +63,19 @@ public class IssueSummary implements Serializable {
      * bug文档
      */
     @TableField("bug_doc")
-    private String bugDoc;
+    private Boolean bugDoc;
 
     /**
      * 测试报告
      */
     @TableField("report_doc")
-    private String reportDoc;
+    private Boolean reportDoc;
 
     /**
      * 需求文档
      */
     @TableField("has_doc")
-    private String hasDoc;
+    private Boolean hasDoc;
 
     /**
      * 完成状态

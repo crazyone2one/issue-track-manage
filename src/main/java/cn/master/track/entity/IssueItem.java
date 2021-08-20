@@ -32,8 +32,8 @@ public class IssueItem implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id",type = IdType.ASSIGN_UUID)
-    private String id;
+    @TableId(value = "issue_id", type = IdType.ASSIGN_UUID)
+    private String issueId;
 
     /**
      * 项目名称
