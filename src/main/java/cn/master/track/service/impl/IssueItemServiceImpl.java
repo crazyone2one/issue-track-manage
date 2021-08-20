@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -127,12 +128,18 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     @Override
     public void modifyIssue(IssueItem issueItem) {
         issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getProjectId());
+        final IssueItem issueItem1 = baseMapper.selectById(issueItem.getIssueId());
         issueItem.setUpdateDate(new Date());
         QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(IssueSummary::getProjectId, issueItem.getProjectId())
                 .eq(IssueSummary::getIssueDate, issueItem.getIssueDate());
         final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
         baseMapper.updateById(issueItem);
-        refService.updateReference(issueItem, tempSummary);
+        // 问题单的状态发生变化时更新ref数据
+        if (Objects.isNull(issueItem1.getStatusUpdate())) {
+            refService.updateReference(issueItem, tempSummary);
+        } else if (!Objects.equals(issueItem1.getStatusUpdate(), issueItem.getStatusUpdate())) {
+            refService.updateReference(issueItem, tempSummary);
+        }
     }
 }
