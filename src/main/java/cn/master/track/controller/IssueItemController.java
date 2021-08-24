@@ -47,6 +47,8 @@ public class IssueItemController {
         model.addAttribute("issueListPage", itemService.pageItems(issueItem, pn, pc));
         model.addAttribute("issueList", itemService.issueItems(issueItem));
         model.addAttribute("proMap", projectService.projectsMap());
+        model.addAttribute("statusList", Constants.allTypes.get("issue_status"));
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "issue/issueList";
     }
 
