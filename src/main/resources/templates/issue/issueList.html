@@ -5,7 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>TRACKING|PROJECT</title>
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
         <link th:href="@{/common/common.css}" rel="stylesheet">
+        <!--        <style>-->
+        <!--            .modal {-->
+        <!--                display: table;-->
+        <!--                width: 600px;-->
+        <!--                height: 100%;-->
+        <!--                margin: 0 auto;-->
+        <!--            }-->
+
+        <!--            .modal-dialog {-->
+        <!--                display: table-cell;-->
+        <!--                vertical-align: center;-->
+        <!--            }-->
+        <!--        </style>-->
     </head>
     <body>
         <!-- 顶部导航 -->
@@ -30,9 +45,9 @@
                                             <div class="form-group">
                                                 <span class="input-group-text">严重程度</span>
                                             </div>
-                                            <select id="jobStatus" name="severity" class="form-select">
+                                            <select id="severity-search" name="severity" class="form-select">
                                                 <option selected>--选择--</option>
-                                                <option th:each="temp:${issueStatusList}"
+                                                <option th:each="temp:${severityList}"
                                                         th:value="${temp.getTypeCode()}"
                                                         th:text="${temp.getTypeName()}">
                                                 </option>
@@ -47,9 +62,15 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-10">
-                                <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0">
-                                    <i class="bx bxs-plus-square">添加问题单</i>
-                                </a>
+                                <!--跳转至页面，添加问题单-->
+                                <!--                                <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0 disabled">-->
+                                <!--                                    <i class="bx bxs-plus-square">添加问题单</i>-->
+                                <!--                                </a>-->
+                                <!--弹框的方式添加问题单-->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#issueAddModal">
+                                    添加问题单
+                                </button>
                                 <a href="#" class="btn btn-light mb-3 mb-lg-0 disabled">导出</a>
                             </div>
                         </div>
@@ -115,7 +136,9 @@
                                     <td th:text="${tempItem.getRemark()}"></td>
                                     <td th:text="${tempItem.getIssueDate()}"></td>
                                     <td>
-                                        <a th:href="@{/items/goModify(id=${tempItem.getIssueId()})}">
+                                        <a th:href="@{/items/goModify(id=${tempItem.getIssueId()})}"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#issueModifyModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -164,6 +187,102 @@
                                 </nav>
                             </div>
                         </div>
+                        <!-- 添加问题单Modal弹框 -->
+                        <div class="modal fade" id="issueAddModal" tabindex="-1"
+                             aria-labelledby="issueAddModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" id="issueAddModalDialog">
+                                <form class="modal-content needs-validation" id="issueAddModalContent"
+                                      th:action="@{/items/addIssue}"
+                                      method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title bg-light" id="issueAddModalLabel">添加问题单</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row g-3 align-items-center">
+                                            <div class="col-md-4">
+                                                <label for="projectId" class="form-label">项目名称</label>
+                                                <input name="projectId" id="projectId" type="text"
+                                                       class="form-control" placeholder value
+                                                       required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="module" class="form-label">模块</label>
+                                                <input name="module" id="module" type="text" class="form-control"
+                                                       placeholder value
+                                                       required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="functionDesc" class="form-label">功能点</label>
+                                                <input name="functionDesc" id="functionDesc" type="text"
+                                                       class="form-control" placeholder
+                                                       value
+                                                       required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="title" class="form-label">标题(问题描述)</label>
+                                                <textarea name="titleDesc" id="title" type="text"
+                                                          class="form-control" rows="2"></textarea>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="severity" class="form-label"></label>
+                                                <select class="form-select" name="severity" id="severity" required>
+                                                    <option value="">--严重程度--</option>
+                                                    <option th:each="s:${severityList}"
+                                                            th:value="${s.getTypeCode()}"
+                                                            th:text="${s.getTypeName()}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="owner" class="form-label"></label>
+                                                <select class="form-select" name="owner" id="owner" required>
+                                                    <option value="">--测试人员--</option>
+                                                    <option th:each="o:${ownerList}"
+                                                            th:value="${o.getTypeCode()}"
+                                                            th:text="${o.getTypeName()}"
+                                                    >
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="status" class="form-label"></label>
+                                                <select class="form-select" name="status" id="status" required>
+                                                    <option th:each="s:${statusList}"
+                                                            th:value="${s.getTypeCode()}"
+                                                            th:text="${s.getTypeName()}"
+                                                            th:selected="${s.getTypeCode() eq '1'}"
+                                                    >
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="monthDate" class="form-label"></label>
+                                                <select class="form-select" name="issueDate" id="monthDate"
+                                                        required>
+                                                    <option th:each="m:${monthList}"
+                                                            th:value="${m}"
+                                                            th:text="${m}"
+                                                            th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
+                                                    >
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="remark" class="form-label">备注</label>
+                                                <textarea name="remark" id="remark" type="text" class="form-control"
+                                                          rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">保存</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- 修改问题单Modal弹框 -->
                     </div>
                 </div>
             </div>
