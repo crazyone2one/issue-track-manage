@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Title</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <div th:fragment="editIssueFragment">
+            <!-- 修改问题单Modal弹框 -->
+            <form th:action="@{/items/modifyIssue}" method="post">
+                <div class="modal fade" id="editIssueModal" tabindex="-1"
+                     aria-labelledby="issueAddModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title bg-light" id="issueEditModalLabel">修改问题单</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 align-items-center">
+                                    <input name="issueId" type="hidden" class="form-control"
+                                           id="issueIdEdit">
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">项目名称</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="projectId"
+                                               id="proName"
+                                               readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">模块</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="module"
+                                               id="module-edit">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">功能点</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control"
+                                               name="functionDesc"
+                                               id="function-edit">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-group">
+                                            <span class="input-group-text">标题(问题描述)</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="titleDesc"
+                                               id="desc-edit">
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-group mb-3" style="width: 50%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">严重程度</span>
+                                            </div>
+                                            <label for="severity-edit" class="form-label"></label>
+                                            <select class="form-select" name="severity" id="severity-edit"
+                                                    required>
+                                                <option value="">--严重程度--</option>
+                                                <option th:each="s:${severityList}"
+                                                        th:value="${s.getTypeCode()}"
+                                                        th:text="${s.getTypeName()}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group mb-3" style="width: 50%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">状态</span>
+                                            </div>
+                                            <select class="form-select" name="statusUpdate" id="status-edit"
+                                                    required>
+                                                <option value="">--状态--</option>
+                                                <option th:each="s:${statusList}"
+                                                        th:value="${s.getTypeCode()}"
+                                                        th:text="${s.getTypeName()}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-group mb-3" style="width: 50%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">测试人员</span>
+                                            </div>
+                                            <select class="form-select" name="owner" id="owner-edit"
+                                                    required>
+                                                <option value="">--测试人员--</option>
+                                                <option th:each="s:${ownerList}"
+                                                        th:value="${s.getTypeCode()}"
+                                                        th:text="${s.getTypeName()}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group mb-3" style="width: 50%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">时间</span>
+                                            </div>
+                                            <select class="form-select" name="issueDate"
+                                                    id="issue-date-edit"
+                                                    required>
+                                                <option value="">--时间--</option>
+                                                <option th:each="s:${monthList}"
+                                                        th:value="${s}"
+                                                        th:text="${s}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">备注</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="remark"
+                                               id="remark-edit">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    取消
+                                </button>
+                                <button type="submit" class="btn btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script>
+                const editIssueModal = document.getElementById('editIssueModal')
+                editIssueModal.addEventListener('show.bs.modal', function (event) {
+                    const button = $(event.relatedTarget);
+                    const modal = $(this);
+                    const tempId = button.closest('tr').find('input').attr('value');
+                    const proName = button.closest('tr').find('td').eq(1).text();
+                    const tempModel = button.closest('tr').find('td').eq(2).text();
+                    const tempFunction = button.closest('tr').find('td').eq(3).text();
+                    const tempDesc = button.closest('tr').find('td').eq(4).text();
+                    const tempSeverity = button.closest('tr').find('td').eq(5).text().trim();
+                    const tempOwner = button.closest('tr').find('td').eq(6).text().trim();
+                    const tempStatus = button.closest('tr').find('td').eq(7).text().trim();
+                    const tempRemark = button.closest('tr').find('td').eq(8).text().trim();
+                    const tempIssueDate = button.closest('tr').find('td').eq(9).text().trim();
+                    modal.find('#issueIdEdit').val(tempId);
+                    modal.find('#proName').val(proName);
+                    modal.find('#module-edit').val(tempModel);
+                    modal.find('#function-edit').val(tempFunction);
+                    modal.find('#desc-edit').val(tempDesc);
+                    modal.find('#remark-edit').val(tempRemark);
+                    // 严重程度
+                    const severity = $("#severity-edit>option");
+                    for (let i = 0; i < severity.length; i++) {
+                        const text = severity[i].text.trim();
+                        if (tempSeverity === text) {
+                            console.log('severity')
+                            severity[i].selected = true;
+                        }
+                    }
+                    // 测试人员
+                    const owner = $("#owner-edit>option");
+                    for (let i = 0; i < owner.length; i++) {
+                        const text = owner[i].text.trim();
+                        if (tempOwner === text) {
+                            console.log('owner')
+                            owner[i].selected = true;
+                        }
+                    }
+                    // 问题单状态
+                    const status = $("#status-edit>option");
+                    for (let i = 0; i < status.length; i++) {
+                        const text = status[i].text.trim();
+                        if (tempStatus === text) {
+                            console.log('status')
+                            status[i].selected = true;
+                        }
+                    }
+                    // 时间
+                    const issueDate = $("#issue-date-edit>option");
+                    for (let i = 0; i < issueDate.length; i++) {
+                        const text = issueDate[i].text.trim();
+                        if (tempIssueDate === text) {
+                            console.log('issueDate')
+                            issueDate[i].selected = true;
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </body>
+</html>
