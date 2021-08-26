@@ -51,23 +51,30 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public Page<IssueItem> pageItems(IssueItem issueItem, Integer pageIndex, Integer pageCount) {
-        final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
-        List<String> issueIds = new ArrayList<>();
-        if (StringUtils.isNotEmpty(issueItem.getProjectId())) {
-            fuzzyQueryByProjectName(issueItem.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueItem::getProjectId, issueIds);
-        }
+        final QueryWrapper<IssueItem> wrapper = getWrapper(issueItem);
         return baseMapper.selectPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
-    @Override
-    public List<IssueItem> issueItems(IssueItem issueItem) {
+    private QueryWrapper<IssueItem> getWrapper(IssueItem issueItem) {
         final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(issueItem.getProjectId())) {
             List<String> issueIds = new ArrayList<>();
             fuzzyQueryByProjectName(issueItem.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueItem::getProjectId, issueIds).orderByDesc(IssueItem::getProjectId);
+            wrapper.lambda().in(IssueItem::getProjectId, issueIds);
         }
+        if (StringUtils.isNotEmpty(issueItem.getSeverity())) {
+            wrapper.lambda().eq(IssueItem::getSeverity, issueItem.getSeverity());
+        }
+        if (StringUtils.isNotEmpty(issueItem.getStatus())) {
+            wrapper.lambda().eq(IssueItem::getStatus, issueItem.getStatus());
+        }
+        wrapper.orderByDesc("project_id");
+        return wrapper;
+    }
+
+    @Override
+    public List<IssueItem> issueItems(IssueItem issueItem) {
+        final QueryWrapper<IssueItem> wrapper = getWrapper(issueItem);
         return baseMapper.selectList(wrapper);
     }
 
@@ -136,9 +143,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
         baseMapper.updateById(issueItem);
         // 问题单的状态发生变化时更新ref数据
-        if (Objects.isNull(issueItem1.getStatusUpdate())) {
-            refService.updateReference(issueItem, tempSummary);
-        } else if (!Objects.equals(issueItem1.getStatusUpdate(), issueItem.getStatusUpdate())) {
+        if (!Objects.equals(issueItem1.getSeverity(), issueItem.getSeverity())) {
             refService.updateReference(issueItem, tempSummary);
         }
     }

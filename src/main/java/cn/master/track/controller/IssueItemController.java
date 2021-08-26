@@ -54,6 +54,7 @@ public class IssueItemController {
 
     @GetMapping("/demo")
     public String demo() {
+        int x = 10 / 0;
         return "";
     }
 
