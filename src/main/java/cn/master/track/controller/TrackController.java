@@ -42,7 +42,7 @@ public class TrackController {
         final List<Map<String, Object>> newCount = commonMapper.findMapBySql(countQuery.replace("{whereSQL}","where status='1'"));
         model.addAttribute("newSeries", mapper.writeValueAsString(getSeries(newCount)));
         // 回测，暂止统计回测通过的数据
-        final List<Map<String, Object>> reviewCount = commonMapper.findMapBySql(countQuery.replace("{whereSQL}", "where status_update='4'"));
+        final List<Map<String, Object>> reviewCount = commonMapper.findMapBySql(countQuery.replace("{whereSQL}", "where status='4'"));
         model.addAttribute("reviewSeries", mapper.writeValueAsString(getSeries(reviewCount)));
         return "index";
     }

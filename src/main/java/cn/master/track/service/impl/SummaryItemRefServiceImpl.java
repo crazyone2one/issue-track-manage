@@ -77,16 +77,16 @@ public class SummaryItemRefServiceImpl extends ServiceImpl<SummaryItemRefMapper,
     public void updateReference(IssueItem item, IssueSummary summary) {
         final SummaryItemRef itemRef = findSummaryItemRef(item, summary);
         if (Objects.nonNull(itemRef)) {
-            if (Constants.BUG_LEVEL_1.equals(item.getSeverityUpdate())) {
+            if (Constants.BUG_LEVEL_1.equals(item.getSeverity())) {
                 itemRef.setReviewBugSlight(itemRef.getReviewBugSlight() + 1);
             }
-            if (Constants.BUG_LEVEL_2.equals(item.getSeverityUpdate())) {
+            if (Constants.BUG_LEVEL_2.equals(item.getSeverity())) {
                 itemRef.setReviewBugOrdinary(itemRef.getReviewBugOrdinary() + 1);
             }
-            if (Constants.BUG_LEVEL_3.equals(item.getSeverityUpdate())) {
+            if (Constants.BUG_LEVEL_3.equals(item.getSeverity())) {
                 itemRef.setReviewBugSeverity(itemRef.getReviewBugSeverity() + 1);
             }
-            if (Constants.BUG_LEVEL_4.equals(item.getSeverityUpdate())) {
+            if (Constants.BUG_LEVEL_4.equals(item.getSeverity())) {
                 itemRef.setReviewBugDeadly(itemRef.getReviewBugDeadly() + 1);
             }
             baseMapper.updateById(itemRef);

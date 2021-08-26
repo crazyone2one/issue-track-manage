@@ -22,26 +22,49 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="input-group mb-3" style="width: 20%">
-                                            <div class="form-group">
-                                                <span class="input-group-text">项目名称</span>
-                                            </div>
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <span class="input-group-text">项目名称</span>-->
+                                            <!--                                            </div>-->
                                             <input name="projectId" class="form-control" id="projectName" type="text"
                                                    placeholder="请输入项目名称"/>
                                         </div>
                                         <div class="input-group mb-3" style="width: 16%">
-                                            <div class="form-group">
-                                                <span class="input-group-text">严重程度</span>
-                                            </div>
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <span class="input-group-text">严重程度</span>-->
+                                            <!--                                            </div>-->
                                             <select id="severity-search" name="severity" class="form-select">
-                                                <option selected>--选择--</option>
+                                                <option th:value="''" selected>--严重程度--</option>
                                                 <option th:each="temp:${severityList}"
                                                         th:value="${temp.getTypeCode()}"
                                                         th:text="${temp.getTypeName()}">
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="input-group mb-3" style="width: 16%">
+                                            <!--                                            <div class="form-group">-->
+                                            <!--                                                <span class="input-group-text">严重程度</span>-->
+                                            <!--                                            </div>-->
+                                            <select id="status-search" name="status" class="form-select">
+                                                <option th:value="''" selected>--问题单状态--</option>
+                                                <option th:each="temp:${issueStatusList}"
+                                                        th:value="${temp.getTypeCode()}"
+                                                        th:text="${temp.getTypeName()}">
+                                                </option>
+                                            </select>
+                                        </div>
                                         <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <button type="submit" class="btn btn-primary">search</button>
+                                            <button type="submit" class="btn">
+                                                <svg t="1629966646018" class="icon" viewBox="0 0 1024 1024"
+                                                     xmlns="http://www.w3.org/2000/svg" p-id="1186"
+                                                     width="25" height="25">
+                                                    <path d="M426.666667 85.333333a341.333333 341.333333 0 1 0 0 682.666667 341.333333 341.333333 0 0 0 0-682.666667z m0 85.333334a256 256 0 1 1 0 512 256 256 0 0 1 0-512z"
+                                                          fill="#049DEE" p-id="1187"></path>
+                                                    <path d="M609.834667 609.834667a42.666667 42.666667 0 0 1 56.32-3.541334l4.010666 3.541334 213.333334 213.333333a42.666667 42.666667 0 0 1-56.32 63.872l-4.010667-3.541333-213.333333-213.333334a42.666667 42.666667 0 0 1 0-60.330666z"
+                                                          fill="#049DEE" p-id="1188"></path>
+                                                    <path d="M695.168 695.168a42.666667 42.666667 0 0 1 56.32-3.541333l4.010667 3.541333 149.333333 149.333333a42.666667 42.666667 0 0 1-56.32 63.872l-4.010667-3.541333-149.333333-149.333333a42.666667 42.666667 0 0 1 0-60.330667z"
+                                                          fill="#03CD8E" p-id="1189"></path>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +81,15 @@
                                         data-bs-target="#issueAddModal">
                                     添加问题单
                                 </button>
-                                <a href="#" class="btn btn-light mb-3 mb-lg-0 disabled">导出</a>
+                                <a href="#" class="btn btn-light mb-3 mb-lg-0 disabled">
+                                    <svg t="1629966461895" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                         xmlns="http://www.w3.org/2000/svg" p-id="1051" width="30" height="30">
+                                        <path d="M512 85.333333a42.666667 42.666667 0 0 1 42.368 37.674667L554.666667 128v451.626667l97.834666-97.792a42.666667 42.666667 0 0 1 56.32-3.541334l4.010667 3.541334a42.666667 42.666667 0 0 1 3.541333 56.32l-3.541333 4.010666-170.666667 170.666667a43.008 43.008 0 0 1-4.778666 4.138667l-4.693334 3.029333-4.864 2.304-4.48 1.493333-6.357333 1.28L512 725.333333l-3.2-0.128-5.376-0.725333-4.736-1.28-4.736-1.877333-4.181333-2.218667-3.925334-2.730667-4.010666-3.541333-170.666667-170.666667a42.666667 42.666667 0 0 1 56.32-63.872l4.010667 3.541334L469.333333 579.626667V128a42.666667 42.666667 0 0 1 42.666667-42.666667z"
+                                              fill="#03CD8E" p-id="1052"></path>
+                                        <path d="M853.333333 640a42.666667 42.666667 0 0 1 42.368 37.674667L896 682.666667l-0.128 173.738666c-3.328 46.208-41.514667 81.664-84.906667 82.389334L804.693333 938.666667l-582.912-0.085334c-46.336 2.730667-86.528-30.677333-93.098666-78.634666L128 853.333333v-170.666666a42.666667 42.666667 0 0 1 85.034667-4.992L213.333333 682.666667l-0.128 167.594666c0.128 1.493333 1.152 2.688 3.84 2.986667L219.306667 853.333333l587.861333 0.085334c1.408 0.085333 2.645333-0.682667 3.2-0.597334L810.666667 853.333333v-170.666666a42.666667 42.666667 0 0 1 42.666666-42.666667z"
+                                              fill="#049DEE" p-id="1053"></path>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                         <!--列表数据-->
@@ -92,14 +123,8 @@
                                     <td th:text="${tempItem.getTitleDesc()}">
                                     <td>
                             <span th:each="c:${severityList}">
-                                <span th:if="${#strings.isEmpty(tempItem.severityUpdate)}">
-                                    <span th:if="${#strings.equals(tempItem.severity,c.typeCode)}"
-                                          th:value="${c.typeCode}" th:text="${c.typeName}"></span>
-                                </span>
-                                <span th:if="${!#strings.isEmpty(tempItem.severityUpdate)}">
-                                    <span th:if="${#strings.equals(tempItem.severityUpdate,c.typeCode)}"
-                                          th:value="${c.typeCode}" th:text="${c.typeName}"></span>
-                                </span>
+                                <span th:if="${#strings.equals(tempItem.severity,c.typeCode)}"
+                                      th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
                                     </td>
                                     <td>
@@ -110,22 +135,16 @@
                                     </td>
                                     <td>
                         <span th:each="c:${issueStatusList}">
-                            <span th:if="${!#strings.isEmpty(tempItem.statusUpdate)}">
-                                        <span th:if="${#strings.equals(tempItem.statusUpdate,c.typeCode)}"
-                                              th:value="${c.typeCode}" th:text="${c.typeName}"></span>
-                                    </span>
-                                    <span th:if="${#strings.isEmpty(tempItem.statusUpdate)}">
-                                        <span th:if="${#strings.equals(tempItem.status,c.typeCode)}"
-                                              th:value="${c.typeCode}" th:text="${c.typeName}"></span>
-                                    </span>
+                            <span th:if="${#strings.equals(tempItem.status,c.typeCode)}"
+                                  th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
                                     </td>
                                     <td th:text="${tempItem.getRemark()}"></td>
                                     <td th:text="${tempItem.getIssueDate()}"></td>
                                     <td>
-                                        <a
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editIssueModal">
+                                        <a class="btn btn-sm"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editIssueModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
