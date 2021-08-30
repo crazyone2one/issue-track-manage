@@ -8,9 +8,14 @@
         <meta name="author" content="11‘s papa">
     </head>
     <body>
+        <!-- 顶部导航 -->
+        <div th:replace="~{common/common::topbar}"></div>
         <div id="notfound">
             <div class="notfound">
-                <div class="notfound-bg"><div></div><div></div></div>
+                <div class="notfound-bg">
+                    <div></div>
+                    <div></div>
+                </div>
                 <h2>ERROR 500</h2>
                 <p th:text="${message.get('exMsg')}"></p>
                 <a th:href="@{/}">go back</a>
