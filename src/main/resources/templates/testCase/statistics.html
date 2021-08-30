@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Title</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <div th:fragment="statistics">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-5 d-flex">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col-sm-6" th:each="info:${caseInfo}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h1 class="mt-1 mb-3">
+                                            <a th:href="@{/case/redirection2CaseList(caseProjectName=${info.get('project')})}"
+                                               th:text="${info.get('project')}"></a></h1>
+                                        <div class="mb-0">
+                                            <span>涉及模块<a href="#" th:text="${info.get('sc')}"></a></span><br>
+                                            <span>涉及用例<a href="#" th:text="${info.get('cc')}"></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

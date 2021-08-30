@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.master.track.mapper.TestCaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.master.track.entity.TestCase">
+        <id column="id" property="id" />
+        <result column="case_project_id" property="caseProjectId" />
+        <result column="case_suite_id" property="caseSuiteId" />
+        <result column="case_title" property="caseTitle" />
+        <result column="case_summary" property="caseSummary" />
+        <result column="case_precondition" property="casePrecondition" />
+        <result column="case_steps" property="caseSteps" />
+        <result column="case_expected_results" property="caseExpectedResults" />
+        <result column="case_run" property="caseRun" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, case_project_id, case_suite_id, case_title, case_summary, case_precondition, case_steps, case_expected_results, case_run, create_date, update_date
+    </sql>
+
+</mapper>

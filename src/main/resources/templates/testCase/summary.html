@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>测试用例</title>
+        <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <!-- 顶部导航 -->
+        <div th:replace="~{common/common::topbar}"></div>
+        <div class="container">
+            <div th:replace="~{testCase/statistics::statistics}"></div>
+        </div>
+    </body>
+</html>
