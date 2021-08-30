@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Title</title>
+        <title>issue|edit</title>
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
@@ -50,12 +50,10 @@
                                                name="functionDesc"
                                                id="function-edit">
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <div class="form-group">
-                                            <span class="input-group-text">标题(问题描述)</span>
-                                        </div>
-                                        <input th:type="text" th:class="form-control" name="titleDesc"
-                                               id="desc-edit">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text">标题(问题描述)</span>
+                                        <textarea th:type="text" th:class="form-control" name="titleDesc"
+                                                  id="desc-edit" rows="2"></textarea>
                                     </div>
                                     <div class="row">
                                         <div class="input-group mb-3" style="width: 50%">
@@ -108,19 +106,17 @@
                                                     id="issue-date-edit"
                                                     required>
                                                 <option value="">--时间--</option>
-                                                <option th:each="s:${monthList}"
-                                                        th:value="${s}"
-                                                        th:text="${s}">
+                                                <option th:each="m:${monthList}"
+                                                        th:value="${m}"
+                                                        th:text="${m}">
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">备注</span>
-                                        </div>
-                                        <input th:type="text" th:class="form-control" name="remark"
-                                               id="remark-edit">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text">备注</span>
+                                        <textarea th:type="text" th:class="form-control" name="remark"
+                                                  id="remark-edit" rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>
