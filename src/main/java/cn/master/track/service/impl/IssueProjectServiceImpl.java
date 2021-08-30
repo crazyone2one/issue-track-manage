@@ -5,12 +5,10 @@ import cn.master.track.mapper.IssueProjectMapper;
 import cn.master.track.service.IssueProjectService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * <p>
@@ -44,6 +42,20 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     }
 
     @Override
+    public List<IssueProject> listProject(String name) {
+        QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
+        wrapper.select("project_id").like(StringUtils.isNotBlank(name), "project_name", name);
+        return baseMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<String> listProjectsId(String name) {
+        List<String> tempList = new ArrayList<>();
+        listProject(name).forEach(temp -> tempList.add(temp.getProjectId()));
+        return tempList;
+    }
+
+    @Override
     public IssueProject getProjectById(String id) {
         return baseMapper.selectById(id);
     }
@@ -51,9 +63,7 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     @Override
     public Map<String, IssueProject> projectsMap() {
         Map<String, IssueProject> map = new LinkedHashMap<>();
-        baseMapper.selectList(new QueryWrapper<>()).forEach(temp -> {
-            map.put(temp.getProjectId(), temp);
-        });
+        baseMapper.selectList(new QueryWrapper<>()).forEach(temp -> map.put(temp.getProjectId(), temp));
         return map;
     }
 }

@@ -3,6 +3,7 @@ package cn.master.track.service;
 import cn.master.track.entity.IssueProject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +32,28 @@ public interface IssueProjectService extends IService<IssueProject> {
      */
     IssueProject getProjectByName(String name);
 
+    /**
+     * 查询项目
+     *
+     * @param name 项目名称
+     * @return java.util.List<cn.master.track.entity.IssueProject>
+     */
+    List<IssueProject> listProject(String name);
+
+    /**
+     * 查询项目id
+     *
+     * @param name 项目名称
+     * @return java.util.List<java.lang.String>
+     */
+    List<String> listProjectsId(String name);
+
+    /**
+     * 通过id查询project信息
+     *
+     * @param id 主键id
+     * @return cn.master.track.entity.IssueProject
+     */
     IssueProject getProjectById(String id);
 
     /**
