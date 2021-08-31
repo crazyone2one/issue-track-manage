@@ -44,6 +44,16 @@ public class IssueProject implements Serializable {
      */
     @TableField("project_code")
     private String projectCode;
+    /**
+     * 模块名称
+     */
+    @TableField("module_name")
+    private String moduleName;
+    /**
+     * 模块名称id
+     */
+    @TableField(value = "module_id")
+    private String moduleId;
 
     /**
      * 创建时间
