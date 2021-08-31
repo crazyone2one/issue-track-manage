@@ -4,14 +4,17 @@ import cn.master.track.entity.IssueItem;
 import cn.master.track.entity.IssueSummary;
 import cn.master.track.mapper.IssueSummaryMapper;
 import cn.master.track.service.IssueSummaryService;
+import cn.master.track.service.TestCaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,14 +29,22 @@ import java.util.Objects;
 @Service
 public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, IssueSummary> implements IssueSummaryService {
 
+    private final TestCaseService caseService;
+
+    @Autowired
+    public IssueSummaryServiceImpl(TestCaseService caseService) {
+        this.caseService = caseService;
+    }
+
     @Override
     public String addIssueSummary(IssueItem item) {
         final IssueSummary issueSummary = findIssueSummary(item);
         final IssueSummary.IssueSummaryBuilder builder = IssueSummary.builder();
+        final Map<String, Integer> caseStatusMap = caseService.caseStatusMap(item.getProjectId(), item.getModule());
         if (Objects.isNull(issueSummary)) {
             final IssueSummary summary = builder.projectId(item.getProjectId())
-                    .createCaseCount(0)
-                    .executeCaseCount(0)
+                    .createCaseCount(caseStatusMap.get("total"))
+                    .executeCaseCount(caseStatusMap.get("execute"))
                     .deliveryStatus("0")
                     .issueDate(item.getIssueDate())
                     .createDate(new Date())
