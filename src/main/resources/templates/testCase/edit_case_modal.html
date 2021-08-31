@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>编辑测试用例</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <div th:fragment="editCaseFragment">
+            <form th:action="@{/case/editCase}" method="post">
+                <div class="modal fade" id="editCaseModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title bg-light" id="addCaseModalLabel">编辑测试用例</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 align-items-center">
+                                    <input name="id" type="hidden" class="form-control"
+                                           id="idEdit">
+                                    <div class="col-md-4">
+                                        <label for="projectId_edit" class="form-label">项目名称</label>
+                                        <input name="caseProjectId" id="projectId_edit" type="text"
+                                               class="form-control" placeholder value
+                                               required readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="caseSuiteId_edit" class="form-label">用例集名称</label>
+                                        <input name="caseSuiteId" id="caseSuiteId_edit" type="text" class="form-control"
+                                               placeholder value
+                                               required readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="caseTitle_edit" class="form-label">测试用例标题</label>
+                                        <input name="caseTitle" id="caseTitle_edit" type="text"
+                                               class="form-control" placeholder
+                                               value
+                                               required>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="caseSummary_edit" class="form-label">摘要</label>
+                                        <textarea name="caseSummary" id="caseSummary_edit" type="text"
+                                                  class="form-control" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="casePrecondition_edit" class="form-label">前提条件</label>
+                                        <textarea name="casePrecondition" id="casePrecondition_edit" type="text"
+                                                  class="form-control"
+                                                  rows="2"></textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="caseSteps_edit" class="form-label">测试步骤</label>
+                                            <textarea name="caseSteps" id="caseSteps_edit" type="text"
+                                                      class="form-control"
+                                                      rows="3"></textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="caseExpectedResults_edit" class="form-label">预期结果</label>
+                                            <textarea name="caseExpectedResults" id="caseExpectedResults_edit"
+                                                      type="text"
+                                                      class="form-control"
+                                                      rows="3"></textarea>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" name="caseRun"
+                                                       id="caseRun">
+                                                <label class="form-check-label" for="caseRun">是否执行</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    取消
+                                </button>
+                                <button type="submit" class="btn btn-primary" onclick="setRunStatusValue()">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script>
+                const editCaseModal = document.getElementById('editCaseModal')
+                editCaseModal.addEventListener('show.bs.modal', function (event) {
+                    const button = $(event.relatedTarget);
+                    const modal = $(this);
+                    // 数据库中主键id
+                    const tempId = button.closest('tr').find('input').attr('value');
+                    modal.find('#idEdit').val(tempId);
+                    for (let i = 1; i < 9; i++) {
+                        const tempContent = button.closest('tr').find('td').eq(i).text();
+                        switch (i) {
+                            case 1:// 项目名称
+                                modal.find('#projectId_edit').val(tempContent);
+                                break;
+                            case 2: // 模块名称
+                                modal.find('#caseSuiteId_edit').val(tempContent);
+                                break;
+                            case 3://标题
+                                modal.find('#caseTitle_edit').val(tempContent);
+                                break;
+                            case 4:// 摘要内容
+                                modal.find('#caseSummary_edit').val(tempContent);
+                                break;
+                            case 5:// 前提条件
+                                modal.find('#casePrecondition_edit').val(tempContent);
+                                break;
+                            case 6://测试步骤
+                                modal.find('#caseSteps_edit').val(tempContent);
+                                break;
+                            case 7://预期结果
+                                modal.find('#caseExpectedResults_edit').val(tempContent);
+                                break;
+                            case 8://执行状态
+                                console.log(typeof tempContent)
+                                if (Object.is(tempContent, "1")) {
+                                    modal.find('#caseRun').attr("checked", true);
+                                }
+                                modal.find('#caseRun').val(tempContent);
+                                break;
+                        }
+                    }
+                });
+
+                // 选择执行状态后重新赋值
+                function setRunStatusValue() {
+                    const attribute = document.getElementById("caseRun").getAttribute("checked");
+                    if (Object.is(attribute, null)) {
+                        const value1 = document.getElementById("caseRun").getAttribute("value");
+                        if (Object.is(value1, "0")) {
+                            document.getElementById("caseRun").setAttribute("value", "1");
+                        }
+                        if (Object.is(value1, "1")) {
+                            document.getElementById("caseRun").setAttribute("value", "0");
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </body>
+</html>
