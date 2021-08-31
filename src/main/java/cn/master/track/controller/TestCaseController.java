@@ -64,6 +64,12 @@ public class TestCaseController {
         return "redirect:/case/list";
     }
 
+    @RequestMapping("/editCase")
+    public String editCase(@ModelAttribute @Validated TestCase testCase) {
+        caseService.upgradeCaseInfo(testCase);
+        return "redirect:/case/list";
+    }
+
     @GetMapping("/redirection2CaseList")
     public String redirection2CaseList(String caseProjectName, String caseSuite, Model model) {
         model.addAttribute("casePageList", caseService.search4Redirection(caseProjectName, caseSuite));

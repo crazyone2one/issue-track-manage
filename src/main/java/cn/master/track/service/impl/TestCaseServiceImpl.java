@@ -1,5 +1,6 @@
 package cn.master.track.service.impl;
 
+import cn.master.track.entity.IssueProject;
 import cn.master.track.entity.TestCase;
 import cn.master.track.mapper.CommonMapper;
 import cn.master.track.mapper.TestCaseMapper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,10 +54,41 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
 
     @Override
     public void addCase(TestCase testCase) {
-        final String projectNameId = projectService.addProjectByName(testCase.getCaseProjectId());
-        testCase.setCaseProjectId(projectNameId);
+        final IssueProject issueProject = projectService.addProject(testCase.getCaseProjectId(), testCase.getCaseSuiteId());
+        testCase.setCaseProjectId(issueProject.getProjectId());
+        testCase.setCaseSuiteId(issueProject.getModuleId());
         testCase.setCreateDate(new Date());
         baseMapper.insert(testCase);
+    }
+
+    @Override
+    public void upgradeCaseInfo(TestCase testCase) {
+        final TestCase caseInfo = findTestCaseInfo(testCase.getCaseProjectId(), testCase.getCaseSuiteId());
+        testCase.setCaseSuiteId(caseInfo.getCaseSuiteId());
+        testCase.setCaseProjectId(caseInfo.getCaseProjectId());
+        testCase.setUpdateDate(new Date());
+        baseMapper.updateById(testCase);
+    }
+
+    @Override
+    public TestCase findTestCaseInfo(String projectName, String moduleName) {
+        final IssueProject project = projectService.getProject(projectName, moduleName);
+        return baseMapper.selectOne(new QueryWrapper<TestCase>().lambda()
+                .eq(StringUtils.isNotBlank(projectName), TestCase::getCaseProjectId, project.getProjectId())
+                .eq(StringUtils.isNotBlank(moduleName), TestCase::getCaseSuiteId, project.getModuleId()));
+    }
+
+    @Override
+    public Map<String, Integer> caseStatusMap(String projectId, String moduleId) {
+        Map<String, Integer> map = new LinkedHashMap<>();
+        map.put("total", baseMapper.selectCount(new QueryWrapper<TestCase>().lambda()
+                .eq(TestCase::getCaseProjectId, projectId)
+                .eq(TestCase::getCaseSuiteId, moduleId)));
+        map.put("execute", baseMapper.selectCount(new QueryWrapper<TestCase>().lambda()
+                .eq(TestCase::getCaseRun, "1")
+                .eq(TestCase::getCaseProjectId, projectId)
+                .eq(TestCase::getCaseSuiteId, moduleId)));
+        return map;
     }
 
     @Override

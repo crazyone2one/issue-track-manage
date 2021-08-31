@@ -20,7 +20,9 @@ public interface TestCaseService extends IService<TestCase> {
     /**
      * 查询
      *
-     * @param testCase testCase
+     * @param testCase
+     * @param pageIndex
+     * @param pageCount
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.TestCase>
      */
     Page<TestCase> searchCase(TestCase testCase, Integer pageIndex, Integer pageCount);
@@ -28,8 +30,8 @@ public interface TestCaseService extends IService<TestCase> {
     /**
      * 数据跳转查询
      *
-     * @param caseProjectName
-     * @param caseSuite
+     * @param caseProjectName 项目名
+     * @param caseSuite       模块名称
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.TestCase>
      */
     Page<TestCase> search4Redirection(String caseProjectName, String caseSuite);
@@ -40,6 +42,31 @@ public interface TestCaseService extends IService<TestCase> {
      * @param testCase testCase
      */
     void addCase(TestCase testCase);
+
+    /**
+     * 更新case信息
+     *
+     * @param testCase TestCase
+     */
+    void upgradeCaseInfo(TestCase testCase);
+
+    /**
+     * 查询
+     *
+     * @param projectName 项目名
+     * @param moduleName  模块名称
+     * @return cn.master.track.entity.TestCase
+     */
+    TestCase findTestCaseInfo(String projectName, String moduleName);
+
+    /**
+     * 测试用例根据执行状态统计
+     *
+     * @param projectId 项目名
+     * @param moduleId  模块名称
+     * @return java.util.Map<java.lang.String, java.lang.Integer>
+     */
+    Map<String, Integer> caseStatusMap(String projectId, String moduleId);
 
     /**
      * 查询测试用例的项目名称，module数量，测试用例数量
