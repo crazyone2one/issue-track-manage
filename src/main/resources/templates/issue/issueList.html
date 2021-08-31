@@ -75,6 +75,7 @@
                                         data-bs-target="#issueAddModal">
                                     添加问题单
                                 </button>
+                                <!--导出功能-->
                                 <button href="#" class="btn disabled">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-download" viewBox="0 0 16 16">
@@ -110,7 +111,7 @@
                                            th:value="${tempItem.getIssueId()}" id="issueId">
                                     <td th:text="${stat.index+1}"></td>
                                     <td th:text="${proMap.get(tempItem.getProjectId()).projectName}"></td>
-                                    <td th:text="${tempItem.getModule()}"></td>
+                                    <td th:text="${proMap.get(tempItem.getProjectId()).moduleName}"></td>
                                     <td th:text="${tempItem.getFunctionDesc()}"></td>
                                     <td th:text="${tempItem.getTitleDesc()}">
                                     <td>
