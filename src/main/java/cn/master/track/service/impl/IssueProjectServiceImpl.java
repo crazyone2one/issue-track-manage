@@ -3,6 +3,7 @@ package cn.master.track.service.impl;
 import cn.master.track.entity.IssueProject;
 import cn.master.track.mapper.IssueProjectMapper;
 import cn.master.track.service.IssueProjectService;
+import cn.master.track.util.UuidUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -23,22 +24,39 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
 
     @Override
     public String addProjectByName(String name) {
-        final IssueProject project = baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name.trim()));
+        final IssueProject project = getProjectByName(name);
         if (Objects.nonNull(project)) {
             return project.getProjectId();
         }
         final IssueProject.IssueProjectBuilder builder = IssueProject.builder();
         builder.projectName(name.trim()).projectCode("").createData(new Date());
         baseMapper.insert(builder.build());
-        return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name.trim())).getProjectId();
+        return getProjectByName(name).getProjectId();
+    }
+
+    @Override
+    public IssueProject addProject(String projectName, String moduleName) {
+        final IssueProject project = getProject(projectName, moduleName);
+        if (Objects.nonNull(project)) {
+            return project;
+        }
+        final IssueProject.IssueProjectBuilder builder = IssueProject.builder();
+        builder.projectName(projectName.trim()).moduleName(moduleName.trim()).moduleId(UuidUtils.generate()).createData(new Date());
+        baseMapper.insert(builder.build());
+        return getProject(projectName, moduleName);
     }
 
     @Override
     public IssueProject getProjectByName(String name) {
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
                 .eq(IssueProject::getProjectName, name.trim()));
+    }
+
+    @Override
+    public IssueProject getProject(String projectName, String moduleName) {
+        return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
+                .eq(StringUtils.isNotBlank(projectName), IssueProject::getProjectName, projectName.trim())
+                .eq(StringUtils.isNotBlank(moduleName), IssueProject::getModuleName, moduleName));
     }
 
     @Override

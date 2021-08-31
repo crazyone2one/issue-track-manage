@@ -18,11 +18,22 @@ public interface IssueProjectService extends IService<IssueProject> {
 
     /**
      * 创建项目数据
+     * 先根据条件查询，如果查询到直接返回查询到的结果。如果没有查询到相对于的数据，则添加然后返回新添加的数据
      *
      * @param name 项目名称
      * @return java.lang.String
      */
     String addProjectByName(String name);
+
+    /**
+     * 添加项目信息。
+     * 先根据条件查询，如果查询到直接返回查询到的结果。如果没有查询到相对于的数据，则添加然后返回新添加的数据
+     *
+     * @param projectName 项目名称
+     * @param moduleName  模块名称
+     * @return java.lang.String
+     */
+    IssueProject addProject(String projectName, String moduleName);
 
     /**
      * 查询项目
@@ -31,6 +42,15 @@ public interface IssueProjectService extends IService<IssueProject> {
      * @return cn.master.track.entity.IssueProject
      */
     IssueProject getProjectByName(String name);
+
+    /**
+     * 查询项目
+     *
+     * @param projectName 项目名称
+     * @param moduleName  模块名称
+     * @return cn.master.track.entity.IssueProject
+     */
+    IssueProject getProject(String projectName, String moduleName);
 
     /**
      * 查询项目
