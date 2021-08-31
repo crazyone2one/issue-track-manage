@@ -1,6 +1,7 @@
 package cn.master.track.service.impl;
 
 import cn.master.track.entity.IssueItem;
+import cn.master.track.entity.IssueProject;
 import cn.master.track.entity.IssueSummary;
 import cn.master.track.mapper.CommonMapper;
 import cn.master.track.mapper.IssueItemMapper;
@@ -80,8 +81,9 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public void saveIssueItem(IssueItem item) {
-        final String projectNameId = projectService.addProjectByName(item.getProjectId());
-        item.setProjectId(projectNameId);
+        final IssueProject issueProject = projectService.addProject(item.getProjectId(), item.getModule());
+        item.setProjectId(issueProject.getProjectId());
+        item.setModule(issueProject.getModuleId());
         baseMapper.insert(item);
         // 保存任务汇总数据
         final String summaryId = summaryService.addIssueSummary(item);
@@ -134,7 +136,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public void modifyIssue(IssueItem issueItem) {
-        issueItem.setProjectId(projectService.getProjectByName(issueItem.getProjectId()).getProjectId());
+        issueItem.setProjectId(projectService.addProject(issueItem.getProjectId(), issueItem.getModule()).getProjectId());
         final IssueItem issueItem1 = baseMapper.selectById(issueItem.getIssueId());
         issueItem.setUpdateDate(new Date());
         QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
