@@ -10,21 +10,19 @@
         <meta name="author" content="11‘s papa">
     </head>
     <body>
-        <div th:fragment="statistics">
+        <div th:fragment="statistics" class="mb-4">
             <div class="row">
-                <div class="col-xl-6 col-xxl-5 d-flex">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col-sm-6" th:each="info:${caseInfo}">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h1 class="mt-1 mb-3">
-                                            <a th:href="@{/case/redirection2CaseList(caseProjectName=${info.get('project')})}"
-                                               th:text="${info.get('project')}"></a></h1>
-                                        <div class="mb-0">
-                                            <span>涉及模块<a href="#" th:text="${info.get('sc')}"></a></span><br>
-                                            <span>涉及用例<a href="#" th:text="${info.get('cc')}"></a></span>
-                                        </div>
+                <div class="col-xl-3 d-flex">
+                    <div class="row">
+                        <div class="col-sm-3 me-3 shadow-sm rounded" th:each="info:${caseInfo}">
+                            <div class="card" style="width: 15rem">
+                                <div class="card-body">
+                                    <h1 class="mt-1 mb-3">
+                                        <a th:href="@{/case/redirection2CaseList(caseProjectName=${info.get('project')})}"
+                                           th:text="${info.get('project')}"></a></h1>
+                                    <div class="mb-0">
+                                        <h6>涉及<span class="text-primary" th:text="${info.get('sc')}"></span>个模块</h6>
+                                        <h6>涉及<span class="text-primary" th:text="${info.get('cc')}"></span>条用例</h6>
                                     </div>
                                 </div>
                             </div>
