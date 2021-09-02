@@ -6,17 +6,16 @@ import cn.master.track.mapper.CommonMapper;
 import cn.master.track.mapper.TestCaseMapper;
 import cn.master.track.service.IssueProjectService;
 import cn.master.track.service.TestCaseService;
+import cn.master.track.util.ExcelUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -41,6 +40,19 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
     public Page<TestCase> searchCase(TestCase testCase, Integer pageIndex, Integer pageCount) {
         QueryWrapper<TestCase> wrapper = new QueryWrapper<>();
         return baseMapper.selectPage(new Page<>(pageIndex, pageCount), wrapper);
+    }
+
+    @Override
+    public List<TestCase> caseList4export(TestCase testCase) {
+        List<TestCase> caseList = new LinkedList<>();
+        QueryWrapper<TestCase> wrapper = new QueryWrapper<>();
+        baseMapper.selectList(wrapper).forEach(testCase1 -> {
+            final IssueProject project = projectService.getProjectById(testCase1.getCaseProjectId(), testCase1.getCaseSuiteId());
+            testCase1.setCaseProjectId(project.getProjectName());
+            testCase1.setCaseSuiteId(project.getModuleName());
+            caseList.add(testCase1);
+        });
+        return caseList;
     }
 
     @Override
@@ -96,5 +108,11 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
         String sql = "SELECT t2.project_name project, COUNT(DISTINCT(case_suite_id)) sc,COUNT(id) cc from test_case t1 " +
                 "LEFT JOIN issue_project t2 on t2.project_id = t1.case_project_id GROUP BY t1.case_project_id;";
         return commonMapper.findMapBySql(sql);
+    }
+
+    @Override
+    public void insertTestCaseByExcel(MultipartFile file) {
+        final List<TestCase> caseList = ExcelUtils.readExcel(TestCase.class, file);
+        caseList.forEach(this::addCase);
     }
 }

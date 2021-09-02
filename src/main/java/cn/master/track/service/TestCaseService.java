@@ -3,6 +3,7 @@ package cn.master.track.service;
 import cn.master.track.entity.TestCase;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,14 @@ public interface TestCaseService extends IService<TestCase> {
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.TestCase>
      */
     Page<TestCase> searchCase(TestCase testCase, Integer pageIndex, Integer pageCount);
+
+    /**
+     * 导出数据查询
+     *
+     * @param testCase TestCase
+     * @return java.util.List<cn.master.track.entity.TestCase>
+     */
+    List<TestCase> caseList4export(TestCase testCase);
 
     /**
      * 数据跳转查询
@@ -74,4 +83,11 @@ public interface TestCaseService extends IService<TestCase> {
      * @return java.util.Map<java.lang.String, java.lang.String>
      */
     List<Map<String, Object>> caseInfoMap();
+
+    /**
+     * 导入数据
+     *
+     * @param file file
+     */
+    void insertTestCaseByExcel(MultipartFile file);
 }
