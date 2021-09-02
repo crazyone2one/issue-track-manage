@@ -6,12 +6,97 @@
         <title>测试用例</title>
         <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
         <link th:href="@{/common/common.css}" rel="stylesheet">
         <meta name="author" content="11‘s papa">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            div > ul {
+                overflow: hidden;
+                padding: 3em;
+            }
+
+            div > ul, li {
+                list-style: none;
+                float: left;
+                margin: 1em;
+            }
+
+            div > ul li h2 {
+                font-size: 140%;
+                font-weight: bold;
+                padding-bottom: 10px;
+            }
+
+            div > ul li p {
+                font-family: "Reenie Beanie", Arial sans-serif, 微软雅黑;
+                font-size: 110%;
+            }
+
+            div > ul li a {
+                display: block;
+                width: 10em;
+                height: 10em;
+                background: #fcc;
+                text-decoration: none;
+                color: #000;
+                padding: 1em;
+                /*-moz-box-shadow: 5px 5px 7px rgb(33, 33, 33);*/
+                /*-webkit-box-shadow: 5px 5px 7px rgb(33, 33, 33);*/
+                box-shadow: 5px 5px 7px rgb(33, 33, 33);
+                -webkit-transform: rotate(-6deg);
+                -o-transform: rotate(-6deg);
+                -moz-transform: rotate(-6deg);
+                -webkit-transition: 1.5s linear;
+            }
+
+            div > ul li:nth-child(2n) a {
+                /*选择器，根据even，选择当前文档选择器选择li下的a超链接标签，选择第2/4/6...的li标签*/
+                -o-transform: rotate(4deg);
+                -webkit-transform: rotate(4deg);
+                -moz-transform: rotate(4deg);
+                position: relative;
+                top: 5px;
+                background: #cfc;
+            }
+
+            div > ul li:nth-child(3n) a {
+                /*选择倍数为3的a超链接*/
+                -o-transform: rotate(-3deg);
+                -webkit-transform: rotate(-3deg);
+                -moz-transform: rotate(-3deg);
+                position: relative;
+                top: -5px;
+                background: #ccf;
+            }
+
+            div > ul li:nth-child(5n) a {
+                /*选择倍数为3的a超链接*/
+                -o-transform: rotate(5deg);
+                -webkit-transform: rotate(5deg);
+                -moz-transform: rotate(5deg);
+                position: relative;
+                top: -10px;
+            }
+
+            div > ul li a:hover, div > ul li a:focus {
+                box-shadow: 10px 10px 7px rgba(0, 0, 0, 7);
+                -webkit-transform: scale(1.25);
+                -o-transform: scale(1.25);
+                -moz-transform: scale(1.25);
+                position: relative;
+                z-index: 5;
+            }
+        </style>
     </head>
     <body>
         <!-- 顶部导航 -->
         <div th:replace="~{common/common::topbar}"></div>
+        <!-- 搜索操作栏-->
         <div class="card">
             <form th:action="@{/summary/list}" class="pe-md-2">
                 <div class="card-body">
@@ -45,6 +130,16 @@
                 </div>
             </form>
         </div>
-        <div th:replace="~{testCase/statistics::statistics}"></div>
+        <!-- 统计展示-->
+        <div class="mb-3">
+            <ul>
+                <li th:each="m,mStat:${caseInfo}">
+                    <a th:href="@{/case/redirection2CaseList(caseProjectName=${m.get('project')})}">
+                        <h2>[[${m.get('project')}]]</h2>
+                        <p>涉及[[${m.get('sc')}]]个模块，涉及[[${m.get('cc')}]]条用例</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </body>
 </html>
