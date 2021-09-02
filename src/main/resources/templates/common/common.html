@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>ISSUE | TRACK</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
         <link th:href="@{/common/common.css}" rel="stylesheet">
     </head>
     <body>
@@ -72,6 +75,28 @@
                     </div>
                 </div>
             </a>
+        </div>
+
+        <div th:fragment="uploadModal">
+            <div class="modal fade border-0" id="uploadModal" tabindex="-1"
+                 aria-labelledby="uploadModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content needs-validation">
+                        <div class="modal-header">
+                            <h5 class="modal-title bg-light">数据导入</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="uploadForm" action="/case/upload" method="post" enctype="multipart/form-data">
+                                <input id="singleFileUploadInput" type="file" name="file" class="file-input" required/>
+                                <input type="submit" value="上传">
+                            </form>
+                        </div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
