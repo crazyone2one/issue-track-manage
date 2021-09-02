@@ -60,6 +60,13 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     }
 
     @Override
+    public IssueProject getProjectById(String projectId, String moduleId) {
+        return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
+                .eq(StringUtils.isNotBlank(projectId), IssueProject::getProjectId, projectId.trim())
+                .eq(StringUtils.isNotBlank(moduleId), IssueProject::getModuleId, moduleId));
+    }
+
+    @Override
     public List<IssueProject> listProject(String name) {
         QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
         wrapper.select("project_id").like(StringUtils.isNotBlank(name), "project_name", name);

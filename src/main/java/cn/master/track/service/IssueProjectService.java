@@ -53,6 +53,15 @@ public interface IssueProjectService extends IService<IssueProject> {
     IssueProject getProject(String projectName, String moduleName);
 
     /**
+     * 查询项目 by id
+     *
+     * @param projectId 项目名称id
+     * @param moduleId  模块名称id
+     * @return cn.master.track.entity.IssueProject
+     */
+    IssueProject getProjectById(String projectId, String moduleId);
+
+    /**
      * 查询项目
      *
      * @param name 项目名称
