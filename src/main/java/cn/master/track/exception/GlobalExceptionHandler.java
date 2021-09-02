@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     public String handleNullPointerException(NullPointerException exception, Model model) {
         model.addAttribute("message", exception.getMessage());
-        return "";
+        return "error/404";
     }
 
     /**

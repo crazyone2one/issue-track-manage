@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Title</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link th:href="@{/common/404.css}" rel="stylesheet">
         <meta name="author" content="11‘s papa">
     </head>
@@ -17,7 +18,7 @@
                     <div></div>
                 </div>
                 <h2>ERROR 500</h2>
-                <p th:text="${message.get('exMsg')}"></p>
+                <!--                <p th:text="${message.get('exMsg')}"></p>-->
                 <a th:href="@{/}">go back</a>
             </div>
         </div>
