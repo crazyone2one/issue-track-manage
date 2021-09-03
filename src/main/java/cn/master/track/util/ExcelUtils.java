@@ -1,12 +1,11 @@
 package cn.master.track.util;
 
-import cn.master.track.config.ExcelColumn;
+import cn.master.track.enums.ExcelColumn;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -78,12 +77,11 @@ public class ExcelUtils {
         if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
             log.error("上传文件格式不正确");
         }
-        String filePath = "src/main/resources/temp";
-        File temp = new File(filePath);
-        if (!temp.exists()) {
-            temp.mkdirs();
-        }
-        File localFile = new File(filePath + fileName);
+//        String filePath = "src/main/resources/temp";
+//        File temp = new File(filePath);
+//        if (!temp.exists()) {
+//            temp.mkdirs();
+//        }
 
         List<T> dataList = new ArrayList<>();
         Workbook workbook = null;
@@ -132,25 +130,7 @@ public class ExcelUtils {
                             T t = cls.newInstance();
                             //判断是否为空白行
                             boolean allBlank = true;
-                            for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
-                                if (reflectionMap.containsKey(j)) {
-                                    Cell cell = row.getCell(j);
-                                    String cellValue = getCellValue(cell);
-                                    if (StringUtils.isNotBlank(cellValue)) {
-                                        allBlank = false;
-                                    }
-                                    List<Field> fieldList = reflectionMap.get(j);
-                                    fieldList.forEach(
-                                            x -> {
-                                                try {
-                                                    handleField(t, cellValue, x);
-                                                } catch (Exception e) {
-                                                    log.error(String.format("reflect field:%s value:%s exception!", x.getName(), cellValue), e);
-                                                }
-                                            }
-                                    );
-                                }
-                            }
+                            allBlank = isAllBlank(reflectionMap, row, t, allBlank);
                             if (!allBlank) {
                                 dataList.add(t);
                             } else {
@@ -176,6 +156,29 @@ public class ExcelUtils {
         return dataList;
     }
 
+    private static <T> boolean isAllBlank(Map<Integer, List<Field>> reflectionMap, Row row, T t, boolean allBlank) {
+        for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+            if (reflectionMap.containsKey(j)) {
+                Cell cell = row.getCell(j);
+                String cellValue = getCellValue(cell);
+                if (StringUtils.isNotBlank(cellValue)) {
+                    allBlank = false;
+                }
+                List<Field> fieldList = reflectionMap.get(j);
+                fieldList.forEach(
+                        x -> {
+                            try {
+                                handleField(t, cellValue, x);
+                            } catch (Exception e) {
+                                log.error(String.format("reflect field:%s value:%s exception!", x.getName(), cellValue), e);
+                            }
+                        }
+                );
+            }
+        }
+        return allBlank;
+    }
+
     private static void getTitle(Row row, Map<Integer, List<Field>> reflectionMap, Map<String, List<Field>> classMap) {
         for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
             Cell cell = row.getCell(j);
@@ -192,7 +195,7 @@ public class ExcelUtils {
         }
         if (cell.getCellType() == CellType.NUMERIC) {
             if (DateUtil.isCellDateFormatted(cell)) {
-                return HSSFDateUtil.getJavaDate(cell.getNumericCellValue()).toString();
+                return DateUtil.getJavaDate(cell.getNumericCellValue()).toString();
             } else {
                 return BigDecimal.valueOf(cell.getNumericCellValue()).toString();
             }
@@ -214,10 +217,10 @@ public class ExcelUtils {
     /**
      * 导出excel
      *
-     * @param fileName
-     * @param response
-     * @param dataList
-     * @param cls
+     * @param fileName 文件名称
+     * @param response HttpServletResponse
+     * @param dataList dataList
+     * @param cls      cls
      */
     public static <T> void writeExcel(String fileName, HttpServletResponse response, List<T> dataList, Class<T> cls) {
         Field[] fields = cls.getDeclaredFields();
