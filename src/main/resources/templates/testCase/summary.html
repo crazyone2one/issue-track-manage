@@ -133,6 +133,14 @@
         <!-- 统计展示-->
         <div class="mb-3">
             <ul>
+                <!-- 系统中没有测试用例时显示添加按钮-->
+                <li th:if="${#lists.isEmpty(caseInfo)}">
+                    <!--                    <div><h3>开始<a data-bs-toggle="modal" data-bs-target="#addCaseModal">添加</a>测试用例</h3></div>-->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addCaseModal">
+                        添加测试用例
+                    </button>
+                </li>
                 <li th:each="m,mStat:${caseInfo}">
                     <a th:href="@{/case/redirection2CaseList(caseProjectName=${m.get('project')})}">
                         <h2>[[${m.get('project')}]]</h2>
@@ -141,5 +149,7 @@
                 </li>
             </ul>
         </div>
+        <!-- 添加问题单Modal弹框 -->
+        <div th:replace="~{testCase/add_case_modal::addCaseFragment}"></div>
     </body>
 </html>
