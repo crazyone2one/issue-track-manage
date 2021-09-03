@@ -47,6 +47,7 @@ public class TestCaseController {
     public String caseSummary(Model model) {
         final List<Map<String, Object>> caseInfoMap = caseService.caseInfoMap();
         model.addAttribute("caseInfo", caseInfoMap);
+        model.addAttribute("proMap", projectService.projectsMap());
         return "testCase/summary";
     }
 

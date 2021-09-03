@@ -106,8 +106,12 @@
                                 <label for="projectName" class="form-label"
                                        style="display: none"></label>
                                 <input type="text" class="form-control" name="caseProjectId"
-                                       id="projectName"
+                                       id="projectName" list="proList"
                                        placeholder="请输入项目名称">
+                                <datalist id="proList" th:each="pro:${proMap}">
+                                    <option th:value="${pro.value.projectName}"
+                                            th:text="${pro.value.projectName}"></option>
+                                </datalist>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-4 col-sm-6">

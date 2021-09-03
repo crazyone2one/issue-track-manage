@@ -22,11 +22,14 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="input-group mb-3" style="width: 20%">
-                                            <!--                                            <div class="form-group">-->
-                                            <!--                                                <span class="input-group-text">项目名称</span>-->
-                                            <!--                                            </div>-->
+                                            <label for="projectName" class="form-label"
+                                                   style="display: none"></label>
                                             <input name="projectId" class="form-control" id="projectName" type="text"
-                                                   placeholder="请输入项目名称"/>
+                                                   placeholder="请输入项目名称" list="proList">
+                                            <datalist id="proList" th:each="pro:${proMap}">
+                                                <option th:value="${pro.value.projectName}"
+                                                        th:text="${pro.value.projectName}"></option>
+                                            </datalist>
                                         </div>
                                         <div class="input-group mb-3" style="width: 16%">
                                             <!--                                            <div class="form-group">-->
