@@ -1,4 +1,4 @@
-package cn.master.track.config;
+package cn.master.track.enums;
 
 import java.lang.annotation.*;
 
