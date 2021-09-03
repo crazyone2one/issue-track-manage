@@ -1,6 +1,6 @@
 package cn.master.track.entity;
 
-import cn.master.track.config.ExcelColumn;
+import cn.master.track.enums.ExcelColumn;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
