@@ -1,11 +1,9 @@
 package cn.master.track.exception;
 
+import cn.master.track.enums.ExceptionEnum;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author Created by 11's papa on 2021/08/26
@@ -22,12 +20,14 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NullPointerException.class)
     public String handleNullPointerException(NullPointerException exception, Model model) {
-        model.addAttribute("message", exception.getMessage());
-        return "error/404";
+        model.addAttribute("result",
+                ResponseResult.error(ExceptionEnum.BODY_NOT_MATCH.getResultCode(),
+                        ExceptionEnum.BODY_NOT_MATCH.getResultMsg() + ":" + exception.getMessage()));
+        return "error/error";
     }
 
     /**
-     * ArithmeticException
+     * 抛出异常算术条件时抛出。 例如，“除以零”的整数会抛出此类的一个实例
      *
      * @param exception ArithmeticException
      * @param model     Model
@@ -35,10 +35,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ArithmeticException.class)
     public String handleArithmeticException(ArithmeticException exception, Model model) {
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put("exMsg", exception.getMessage());
-        model.addAttribute("message", map);
-        return "error/500";
+        model.addAttribute("result",
+                ResponseResult.error(ExceptionEnum.BODY_NOT_MATCH.getResultCode(),
+                        ExceptionEnum.BODY_NOT_MATCH.getResultMsg() + ":" + exception.getMessage()));
+        return "error/error";
     }
 
     /**
@@ -50,7 +50,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public String handleException(Exception exception, Model model) {
-        model.addAttribute("message", exception.getMessage());
-        return "error/404";
+        model.addAttribute("result",
+                ResponseResult.error(ExceptionEnum.NOT_FOUND.getResultCode(),
+                        ExceptionEnum.NOT_FOUND.getResultMsg() + ":" + exception.getMessage()));
+        return "error/error";
     }
 }
