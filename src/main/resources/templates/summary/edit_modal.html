@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>任务汇总 >> 编辑</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <div th:fragment="editSummaryFragment">
+            <!-- 任务汇总编辑弹框 -->
+            <form th:action="@{/summary/modifySummary}" method="post">
+                <div class="modal fade" id="editSummaryModal" tabindex="-1"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title bg-light" id="editSummaryModalLabel">任务汇总数据信息修改</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 align-items-center">
+                                    <input name="summaryId" type="hidden" class="form-control"
+                                           id="id_edit">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="form-group">
+                                        <span class="input-group-text">项目名称</span>
+                                    </div>
+                                    <input th:type="text" th:class="form-control" name="projectId"
+                                           id="proName"
+                                           readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="summary_edit" class="form-label">任务描述</label>
+                                    <textarea th:type="text" th:class="form-control" rows="3"
+                                              name="summaryDesc"
+                                              id="summary_edit"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group mb-3 col-sm-3" style="width: 50%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">编写用例</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="createCaseCount"
+                                               id="createCaseCount"
+                                               readonly>
+                                    </div>
+                                    <div class="input-group mb-3 col-sm-3" style="width: 50%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">执行用例</span>
+                                        </div>
+                                        <input th:type="text" th:class="form-control" name="executeCaseCount"
+                                               id="executeCaseCount"
+                                               readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 input-group mb-3" style="width: 50%">
+                                        <div class="form-group">
+                                            <span class="input-group-text">完成状态</span>
+                                        </div>
+                                        <select class="form-select" name="jobStatus" id="jobStatus" required>
+                                            <option th:each="temp:${jobStatusList}"
+                                                    th:value="${temp.getTypeCode()}"
+                                                    th:text="${temp.getTypeName()}">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 input-group mb-3" style="width: 50%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">测试人员</span>
+                                        </div>
+                                        <select class="form-select" name="owner" id="owner-edit"
+                                                required>
+                                            <option value="">--测试人员--</option>
+                                            <option th:each="s:${ownerList}"
+                                                    th:value="${s.getTypeCode()}"
+                                                    th:text="${s.getTypeName()}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="bugDoc"
+                                                           id="bugDoc" onclick="check(this.id)">
+                                                    <label class="form-check-label" for="bugDoc">有无bug文档</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="reportDoc"
+                                                           id="reportDoc" onclick="check(this.id)">
+                                                    <label class="form-check-label" for="reportDoc">测试报告</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="hasDoc"
+                                                           id="hasDoc" onclick="check(this.id)">
+                                                    <label class="form-check-label" for="hasDoc">需求文档</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <input type="radio" value="0" name="deliveryStatus">未交付<br>
+                                                <input type="radio" value="1" name="deliveryStatus">已交付<br>
+                                                <input type="radio" value="2" name="deliveryStatus">不确定
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="remark" class="form-label">备注内容</label>
+                                    <textarea th:type="text" th:class="form-control"
+                                              name="remark"
+                                              id="remark" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <input name="issueDate" type="hidden" class="form-control"
+                                       id="issue_date_edit">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    取消
+                                </button>
+                                <button type="submit" class="btn btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script>
+                const editModal = document.getElementById('editSummaryModal');
+                // 修改modal中赋值
+                editModal.addEventListener('show.bs.modal', function (event) {
+                    const button = $(event.relatedTarget);
+                    const modal = $(this);
+                    // 数据库中主键id
+                    const tempId = button.closest('tr').find('input').attr('value');
+                    modal.find('#id_edit').val(tempId);
+                    for (let i = 1; i < 23; i++) {
+                        const tempContent = button.closest('tr').find('td').eq(i).text().trim();
+                        switch (i) {
+                            case 1:
+                                modal.find('#proName').val(tempContent);
+                                break;
+                            case 2:
+                                modal.find('#summary_edit').val(tempContent);
+                                break;
+                            case 3:
+                                modal.find('#createCaseCount').val(tempContent);
+                                break;
+                            case 4:
+                                modal.find('#executeCaseCount').val(tempContent);
+                                break;
+                            case 15:
+                                const tempContent1 = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                if (Object.is(tempContent1, "true")) {
+                                    modal.find('#bugDoc').attr("checked", true);
+                                }
+                                modal.find('#bugDoc').val(tempContent1);
+                                break;
+                            case 16:
+                                const tempReportDoc = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                if (Object.is(tempReportDoc, "true")) {
+                                    modal.find('#reportDoc').attr("checked", true);
+                                }
+                                modal.find('#reportDoc').val(tempReportDoc);
+                                break;
+                            case 17:
+                                const tempHasDoc = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                if (Object.is(tempHasDoc, "true")) {
+                                    modal.find('#hasDoc').attr("checked", true);
+                                }
+                                modal.find('#hasDoc').val(tempHasDoc);
+                                break;
+                            case 18:
+                                const tempJobStatus = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                modal.find('#jobStatus').find("option[value='" + tempJobStatus + "']").attr("selected", true);
+                                break;
+                            case 19:
+                                const tempDeliveryStatus = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                const radios = document.getElementsByName("deliveryStatus");
+                                for (let j = 0; j < radios.length; j++) {
+                                    if (Object.is(radios[j].getAttribute("value"), tempDeliveryStatus)) {
+                                        radios[j].checked = true;
+                                    }
+                                }
+                                break;
+                            case 20:
+                                const tempOwner = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
+                                const ownerOptions = document.getElementById("owner-edit");
+                                for (let j = 0; j < ownerOptions.length; j++) {
+                                    if (Object.is(tempOwner, ownerOptions[j].getAttribute("value"))) {
+                                        ownerOptions[j].selected = true;
+                                    }
+                                }
+                                break;
+                            case 21:
+                                modal.find('#remark').val(tempContent);
+                                break;
+                            case 22:
+                                modal.find('#issue_date_edit').val(tempContent);
+                                break;
+                        }
+                    }
+                });
+
+                // 保存数据时验证 fixme 优化false时往后台传值为null问题
+                function check(x) {
+                    const tempBugDoc = document.getElementById(x);
+                    tempBugDoc.onclick = function (element) {
+                        if (Object.is(tempBugDoc.checked, true)) {
+                            tempBugDoc.setAttribute("checked", "true");
+                            tempBugDoc.setAttribute("value", "true");
+                        } else {
+                            tempBugDoc.setAttribute("checked", "false");
+                            tempBugDoc.setAttribute("value", "false");
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </body>
+</html>

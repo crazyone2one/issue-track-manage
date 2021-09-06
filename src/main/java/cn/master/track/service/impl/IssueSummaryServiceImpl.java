@@ -46,6 +46,7 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
                     .createCaseCount(caseStatusMap.get("total"))
                     .executeCaseCount(caseStatusMap.get("execute"))
                     .deliveryStatus("0")
+                    .owner(item.getOwner())
                     .issueDate(item.getIssueDate())
                     .createDate(new Date())
                     .build();
@@ -91,6 +92,15 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
     @Override
     public void modifySummary(IssueSummary summary) {
         summary.setProjectId(findSummaryById(summary.getSummaryId()).getProjectId());
+        if (Objects.isNull(summary.getBugDoc())) {
+            summary.setBugDoc(false);
+        }
+        if (Objects.isNull(summary.getReportDoc())) {
+            summary.setReportDoc(false);
+        }
+        if (Objects.isNull(summary.getHasDoc())) {
+            summary.setHasDoc(false);
+        }
         summary.setUpdateDate(new Date());
         baseMapper.update(summary, new QueryWrapper<IssueSummary>().lambda().eq(IssueSummary::getSummaryId, summary.getSummaryId()));
     }
