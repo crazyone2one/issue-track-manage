@@ -34,11 +34,11 @@
                                                 </datalist>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-4 col-sm-6">
+                                        <div class="col-lg-2 col-md-4 col-sm-6" style="width: 11%">
                                             <div class="input-group">
                                                 <label for="jobStatus" class="form-label" style="display: none"></label>
                                                 <select id="jobStatus" name="jobStatus" class="form-select">
-                                                    <option>选择任务完成状态</option>
+                                                    <option th:value="''">选择任务完成状态</option>
                                                     <option th:each="temp:${jobStatusList}"
                                                             th:value="${temp.getTypeCode()}"
                                                             th:text="${temp.getTypeName()}">
@@ -46,8 +46,26 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-lg-2 col-md-4 col-sm-6" style="width: 8%">
+                                            <div class="input-group">
+                                                <label for="monthDate" class="form-label"></label>
+                                                <select class="form-select" name="issueDate" id="monthDate"
+                                                        required>
+                                                    <option th:each="m:${monthList}"
+                                                            th:value="${m}"
+                                                            th:text="${m}"
+                                                            th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
+                                                    >
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <button type="submit" class="btn btn-primary">搜索</button>
+                                            <button type="submit" class="btn">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="col-lg-2 col-md-4 col-sm-6">
                                             <a href="#" class="btn btn-primary disabled">导出</a>

@@ -55,6 +55,19 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="col-lg-2 col-md-4 col-sm-6" style="width: 10%">
+                                            <div class="input-group">
+                                                <label for="monthDate" class="form-label"></label>
+                                                <select class="form-select" name="issueDate" id="monthDate"
+                                                        required>
+                                                    <option th:each="m:${monthList}"
+                                                            th:value="${m}"
+                                                            th:text="${m}"
+                                                            th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
+                                                    >
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-2 col-md-4 col-sm-6">
                                             <button type="submit" class="btn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

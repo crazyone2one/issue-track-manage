@@ -61,6 +61,7 @@ public class IssueSummaryController {
         model.addAttribute("proMap", projectService.projectsMap());
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
         model.addAttribute("refMap", refService.refsMap());
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "summary/summaryList";
     }
 

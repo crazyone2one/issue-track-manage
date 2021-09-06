@@ -69,6 +69,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         if (StringUtils.isNotEmpty(issueItem.getStatus())) {
             wrapper.lambda().eq(IssueItem::getStatus, issueItem.getStatus());
         }
+        wrapper.lambda().eq(StringUtils.isNotBlank(issueItem.getIssueDate()), IssueItem::getIssueDate, issueItem.getIssueDate());
         wrapper.orderByDesc("project_id");
         return wrapper;
     }
@@ -114,6 +115,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
+        wrapper.lambda().eq(StringUtils.isNotBlank(summary.getIssueDate()), IssueSummary::getIssueDate, summary.getIssueDate());
         wrapper.lambda().groupBy(IssueSummary::getProjectId);
         return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
     }
@@ -129,6 +131,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
+        wrapper.lambda().eq(StringUtils.isNotBlank(summary.getIssueDate()), IssueSummary::getIssueDate, summary.getIssueDate());
         wrapper.groupBy("project_id", "issue_date");
         wrapper.lambda().orderByDesc(IssueSummary::getProjectId);
         return summaryService.listSummary(wrapper);
