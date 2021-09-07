@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>setting</title>
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/bootstrap/icons/bootstrap-icons.css}">
+        <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+        <link th:href="@{/common/common.css}" rel="stylesheet">
+        <meta name="author" content="11‘s papa">
+    </head>
+    <body>
+        <div class="container-fluid" th:each="p:${types}">
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="card">
+                        <h5 class="card-header" th:value="${p.key}" th:text="${typeMap.get(p.key)}"></h5>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">name</th>
+                                    <th scope="col">code</th>
+                                    <th scope="col"><i class="bi-tools"></i>
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#addModal">
+                                        <i class="bi bi-plus-circle-dotted"></i>
+                                    </a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody th:each="t:${p.value}">
+                                <tr>
+                                    <input name="id" type="hidden" class="form-control"
+                                           th:value="${t.id}" id="id">
+                                    <td th:value="${t.typeName}" th:text="${t.typeName}"></td>
+                                    <td th:value="${t.typeCode}" th:text="${t.typeCode}"></td>
+                                    <td><a class="btn btn-sm"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#editModal">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                        <a data-bs-toggle="modal"
+                                           data-bs-target="#deleteModal">
+                                            <i class="bi bi-trash"></i>
+                                        </a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:fragment="add">
+            <!--add Modal -->
+            <form th:action="@{/type/addType}" method="post">
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <div class="form-group">
+                                        <span class="input-group-text">typeName</span>
+                                    </div>
+                                    <input th:type="text" th:class="form-control" name="typeName" id="typeName">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="form-group">
+                                        <span class="input-group-text">typeCode</span>
+                                    </div>
+                                    <input th:type="text" th:class="form-control" name="typeCode" id="typeCode">
+                                </div>
+                                <div class="input-group mb-3" style="width: 50%">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">类型</span>
+                                    </div>
+                                    <select class="form-select" name="typeGroup"
+                                            id="typeGroup"
+                                            required>
+                                        <option>--类型--</option>
+                                        <option th:value="severity_level" th:text="严重程度"></option>
+                                        <option th:value="job_status" th:text="任务状态"></option>
+                                        <option th:value="owner_list" th:text="测试人员"></option>
+                                        <option th:value="issue_status" th:text="问题单状态"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div th:fragment="edit">
+            <!--edit Modal -->
+            <form th:action="@{/type/editItem}" method="post">
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input name="id" type="hidden" class="form-control"
+                                       id="id_edit">
+                                <div class="input-group mb-3">
+                                    <div class="form-group">
+                                        <span class="input-group-text">typeName</span>
+                                    </div>
+                                    <input th:type="text" th:class="form-control" name="typeName" id="type_name">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="form-group">
+                                        <span class="input-group-text">typeCode</span>
+                                    </div>
+                                    <input th:type="text" th:class="form-control" name="typeCode" id="type_group">
+                                </div>
+<!--                                <div class="input-group mb-3" style="width: 50%">-->
+<!--                                    <div class="input-group-prepend">-->
+<!--                                        <span class="input-group-text">类型</span>-->
+<!--                                    </div>-->
+<!--                                    <select class="form-select" name="typeGroup"-->
+<!--                                            id="issue-date-edit"-->
+<!--                                            required>-->
+<!--                                        <option>&#45;&#45;类型&#45;&#45;</option>-->
+<!--                                        <option th:each="m:${typeMap}"-->
+<!--                                                th:value="${m.key}"-->
+<!--                                                th:text="${m.value}">-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div th:fragment="delete">
+            <!--delete Modal -->
+            <form th:action="@{/type/deleteItem}" method="post">
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content needs-validation">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input name="id" type="hidden" class="form-control"
+                                       id="id_delete">
+                                <P>删除数据？</P>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script>
+            // 修改
+            const editModal = document.getElementById('editModal');
+            editModal.addEventListener('show.bs.modal', function(event){
+                const button = $(event.relatedTarget);
+                const modal = $(this);
+                // 数据库中主键id
+                const tempId = button.closest('tr').find('input').attr('value');
+                modal.find('#id_edit').val(tempId);
+                const tempContent1 = button.closest('tr').find('td').eq(0).text();
+                modal.find('#type_name').val(tempContent1);
+                const tempContent2 = button.closest('tr').find('td').eq(1).text();
+                modal.find('#type_group').val(tempContent2);
+            });
+            // 删除
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function(event){
+                const button = $(event.relatedTarget);
+                const modal = $(this);
+                // 数据库中主键id
+                const tempId = button.closest('tr').find('input').attr('value');
+                modal.find('#id_delete').val(tempId);
+            });
+        </script>
+    </body>
+</html>

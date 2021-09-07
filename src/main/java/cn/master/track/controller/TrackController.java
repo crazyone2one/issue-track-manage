@@ -1,5 +1,6 @@
 package cn.master.track.controller;
 
+import cn.master.track.config.Constants;
 import cn.master.track.mapper.CommonMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,7 @@ public class TrackController {
         // 回测，暂止统计回测通过的数据
         final List<Map<String, Object>> reviewCount = commonMapper.findMapBySql(countQuery.replace("{whereSQL}", "where status='4'"));
         model.addAttribute("reviewSeries", mapper.writeValueAsString(getSeries(reviewCount)));
+        model.addAttribute("types", Constants.allTypes);
         return "index";
     }
 

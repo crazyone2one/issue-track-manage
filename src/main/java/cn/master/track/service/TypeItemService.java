@@ -3,11 +3,9 @@ package cn.master.track.service;
 import cn.master.track.entity.TypeItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.Map;
-
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 11's papa
@@ -15,5 +13,15 @@ import java.util.Map;
  */
 public interface TypeItemService extends IService<TypeItem> {
 
-    void addType(Map<String, String> param);
+    /**
+     * 添加数据字典
+     *
+     * @param item TypeItem
+     * @return int
+     */
+    int addType(TypeItem item);
+
+    int updateType(TypeItem item);
+
+    int deleteType(TypeItem item);
 }
