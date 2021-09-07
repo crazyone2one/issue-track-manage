@@ -35,7 +35,7 @@ public class CommonServiceImpl implements CommonService {
     @Override
     @PostConstruct
     public void initTypeGroup() {
-        final List<TypeItem> typeItems = typeItemMapper.selectList(new QueryWrapper<TypeItem>().lambda());
+        final List<TypeItem> typeItems = typeItemMapper.selectList(new QueryWrapper<TypeItem>().lambda().eq(TypeItem::getDeleteFlag, "0"));
         List<TypeItem> temp1 = new LinkedList<>();
         List<TypeItem> temp2 = new LinkedList<>();
         List<TypeItem> temp3 = new LinkedList<>();
@@ -58,6 +58,25 @@ public class CommonServiceImpl implements CommonService {
         Constants.allTypes.put("owner_list", temp2);
         Constants.allTypes.put("issue_status", temp3);
         Constants.allTypes.put("job_status", temp4);
+    }
+
+    @Override
+    @PostConstruct
+    public void typeMap() {
+        typeItemMapper.selectList(new QueryWrapper<TypeItem>().lambda().groupBy(TypeItem::getTypeGroup)).forEach(temp ->
+                Constants.typeMap.put(temp.getTypeGroup(), temp.getTypeGroupName()));
+    }
+
+    @Override
+    public void refreshTypeMap() {
+        Constants.typeMap.clear();
+        typeMap();
+    }
+
+    @Override
+    public void refreshTypeGroup() {
+        Constants.allTypes.clear();
+        initTypeGroup();
     }
 
     @Override

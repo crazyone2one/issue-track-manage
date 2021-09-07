@@ -14,6 +14,7 @@ import java.util.Map;
 public class Constants {
 
     public static Map<String, List<TypeItem>> allTypes = new LinkedHashMap<>();
+    public static Map<String, String> typeMap = new LinkedHashMap<>();
 
     public static List<String> MONTH_LIST = new LinkedList<>();
     public static List<String> PROJECT_ID_LIST = new LinkedList<>();

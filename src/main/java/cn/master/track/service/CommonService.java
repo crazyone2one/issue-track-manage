@@ -10,6 +10,12 @@ public interface CommonService {
      */
     void initTypeGroup();
 
+    void typeMap();
+
+    void refreshTypeMap();
+
+    void refreshTypeGroup();
+
     /**
      * 初始化当前年月
      */
@@ -17,7 +23,6 @@ public interface CommonService {
 
     /**
      * 初始化项目id数据
-     *
      */
     void initProjectId();
 
