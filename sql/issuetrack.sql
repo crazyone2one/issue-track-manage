@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50732
 File Encoding         : 65001
 
-Date: 2021-08-30 15:44:56
+Date: 2021-09-07 16:42:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,6 +44,8 @@ CREATE TABLE `issue_project` (
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `project_code` varchar(255) DEFAULT NULL COMMENT '项目code',
   `create_data` datetime(6) DEFAULT NULL COMMENT '创建时间',
+  `module_name` varchar(255) DEFAULT NULL COMMENT '模块名称',
+  `module_id` varchar(255) DEFAULT NULL COMMENT '模块名称id',
   PRIMARY KEY (`project_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题单对应的项目表';
 
@@ -129,5 +131,7 @@ CREATE TABLE `type_item` (
   `type_code` varchar(15) DEFAULT NULL COMMENT '字典编码',
   `type_name` varchar(50) DEFAULT NULL COMMENT '字典名称',
   `type_group` varchar(36) DEFAULT NULL COMMENT '字典组ID',
+  `type_group_name` varchar(12) DEFAULT NULL COMMENT 'group name',
+  `delete_flag` varchar(12) DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据字典';
