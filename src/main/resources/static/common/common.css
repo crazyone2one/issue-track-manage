@@ -15,11 +15,30 @@ tr {
 td {
     text-align: center;
 }
-table{
+
+table {
     table-layout: fixed; /*固定表格布局*/
 }
-table td,table th{
+
+table td, table th {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+/*.setting-plugin {*/
+/*    position: fixed;*/
+/*    top: 5%;*/
+/*    right: 0;*/
+/*    width: 35px;*/
+/*    background: rgba(0, 0, 0, .3);*/
+/*    z-index: 2;*/
+/*    border-radius: 8px 0 0 8px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*解决数据字典编辑框不能使用问题*/
+.modal-backdrop {
+    z-index: 0;
+    position: relative;
 }
