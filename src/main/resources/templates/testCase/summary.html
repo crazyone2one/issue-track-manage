@@ -144,7 +144,7 @@
                                     </button>
                                 </li>
                                 <li th:each="m,mStat:${caseInfo}">
-                                    <a th:href="@{/case/redirection2CaseList(caseProjectName=${m.get('project')})}">
+                                    <a th:href="@{/case/list(proId=${m.get('project')})}">
                                         <h2>[[${m.get('project')}]]</h2>
                                         <p>涉及[[${m.get('sc')}]]个模块，涉及[[${m.get('cc')}]]条用例</p>
                                     </a>
