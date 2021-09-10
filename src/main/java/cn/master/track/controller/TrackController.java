@@ -38,7 +38,7 @@ public class TrackController {
         List<Map<String, Object>> xAxi = getSeries(xAxData);
         model.addAttribute("xAxisList", mapper.writeValueAsString(xAxi));
         String countQuery = "SELECT GROUP_CONCAT(count ORDER BY date) data  from (SELECT t1.date,IFNULL( issueCount.c, 0 ) count FROM ( SELECT DATE_FORMAT( DATE_SUB( NOW(), INTERVAL ac - 1 MONTH ), '%Y-%m' ) AS date FROM (SELECT @ai /*'*/ := /*'*/ @ai + 1 AS ac FROM ( SELECT 1 UNION SELECT 2 UNION SELECT 3 ) ac1, ( SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 ) ac2,( SELECT @ai /*'*/ := /*'*/ 0 ) xc0 ) a ORDER BY date )\n" +
-                "t1 LEFT JOIN ( SELECT issue_date, COUNT( issue_id ) c FROM issue_item {whereSQL} GROUP BY issue_date ) issueCount ON issueCount.issue_date = t1.date ORDER BY t1.date) t2";
+                "t1 LEFT JOIN ( SELECT issue_date, COUNT( id ) c FROM issue_item {whereSQL} GROUP BY issue_date ) issueCount ON issueCount.issue_date = t1.date ORDER BY t1.date) t2";
         // 新增
         final List<Map<String, Object>> newCount = commonMapper.findMapBySql(countQuery.replace("{whereSQL}","where status='1'"));
         model.addAttribute("newSeries", mapper.writeValueAsString(getSeries(newCount)));
