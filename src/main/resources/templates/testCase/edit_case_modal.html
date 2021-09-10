@@ -32,7 +32,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="caseSuiteId_edit" class="form-label">用例集名称</label>
-                                        <input name="caseSuiteId" id="caseSuiteId_edit" type="text" class="form-control"
+                                        <input name="caseModuleId" id="caseSuiteId_edit" type="text"
+                                               class="form-control"
                                                placeholder value
                                                required readonly>
                                     </div>
@@ -48,7 +49,17 @@
                                         <textarea name="caseSummary" id="caseSummary_edit" type="text"
                                                   class="form-control" rows="2"></textarea>
                                     </div>
-
+                                    <div class="col-md-3">
+                                        <label for="monthDate" class="form-label"></label>
+                                        <select class="form-select" name="issueDate" id="monthDate"
+                                                required>
+                                            <option th:each="m:${monthList}"
+                                                    th:value="${m}"
+                                                    th:text="${m}"
+                                                    th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
+                                            >
+                                        </select>
+                                    </div>
                                     <div class="col-md-12">
                                         <label for="casePrecondition_edit" class="form-label">前提条件</label>
                                         <textarea name="casePrecondition" id="casePrecondition_edit" type="text"
