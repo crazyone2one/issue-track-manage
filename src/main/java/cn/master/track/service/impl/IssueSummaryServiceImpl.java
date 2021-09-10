@@ -40,9 +40,9 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
     public String addIssueSummary(IssueItem item) {
         final IssueSummary issueSummary = findIssueSummary(item);
         final IssueSummary.IssueSummaryBuilder builder = IssueSummary.builder();
-        final Map<String, Integer> caseStatusMap = caseService.caseStatusMap(item.getProjectId(), item.getModule());
+        final Map<String, Integer> caseStatusMap = caseService.caseStatusMap(item.getProjectCode(), item.getModule());
         if (Objects.isNull(issueSummary)) {
-            final IssueSummary summary = builder.projectId(item.getProjectId())
+            final IssueSummary summary = builder.projectId(item.getProjectCode())
                     .createCaseCount(caseStatusMap.get("total"))
                     .executeCaseCount(caseStatusMap.get("execute"))
                     .deliveryStatus("0")
@@ -53,7 +53,7 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
             baseMapper.insert(summary);
             return summary.getSummaryId();
         } else {
-            builder.projectId(item.getProjectId()).issueDate(item.getIssueDate()).updateDate(new Date());
+            builder.projectId(item.getProjectCode()).issueDate(item.getIssueDate()).updateDate(new Date());
             baseMapper.updateById(builder.build());
             return issueSummary.getSummaryId();
         }
@@ -62,7 +62,7 @@ public class IssueSummaryServiceImpl extends ServiceImpl<IssueSummaryMapper, Iss
     @Override
     public IssueSummary findIssueSummary(IssueItem issueItem) {
         return baseMapper.selectOne(new QueryWrapper<IssueSummary>().lambda()
-                .eq(IssueSummary::getProjectId, issueItem.getProjectId())
+                .eq(IssueSummary::getProjectId, issueItem.getProjectCode())
                 .eq(IssueSummary::getIssueDate,issueItem.getIssueDate()));
     }
 

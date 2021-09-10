@@ -3,10 +3,7 @@ package cn.master.track.controller;
 
 import cn.master.track.config.Constants;
 import cn.master.track.entity.IssueSummary;
-import cn.master.track.service.IssueItemService;
-import cn.master.track.service.IssueProjectService;
-import cn.master.track.service.IssueSummaryService;
-import cn.master.track.service.SummaryItemRefService;
+import cn.master.track.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,13 +29,15 @@ public class IssueSummaryController {
     private final IssueSummaryService summaryService;
     private final IssueProjectService projectService;
     private final SummaryItemRefService refService;
+    private final TestCaseService caseService;
 
     @Autowired
-    public IssueSummaryController(IssueItemService itemService, IssueSummaryService summaryService, IssueProjectService projectService, SummaryItemRefService refService) {
+    public IssueSummaryController(IssueItemService itemService, IssueSummaryService summaryService, IssueProjectService projectService, SummaryItemRefService refService, TestCaseService caseService) {
         this.itemService = itemService;
         this.summaryService = summaryService;
         this.projectService = projectService;
         this.refService = refService;
+        this.caseService = caseService;
     }
 
     /**
@@ -62,6 +61,7 @@ public class IssueSummaryController {
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
         model.addAttribute("refMap", refService.refsMap());
         model.addAttribute("monthList", Constants.MONTH_LIST);
+        model.addAttribute("caseStatus", caseService.caseStatusMap());
         return "summary/summaryList";
     }
 

@@ -40,23 +40,32 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
         if (Objects.nonNull(project)) {
             return project;
         }
+        final IssueProject projectByName = getProjectByName(projectName);
         final IssueProject.IssueProjectBuilder builder = IssueProject.builder();
-        builder.projectName(projectName.trim()).moduleName(moduleName.trim()).moduleId(UuidUtils.generate()).createData(new Date());
+        if (Objects.nonNull(projectByName)) {
+            builder.projectName(projectByName.getProjectName());
+            builder.projectCode(projectByName.getProjectCode());
+        } else {
+            builder.projectName(projectName.trim());
+            builder.projectCode(UuidUtils.generate());
+        }
+        builder.moduleName(moduleName.trim()).moduleId(UuidUtils.generate()).createData(new Date());
         baseMapper.insert(builder.build());
         return getProject(projectName, moduleName);
     }
 
     @Override
     public IssueProject getProjectByName(String name) {
-        return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
-                .eq(IssueProject::getProjectName, name.trim()));
+        QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
+        wrapper.select("DISTINCT(project_code)").eq("project_name", name.trim());
+        return baseMapper.selectOne(wrapper);
     }
 
     @Override
     public IssueProject getProject(String projectName, String moduleName) {
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
                 .eq(StringUtils.isNotBlank(projectName), IssueProject::getProjectName, projectName.trim())
-                .eq(StringUtils.isNotBlank(moduleName), IssueProject::getModuleName, moduleName));
+                .eq(StringUtils.isNotBlank(moduleName), IssueProject::getModuleName, moduleName.trim()));
     }
 
     @Override
@@ -69,14 +78,14 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     @Override
     public List<IssueProject> listProject(String name) {
         QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
-        wrapper.select("project_id").like(StringUtils.isNotBlank(name), "project_name", name);
+        wrapper.select("DISTINCT(project_code)").like(StringUtils.isNotBlank(name), "project_name", name);
         return baseMapper.selectList(wrapper);
     }
 
     @Override
     public List<String> listProjectsId(String name) {
         List<String> tempList = new ArrayList<>();
-        listProject(name).forEach(temp -> tempList.add(temp.getProjectId()));
+        listProject(name).forEach(temp -> tempList.add(temp.getProjectCode()));
         return tempList;
     }
 
@@ -88,7 +97,7 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     @Override
     public Map<String, IssueProject> projectsMap() {
         Map<String, IssueProject> map = new LinkedHashMap<>();
-        baseMapper.selectList(new QueryWrapper<>()).forEach(temp -> map.put(temp.getProjectId(), temp));
+        baseMapper.selectList(new QueryWrapper<>()).forEach(temp -> map.put(temp.getProjectCode(), temp));
         return map;
     }
 }

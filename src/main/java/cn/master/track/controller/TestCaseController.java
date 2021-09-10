@@ -1,10 +1,12 @@
 package cn.master.track.controller;
 
 
+import cn.master.track.config.Constants;
 import cn.master.track.entity.TestCase;
 import cn.master.track.service.IssueProjectService;
 import cn.master.track.service.TestCaseService;
 import cn.master.track.util.ExcelUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,6 +50,7 @@ public class TestCaseController {
         final List<Map<String, Object>> caseInfoMap = caseService.caseInfoMap();
         model.addAttribute("caseInfo", caseInfoMap);
         model.addAttribute("proMap", projectService.projectsMap());
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "testCase/summary";
     }
 
@@ -61,11 +64,15 @@ public class TestCaseController {
      * @return java.lang.String
      */
     @GetMapping("/list")
-    public String caseList(@ModelAttribute @Validated TestCase testCase, Model model,
+    public String caseList(@ModelAttribute @Validated TestCase testCase, Model model, String proId,
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
+        if (StringUtils.isNotBlank(proId)) {
+            testCase.setCaseProjectId(proId);
+        }
         model.addAttribute("casePageList", caseService.searchCase(testCase, pn, pc));
         model.addAttribute("proMap", projectService.projectsMap());
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "testCase/case_list";
     }
 
@@ -90,6 +97,7 @@ public class TestCaseController {
     public String redirection2CaseList(String caseProjectName, String caseSuite, Model model) {
         model.addAttribute("casePageList", caseService.search4Redirection(caseProjectName, caseSuite));
         model.addAttribute("proMap", projectService.projectsMap());
+        model.addAttribute("monthList", Constants.MONTH_LIST);
         return "testCase/case_list";
     }
 

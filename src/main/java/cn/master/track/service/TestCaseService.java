@@ -90,4 +90,6 @@ public interface TestCaseService extends IService<TestCase> {
      * @param file file
      */
     void insertTestCaseByExcel(MultipartFile file);
+
+    Map<String, Map<String, Integer>> caseStatusMap();
 }

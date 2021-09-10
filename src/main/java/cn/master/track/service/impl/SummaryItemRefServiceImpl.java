@@ -30,7 +30,7 @@ public class SummaryItemRefServiceImpl extends ServiceImpl<SummaryItemRefMapper,
     public SummaryItemRef findSummaryItemRef(IssueItem issueItem, IssueSummary summary) {
         return baseMapper.selectOne(new QueryWrapper<SummaryItemRef>().lambda()
                 .eq(SummaryItemRef::getIssueDate, issueItem.getIssueDate())
-                .eq(SummaryItemRef::getItemId, issueItem.getProjectId())
+                .eq(SummaryItemRef::getItemId, issueItem.getProjectCode())
                 .eq(SummaryItemRef::getSummaryId, summary.getSummaryId())
         );
     }
@@ -55,7 +55,7 @@ public class SummaryItemRefServiceImpl extends ServiceImpl<SummaryItemRefMapper,
                 baseMapper.updateById(itemRef);
             } else {
                 final SummaryItemRef.SummaryItemRefBuilder builder = SummaryItemRef.builder();
-                builder.itemId(item.getProjectId()).summaryId(summary.getSummaryId()).issueDate(item.getIssueDate());
+                builder.itemId(item.getProjectCode()).summaryId(summary.getSummaryId()).issueDate(item.getIssueDate());
                 if (Constants.BUG_LEVEL_1.equals(item.getSeverity())) {
                     builder.createBugSlight(1);
                 }
