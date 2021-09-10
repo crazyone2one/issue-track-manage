@@ -123,9 +123,10 @@
                                     <td th:text="${tempItem.getSummaryDesc}"></td>
                                     <!--编写用例-->
                                     <td>
-                                        <span th:text="${tempItem.getCreateCaseCount()}">
-                                    <a href="#"></a>
-                                </span>
+                                        <a th:href="@{/case/list(proId=${proMap.get(tempItem.getProjectId()).getProjectName()})}"
+                                           th:text="${caseStatus.get(tempItem.projectId).get('total')}"></a>
+                                        <span>
+                                        </span>
                                     </td>
                                     <!--执行用例-->
                                     <td>
