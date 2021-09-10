@@ -77,7 +77,7 @@ public class IssueItemController {
     @GetMapping("/goModify")
     public String goModify(String id, Model model) {
         model.addAttribute("issueVo", itemService.getIssueById(id));
-        model.addAttribute("proVo", projectService.getProjectById(itemService.getIssueById(id).getProjectId()));
+        model.addAttribute("proVo", projectService.getProjectById(itemService.getIssueById(id).getProjectCode()));
         model.addAttribute("severityList", Constants.allTypes.get("severity_level"));
         model.addAttribute("statusList", Constants.allTypes.get("issue_status"));
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));

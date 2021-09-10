@@ -58,10 +58,10 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     private QueryWrapper<IssueItem> getWrapper(IssueItem issueItem) {
         final QueryWrapper<IssueItem> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(issueItem.getProjectId())) {
+        if (StringUtils.isNotEmpty(issueItem.getProjectCode())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(issueItem.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
-            wrapper.lambda().in(IssueItem::getProjectId, issueIds);
+            fuzzyQueryByProjectName(issueItem.getProjectCode()).forEach(temp -> issueIds.add(temp.getProjectCode()));
+            wrapper.lambda().in(IssueItem::getProjectCode, issueIds);
         }
         if (StringUtils.isNotEmpty(issueItem.getSeverity())) {
             wrapper.lambda().eq(IssueItem::getSeverity, issueItem.getSeverity());
@@ -70,7 +70,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
             wrapper.lambda().eq(IssueItem::getStatus, issueItem.getStatus());
         }
         wrapper.lambda().eq(StringUtils.isNotBlank(issueItem.getIssueDate()), IssueItem::getIssueDate, issueItem.getIssueDate());
-        wrapper.orderByDesc("project_id");
+        wrapper.orderByDesc("project_code");
         return wrapper;
     }
 
@@ -82,8 +82,8 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public void saveIssueItem(IssueItem item) {
-        final IssueProject issueProject = projectService.addProject(item.getProjectId(), item.getModule());
-        item.setProjectId(issueProject.getProjectId());
+        final IssueProject issueProject = projectService.addProject(item.getProjectCode(), item.getModule());
+        item.setProjectCode(issueProject.getProjectCode());
         item.setModule(issueProject.getModuleId());
         baseMapper.insert(item);
         // 保存任务汇总数据
@@ -99,9 +99,9 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public List<IssueItem> fuzzyQueryByProjectName(String projectName) {
-        String sql = "SELECT project_id FROM issue_project WHERE project_name LIKE '%" + projectName + "%'";
+        String sql = "SELECT project_code FROM issue_project WHERE project_name LIKE '%" + projectName + "%'";
         return baseMapper.selectList(new QueryWrapper<IssueItem>().lambda()
-                .in(IssueItem::getProjectId, commonMapper.findListBySql(sql)));
+                .in(IssueItem::getProjectCode, commonMapper.findListBySql(sql)));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(summary.getProjectId())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectCode()));
             wrapper.lambda().in(IssueSummary::getProjectId, issueIds).orderByDesc(IssueSummary::getProjectId);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
@@ -125,7 +125,7 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
         List<String> issueIds = new ArrayList<>();
         if (StringUtils.isNotEmpty(summary.getProjectId())) {
-            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectId()));
+            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectCode()));
             wrapper.lambda().in(IssueSummary::getProjectId, issueIds);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
@@ -139,11 +139,12 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public void modifyIssue(IssueItem issueItem) {
-        issueItem.setProjectId(projectService.addProject(issueItem.getProjectId(), issueItem.getModule()).getProjectId());
-        final IssueItem issueItem1 = baseMapper.selectById(issueItem.getIssueId());
+        issueItem.setProjectCode(projectService.addProject(issueItem.getProjectCode(), issueItem.getModule()).getProjectCode());
+        final IssueItem issueItem1 = baseMapper.selectById(issueItem.getId());
+        issueItem1.setCreateDate(issueItem.getCreateDate());
         issueItem.setUpdateDate(new Date());
         QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(IssueSummary::getProjectId, issueItem.getProjectId())
+        wrapper.lambda().eq(IssueSummary::getProjectId, issueItem.getProjectCode())
                 .eq(IssueSummary::getIssueDate, issueItem.getIssueDate());
         final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
         baseMapper.updateById(issueItem);

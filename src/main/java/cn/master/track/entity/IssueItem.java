@@ -32,14 +32,14 @@ public class IssueItem implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "issue_id", type = IdType.ASSIGN_UUID)
-    private String issueId;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 项目名称
      */
-    @TableField("project_id")
-    private String projectId;
+    @TableField("project_code")
+    private String projectCode;
 
     /**
      * 所属模块

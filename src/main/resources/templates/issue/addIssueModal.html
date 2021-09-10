@@ -27,10 +27,14 @@
                         <div class="modal-body">
                             <div class="row g-3 align-items-center">
                                 <div class="col-md-4">
-                                    <label for="projectId" class="form-label">项目名称</label>
-                                    <input name="projectId" id="projectId" type="text"
-                                           class="form-control" placeholder value
+                                    <label for="projectCode" class="form-label">项目名称</label>
+                                    <input name="projectCode" id="projectCode" type="text"
+                                           class="form-control" placeholder value list="proList"
                                            required>
+                                    <datalist id="proList" th:each="pro:${proMap}">
+                                        <option th:value="${pro.value.projectName}"
+                                                th:text="${pro.value.projectName}"></option>
+                                    </datalist>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="module" class="form-label">模块</label>

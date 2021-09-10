@@ -42,11 +42,11 @@ public class TestCase implements Serializable {
     private String caseProjectId;
 
     /**
-     * 用例集名称id
+     * 用例集(模块)id
      */
-    @TableField("case_suite_id")
+    @TableField("case_module_id")
     @ExcelColumn(value = "用例集名称", col = 2)
-    private String caseSuiteId;
+    private String caseModuleId;
 
     /**
      * 测试用例标题
@@ -88,9 +88,14 @@ public class TestCase implements Serializable {
      */
     @TableField("case_run")
     private Integer caseRun;
+    /**
+     * 是否执行
+     */
+    @TableField("issue_date")
+    private String issueDate;
 
     /**
-     * 创建时间
+     * 任务时间,同问题单表中字段一致
      */
     @TableField("create_date")
     private Date createDate;

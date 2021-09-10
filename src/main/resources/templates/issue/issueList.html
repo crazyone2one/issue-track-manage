@@ -25,7 +25,7 @@
                                         <div class="input-group mb-3" style="width: 15%">
                                             <label for="projectName" class="form-label"
                                                    style="display: none"></label>
-                                            <input name="projectId" class="form-control" id="projectName" type="text"
+                                            <input name="projectCode" class="form-control" id="projectName" type="text"
                                                    placeholder="请输入项目名称" list="proList">
                                             <datalist id="proList" th:each="pro:${proMap}">
                                                 <option th:value="${pro.value.projectName}"
@@ -117,10 +117,10 @@
                                 <tbody>
                                 <tr th:each="tempItem,stat:${issueListPage.records}">
                                     <input name="id" type="hidden" class="form-control"
-                                           th:value="${tempItem.getIssueId()}" id="issueId">
+                                           th:value="${tempItem.id}" id="issueId">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${proMap.get(tempItem.getProjectId()).projectName}"></td>
-                                    <td th:text="${proMap.get(tempItem.getProjectId()).moduleName}"></td>
+                                    <td th:text="${proMap.get(tempItem.projectCode).projectName}"></td>
+                                    <td th:text="${proMap.get(tempItem.projectCode).moduleName}"></td>
                                     <td th:text="${tempItem.getFunctionDesc()}"></td>
                                     <td th:text="${tempItem.getTitleDesc()}">
                                     <td>
