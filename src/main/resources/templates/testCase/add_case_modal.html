@@ -30,8 +30,8 @@
                                         <input name="caseProjectId" id="projectId" type="text"
                                                class="form-control" placeholder value
                                                list="proList" required>
-                                        <datalist id="proList" th:each="pro:${proMap}">
-                                            <option th:value="${pro.value.projectName}"
+                                        <datalist id="proList">
+                                            <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
                                                     th:text="${pro.value.projectName}"></option>
                                         </datalist>
                                     </div>

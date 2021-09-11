@@ -27,8 +27,8 @@
                                                    style="display: none"></label>
                                             <input name="projectCode" class="form-control" id="projectName" type="text"
                                                    placeholder="请输入项目名称" list="proList">
-                                            <datalist id="proList" th:each="pro:${proMap}">
-                                                <option th:value="${pro.value.projectName}"
+                                            <datalist id="proList">
+                                                <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
                                                         th:text="${pro.value.projectName}"></option>
                                             </datalist>
                                         </div>
