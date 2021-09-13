@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 12/09/2021 15:53:20
+ Date: 13/09/2021 14:02:41
 */
 
 SET NAMES utf8mb4;
@@ -88,13 +88,14 @@ CREATE TABLE `issue_summary`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '问题汇总表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for summary_case_ref
+-- Table structure for project_module_case_ref
 -- ----------------------------
-DROP TABLE IF EXISTS `summary_case_ref`;
-CREATE TABLE `summary_case_ref`  (
-  `id` int(36) NOT NULL,
-  `summary_id` int(36) NULL DEFAULT NULL,
-  `case_id` int(36) NULL DEFAULT NULL,
+DROP TABLE IF EXISTS `project_module_case_ref`;
+CREATE TABLE `project_module_case_ref`  (
+  `id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `project_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目id',
+  `case_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '测试用例id',
+  `module_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '模块id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -134,8 +135,24 @@ CREATE TABLE `test_case`  (
   `case_run` tinyint(4) NULL DEFAULT 0 COMMENT '是否执行',
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_date` datetime NULL DEFAULT NULL COMMENT '修改时间',
+  `issue_date` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for test_case_steps
+-- ----------------------------
+DROP TABLE IF EXISTS `test_case_steps`;
+CREATE TABLE `test_case_steps`  (
+  `id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `case_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `case_order` int(10) NULL DEFAULT NULL,
+  `case_step` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `case_step_result` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `create_date` datetime NULL DEFAULT NULL,
+  `update_date` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for type_item
