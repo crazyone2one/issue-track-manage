@@ -83,12 +83,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="tempItem,stat:${casePageList.records}">
+                                <tr th:each="tempItem,stat:${records}">
                                     <input name="id" type="hidden" class="form-control"
                                            th:value="${tempItem.id}" id="issueId">
                                     <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${proMap.get(tempItem.caseProjectId).projectName}"></td>
-                                    <td th:text="${proMap.get(tempItem.caseProjectId).moduleName}"></td>
+                                    <td th:text="${tempItem.caseProjectId}"></td>
+                                    <td th:text="${tempItem.caseModuleId}"></td>
                                     <td th:text="${tempItem.caseTitle}"></td>
                                     <td th:text="${tempItem.caseSummary}">
                                     <td th:text="${tempItem.casePrecondition}"></td>

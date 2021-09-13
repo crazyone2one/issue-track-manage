@@ -17,17 +17,8 @@ import java.util.Map;
 public interface IssueProjectService extends IService<IssueProject> {
 
     /**
-     * 创建项目数据
-     * 先根据条件查询，如果查询到直接返回查询到的结果。如果没有查询到相对于的数据，则添加然后返回新添加的数据
-     *
-     * @param name 项目名称
-     * @return java.lang.String
-     */
-    String addProjectByName(String name);
-
-    /**
      * 添加项目信息。
-     * 先根据条件查询，如果查询到直接返回查询到的结果。如果没有查询到相对于的数据，则添加然后返回新添加的数据
+     * 先根据条件查询，如果查询到直接返回查询到的结果。如果没有查询到相对应的数据，则添加然后返回新添加的数据
      *
      * @param projectName 项目名称
      * @param moduleName  模块名称
@@ -47,10 +38,9 @@ public interface IssueProjectService extends IService<IssueProject> {
      * 查询项目
      *
      * @param projectName 项目名称
-     * @param moduleName  模块名称
      * @return cn.master.track.entity.IssueProject
      */
-    IssueProject getProject(String projectName, String moduleName);
+    IssueProject checkProject(String projectName);
 
     /**
      * 查询项目 by id
@@ -91,4 +81,6 @@ public interface IssueProjectService extends IService<IssueProject> {
      * @return java.util.Map<java.lang.String, cn.master.track.entity.IssueProject>
      */
     Map<String, IssueProject> projectsMap();
+
+    boolean checkProjectByNameAndModule(String projectName, String moduleName);
 }

@@ -1,14 +1,14 @@
 package cn.master.track.service.impl;
 
+import cn.master.track.entity.IssueModule;
 import cn.master.track.entity.IssueProject;
 import cn.master.track.entity.TestCase;
 import cn.master.track.entity.TestCaseSteps;
 import cn.master.track.mapper.CommonMapper;
 import cn.master.track.mapper.TestCaseMapper;
-import cn.master.track.service.IssueProjectService;
-import cn.master.track.service.TestCaseService;
-import cn.master.track.service.TestCaseStepsService;
+import cn.master.track.service.*;
 import cn.master.track.util.ExcelUtils;
+import cn.master.track.util.UuidUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,18 +32,24 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
     private final IssueProjectService projectService;
     private final TestCaseStepsService caseStepsService;
     private final CommonMapper commonMapper;
+    private final IssueModuleService moduleService;
+    private final ProjectModuleCaseRefService refService;
 
     @Autowired
-    public TestCaseServiceImpl(IssueProjectService projectService, TestCaseStepsService caseStepsService, CommonMapper commonMapper) {
+    public TestCaseServiceImpl(IssueProjectService projectService, TestCaseStepsService caseStepsService, CommonMapper commonMapper, IssueModuleService moduleService, ProjectModuleCaseRefService refService) {
         this.projectService = projectService;
         this.caseStepsService = caseStepsService;
         this.commonMapper = commonMapper;
+        this.moduleService = moduleService;
+        this.refService = refService;
     }
 
     @Override
     public Page<TestCase> searchCase(TestCase testCase, Integer pageIndex, Integer pageCount) {
         QueryWrapper<TestCase> wrapper = new QueryWrapper<>();
-        wrapper.eq(Objects.nonNull(testCase), "case_project_id", projectService.getProjectByName(testCase.getCaseProjectId()).getProjectCode());
+        if (StringUtils.isNotBlank(testCase.getCaseProjectId())) {
+            wrapper.eq("case_project_id", projectService.getProjectByName(testCase.getCaseProjectId()).getId());
+        }
         return baseMapper.selectPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
@@ -71,14 +77,36 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
 
     @Override
     public void addCase(TestCase testCase) {
-        final String[] tempCases = testCase.getCaseSteps().split(",");
-        final String[] tempResults = testCase.getCaseExpectedResults().split(",");
 
-        final IssueProject issueProject = projectService.addProject(testCase.getCaseProjectId(), testCase.getCaseModuleId());
-        testCase.setCaseProjectId(issueProject.getProjectCode());
-        testCase.setCaseModuleId(issueProject.getModuleId());
+        /*1、 判断对应的项目是否存在系统中*/
+        final boolean b = projectService.checkProjectByNameAndModule(testCase.getCaseProjectId(), testCase.getCaseModuleId());
+        IssueProject issueProject;
+        if (b) {
+            /*存在直接查询对应的数据*/
+            issueProject = projectService.getProjectByName(testCase.getCaseProjectId());
+        } else {
+            issueProject = projectService.addProject(testCase.getCaseProjectId(), testCase.getCaseModuleId());
+        }
+        testCase.setCaseProjectId(issueProject.getId());
+        final IssueModule issueModule = moduleService.getModuleByName(testCase.getCaseModuleId());
+        final String generateId = UuidUtils.generate();
+        testCase.setId(generateId);
+        testCase.setCaseModuleId(issueModule.getId());
         testCase.setCreateDate(new Date());
         baseMapper.insert(testCase);
+        refService.appendRef(issueProject, issueModule, testCase);
+        final String[] tempCases;
+        final String[] tempResults;
+        // 导入测试用例
+        if (Objects.equals(false, testCase.isFlag())) {
+            tempCases = testCase.getCaseSteps().split("\\r?\\n");
+            tempResults = testCase.getCaseExpectedResults().split("\\r?\\n");
+        } else {
+            // 页面山添加
+            tempCases = testCase.getCaseSteps().split(",");
+            tempResults = testCase.getCaseExpectedResults().split(",");
+        }
+        // TODO: 2021/9/13 0013 测试步骤和预期结果数量不一致的情况
         for (int i = 0; i < tempCases.length; i++) {
             final TestCaseSteps.TestCaseStepsBuilder builder = TestCaseSteps.builder();
             builder.caseId(testCase.getId())
@@ -92,19 +120,17 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
 
     @Override
     public void upgradeCaseInfo(TestCase testCase) {
-        final TestCase caseInfo = findTestCaseInfo(testCase.getCaseProjectId(), testCase.getCaseModuleId());
-        testCase.setCaseModuleId(caseInfo.getCaseModuleId());
-        testCase.setCaseProjectId(caseInfo.getCaseProjectId());
-        testCase.setUpdateDate(new Date());
-        baseMapper.updateById(testCase);
-    }
-
-    @Override
-    public TestCase findTestCaseInfo(String projectName, String moduleName) {
-        final IssueProject project = projectService.getProject(projectName, moduleName);
-        return baseMapper.selectOne(new QueryWrapper<TestCase>().lambda()
-                .eq(StringUtils.isNotBlank(projectName), TestCase::getCaseProjectId, project.getProjectId())
-                .eq(StringUtils.isNotBlank(moduleName), TestCase::getCaseModuleId, project.getModuleId()));
+        try {
+            final TestCase caseInfo = baseMapper.selectById(testCase.getId());
+            testCase.setCaseModuleId(caseInfo.getCaseModuleId());
+            testCase.setCaseProjectId(caseInfo.getCaseProjectId());
+            testCase.setCaseRun(caseInfo.getCaseRun());
+            testCase.setCreateDate(caseInfo.getCreateDate());
+            testCase.setUpdateDate(new Date());
+            baseMapper.updateById(testCase);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -122,14 +148,15 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
 
     @Override
     public List<Map<String, Object>> caseInfoMap() {
-        String sql = "SELECT t2.project_name project, COUNT(DISTINCT(case_module_id)) sc,COUNT(DISTINCT(id)) cc from test_case t1 " +
-                "LEFT JOIN issue_project t2 on t2.project_code = t1.case_project_id GROUP BY t1.case_project_id;";
+        String sql = "SELECT t2.project_name project, COUNT(DISTINCT(case_module_id)) sc,COUNT(DISTINCT(t1.id)) cc from test_case t1 " +
+                "LEFT JOIN issue_project t2 on t2.id = t1.case_project_id GROUP BY t1.case_project_id;";
         return commonMapper.findMapBySql(sql);
     }
 
     @Override
     public void insertTestCaseByExcel(MultipartFile file) {
         final List<TestCase> caseList = ExcelUtils.readExcel(TestCase.class, file);
+        caseList.forEach(testCase -> testCase.setFlag(false));
         caseList.forEach(this::addCase);
     }
 

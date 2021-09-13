@@ -18,58 +18,46 @@ import java.util.Date;
  * </p>
  *
  * @author 11's papa
- * @since 2021-09-09
+ * @since 2021-09-11
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("test_case_steps")
+@TableName("issue_module")
 @Builder
 @AllArgsConstructor
-public class TestCaseSteps implements Serializable {
+public class IssueModule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    @TableId(value = "id",type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 测试用例id
+     * 模块名称
      */
-    @TableField("case_id")
-    private String caseId;
+    @TableField("module_name")
+    private String moduleName;
 
     /**
-     * 排序
+     * 模块id
      */
-    @TableField("case_order")
-    private Integer caseOrder;
+    @TableField("module_code")
+    private String moduleCode;
 
     /**
-     * 步骤
+     * 项目id
      */
-    @TableField("case_step")
-    private String caseStep;
-
-    /**
-     * 预期结果
-     */
-    @TableField("case_step_result")
-    private String caseStepResult;
+    @TableField("project_id")
+    private String projectId;
 
     /**
      * 创建时间
      */
     @TableField("create_date")
     private Date createDate;
-
-    /**
-     * 修改时间
-     */
-    @TableField("update_date")
-    private Date updateDate;
 
 
 }

@@ -1,14 +1,12 @@
 package cn.master.track.service.impl;
 
 import cn.master.track.entity.IssueItem;
+import cn.master.track.entity.IssueModule;
 import cn.master.track.entity.IssueProject;
 import cn.master.track.entity.IssueSummary;
 import cn.master.track.mapper.CommonMapper;
 import cn.master.track.mapper.IssueItemMapper;
-import cn.master.track.service.IssueItemService;
-import cn.master.track.service.IssueProjectService;
-import cn.master.track.service.IssueSummaryService;
-import cn.master.track.service.SummaryItemRefService;
+import cn.master.track.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,16 +36,18 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     private final SummaryItemRefService refService;
     private final IssueProjectService projectService;
     private final CommonMapper commonMapper;
+    private final IssueModuleService moduleService;
 
     @Autowired
     public IssueItemServiceImpl(IssueSummaryService summaryService,
                                 SummaryItemRefService refService,
                                 IssueProjectService projectService,
-                                CommonMapper commonMapper) {
+                                CommonMapper commonMapper, IssueModuleService moduleService) {
         this.summaryService = summaryService;
         this.refService = refService;
         this.projectService = projectService;
         this.commonMapper = commonMapper;
+        this.moduleService = moduleService;
     }
 
     @Override
@@ -82,9 +82,17 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
 
     @Override
     public void saveIssueItem(IssueItem item) {
-        final IssueProject issueProject = projectService.addProject(item.getProjectCode(), item.getModule());
-        item.setProjectCode(issueProject.getProjectCode());
-        item.setModule(issueProject.getModuleId());
+        final boolean b = projectService.checkProjectByNameAndModule(item.getProjectCode(), item.getModuleCode());
+        IssueProject issueProject;
+        if (b) {
+            issueProject = projectService.getProjectByName(item.getProjectCode());
+        } else {
+            issueProject = projectService.addProject(item.getProjectCode(), item.getModuleCode());
+        }
+        item.setProjectCode(issueProject.getId());
+        final IssueModule issueModule = moduleService.getModuleByName(item.getModuleCode());
+        item.setModuleCode(issueModule.getId());
+        item.setCreateDate(new Date());
         baseMapper.insert(item);
         // 保存任务汇总数据
         final String summaryId = summaryService.addIssueSummary(item);
@@ -107,16 +115,16 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     @Override
     public Page<IssueSummary> searchSummary(IssueSummary summary, Integer pageIndex, Integer pageCount) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(summary.getProjectId())) {
+        if (StringUtils.isNotEmpty(summary.getProjectCode())) {
             List<String> issueIds = new ArrayList<>();
-            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectCode()));
-            wrapper.lambda().in(IssueSummary::getProjectId, issueIds).orderByDesc(IssueSummary::getProjectId);
+            fuzzyQueryByProjectName(summary.getProjectCode()).forEach(temp -> issueIds.add(temp.getProjectCode()));
+            wrapper.lambda().in(IssueSummary::getProjectCode, issueIds).orderByDesc(IssueSummary::getProjectCode);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
         wrapper.lambda().eq(StringUtils.isNotBlank(summary.getIssueDate()), IssueSummary::getIssueDate, summary.getIssueDate());
-        wrapper.lambda().groupBy(IssueSummary::getProjectId);
+        wrapper.lambda().groupBy(IssueSummary::getProjectCode);
         return summaryService.searchSummaryPage(new Page<>(pageIndex, pageCount), wrapper);
     }
 
@@ -124,27 +132,27 @@ public class IssueItemServiceImpl extends ServiceImpl<IssueItemMapper, IssueItem
     public List<IssueSummary> summaryList(IssueSummary summary) {
         final QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
         List<String> issueIds = new ArrayList<>();
-        if (StringUtils.isNotEmpty(summary.getProjectId())) {
-            fuzzyQueryByProjectName(summary.getProjectId()).forEach(temp -> issueIds.add(temp.getProjectCode()));
-            wrapper.lambda().in(IssueSummary::getProjectId, issueIds);
+        if (StringUtils.isNotEmpty(summary.getProjectCode())) {
+            fuzzyQueryByProjectName(summary.getProjectCode()).forEach(temp -> issueIds.add(temp.getProjectCode()));
+            wrapper.lambda().in(IssueSummary::getProjectCode, issueIds);
         }
         if (StringUtils.isNotEmpty(summary.getJobStatus())) {
             wrapper.lambda().eq(IssueSummary::getJobStatus, summary.getJobStatus());
         }
         wrapper.lambda().eq(StringUtils.isNotBlank(summary.getIssueDate()), IssueSummary::getIssueDate, summary.getIssueDate());
-        wrapper.groupBy("project_id", "issue_date");
-        wrapper.lambda().orderByDesc(IssueSummary::getProjectId);
+        wrapper.groupBy("project_code", "issue_date");
+        wrapper.lambda().orderByDesc(IssueSummary::getProjectCode);
         return summaryService.listSummary(wrapper);
     }
 
     @Override
     public void modifyIssue(IssueItem issueItem) {
-        issueItem.setProjectCode(projectService.addProject(issueItem.getProjectCode(), issueItem.getModule()).getProjectCode());
+        issueItem.setProjectCode(projectService.addProject(issueItem.getProjectCode(), issueItem.getModuleCode()).getProjectCode());
         final IssueItem issueItem1 = baseMapper.selectById(issueItem.getId());
         issueItem1.setCreateDate(issueItem.getCreateDate());
         issueItem.setUpdateDate(new Date());
         QueryWrapper<IssueSummary> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(IssueSummary::getProjectId, issueItem.getProjectCode())
+        wrapper.lambda().eq(IssueSummary::getProjectCode, issueItem.getProjectCode())
                 .eq(IssueSummary::getIssueDate, issueItem.getIssueDate());
         final IssueSummary tempSummary = summaryService.findIssueSummary(wrapper);
         baseMapper.updateById(issueItem);

@@ -21,9 +21,9 @@ public interface TestCaseService extends IService<TestCase> {
     /**
      * 查询
      *
-     * @param testCase
-     * @param pageIndex
-     * @param pageCount
+     * @param testCase  testCase
+     * @param pageIndex pageIndex
+     * @param pageCount pageCount
      * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.TestCase>
      */
     Page<TestCase> searchCase(TestCase testCase, Integer pageIndex, Integer pageCount);
@@ -58,15 +58,6 @@ public interface TestCaseService extends IService<TestCase> {
      * @param testCase TestCase
      */
     void upgradeCaseInfo(TestCase testCase);
-
-    /**
-     * 查询
-     *
-     * @param projectName 项目名
-     * @param moduleName  模块名称
-     * @return cn.master.track.entity.TestCase
-     */
-    TestCase findTestCaseInfo(String projectName, String moduleName);
 
     /**
      * 测试用例根据执行状态统计

@@ -42,7 +42,7 @@
                                             <span class="input-group-text">模块</span>
                                         </div>
                                         <input th:type="text" th:class="form-control" name="module" id="jobDesc"
-                                               th:value="*{module}">
+                                               th:value="*{getModuleCode}">
                                     </div>
                                     <div class="input-group mb-3" style="width: 50%">
                                         <div class="form-group">
@@ -80,7 +80,7 @@
                                         </div>
                                         <select class="form-select" name="owner" id="owner" required>
                                             <option th:each="temp:${ownerList}" th:value="${temp.getTypeCode()}"
-                                                    th:selected="${issueVo.owner eq temp.getTypeCode()}"
+                                                    th:selected="${issueVo.getTester eq temp.getTypeCode()}"
                                                     th:text="${temp.getTypeName()}">
                                         </select>
                                     </div>

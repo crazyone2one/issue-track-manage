@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -30,8 +31,8 @@ public class IssueProject implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "project_id", type = IdType.ASSIGN_UUID)
-    private String projectId;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 项目名称
@@ -61,5 +62,6 @@ public class IssueProject implements Serializable {
     @TableField("create_data")
     private Date createData;
 
-
+    @TableField(exist = false)
+    private List<IssueModule> modules;
 }

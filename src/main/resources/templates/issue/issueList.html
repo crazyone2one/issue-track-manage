@@ -131,7 +131,7 @@
                                     </td>
                                     <td>
                                 <span th:each="c:${ownerList}">
-                                    <span th:if="${#strings.equals(tempItem.owner,c.typeCode)}"
+                                    <span th:if="${#strings.equals(tempItem.tester,c.typeCode)}"
                                           th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
                                     </td>

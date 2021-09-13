@@ -1,7 +1,6 @@
 package cn.master.track.entity;
 
 import cn.master.track.enums.ExcelColumn;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -31,7 +30,7 @@ public class TestCase implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    @TableId("id")
     private String id;
 
     /**
@@ -73,7 +72,7 @@ public class TestCase implements Serializable {
      * 测试步骤
      */
     @TableField("case_steps")
-    @ExcelColumn(value = "测试步骤", col = 6)
+    @ExcelColumn(value = "测试步骤描述", col = 6)
     private String caseSteps;
 
     /**
@@ -106,5 +105,6 @@ public class TestCase implements Serializable {
     @TableField("update_date")
     private Date updateDate;
 
-
+    @TableField(exist = false)
+    private boolean flag;
 }

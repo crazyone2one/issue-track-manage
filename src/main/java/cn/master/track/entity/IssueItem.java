@@ -44,8 +44,8 @@ public class IssueItem implements Serializable {
     /**
      * 所属模块
      */
-    @TableField("module")
-    private String module;
+    @TableField("module_code")
+    private String moduleCode;
 
     /**
      * 功能点
@@ -68,8 +68,8 @@ public class IssueItem implements Serializable {
     /**
      * 测试人员
      */
-    @TableField("owner")
-    private String owner;
+    @TableField("tester")
+    private String tester;
 
     /**
      * 状态

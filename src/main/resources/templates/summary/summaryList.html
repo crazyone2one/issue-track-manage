@@ -116,15 +116,15 @@
                                 <tbody>
                                 <tr th:each="tempItem,stat:${pages.records}">
                                     <input name="id" id="id" type="hidden" class="form-control"
-                                           th:value="${tempItem.getSummaryId}">
+                                           th:value="${tempItem.getId}">
                                     <td th:text="${stat.count}"></td>
-                                    <td th:text="${proMap.get(tempItem.getProjectId()).getProjectName()}"
+                                    <td th:text="${proMap.get(tempItem.getProjectCode()).getProjectName()}"
                                         class="overflow-hidden"></td>
                                     <td th:text="${tempItem.getSummaryDesc}"></td>
                                     <!--编写用例-->
                                     <td>
-                                        <a th:href="@{/case/list(proId=${proMap.get(tempItem.getProjectId()).getProjectName()})}"
-                                           th:text="${caseStatus.get(tempItem.projectId).get('total')}"></a>
+                                        <a th:href="@{/case/list(proId=${proMap.get(tempItem.getProjectCode()).getProjectName()})}"
+                                           th:text="${caseStatus.get(tempItem.getProjectCode).get('total')}"></a>
                                         <span>
                                         </span>
                                     </td>
@@ -134,51 +134,51 @@
                                     </td>
                                     <!--提交bug部分-->
                                     <!--致命-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).createBugDeadly}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).createBugDeadly}"></span>
                                     </td>
                                     <!--严重-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).createBugSeverity}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).createBugSeverity}"></span>
                                     </td>
                                     <!--一般-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).createBugOrdinary}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).createBugOrdinary}"></span>
                                     </td>
                                     <!--轻微-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).createBugSlight}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).createBugSlight}"></span>
                                     </td>
                                     <!--总计-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).createBugDeadly
-                                        + refMap.get(tempItem.getSummaryId).createBugSeverity
-                                        + refMap.get(tempItem.getSummaryId).createBugOrdinary
-                                        + refMap.get(tempItem.getSummaryId).createBugSlight}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).createBugDeadly
+                                        + refMap.get(tempItem.getId).createBugSeverity
+                                        + refMap.get(tempItem.getId).createBugOrdinary
+                                        + refMap.get(tempItem.getId).createBugSlight}"></span>
                                     </td>
                                     <!--回测bug-->
                                     <!--致命-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).reviewBugDeadly}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).reviewBugDeadly}"></span>
                                     </td>
                                     <!--严重-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).reviewBugSeverity}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).reviewBugSeverity}"></span>
                                     </td>
                                     <!--一般-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).reviewBugOrdinary}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).reviewBugOrdinary}"></span>
                                     </td>
                                     <!--轻微-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).reviewBugSlight}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).reviewBugSlight}"></span>
                                     </td>
                                     <!--总计-->
-                                    <td th:value="${tempItem.getSummaryId}">
-                                        <span th:text="${refMap.get(tempItem.getSummaryId).reviewBugDeadly
-                                        + refMap.get(tempItem.getSummaryId).reviewBugSeverity
-                                        + refMap.get(tempItem.getSummaryId).reviewBugOrdinary
-                                        + refMap.get(tempItem.getSummaryId).reviewBugSlight}"></span>
+                                    <td th:value="${tempItem.getId}">
+                                        <span th:text="${refMap.get(tempItem.getId).reviewBugDeadly
+                                        + refMap.get(tempItem.getId).reviewBugSeverity
+                                        + refMap.get(tempItem.getId).reviewBugOrdinary
+                                        + refMap.get(tempItem.getId).reviewBugSlight}"></span>
                                     </td>
                                     <!--bug文档-->
                                     <td th:value="${tempItem.bugDoc}">

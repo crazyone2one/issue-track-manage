@@ -32,14 +32,14 @@ public class IssueSummary implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "summary_id", type = IdType.ASSIGN_UUID)
-    private String summaryId;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 项目名称
      */
-    @TableField("project_id")
-    private String projectId;
+    @TableField("project_code")
+    private String projectCode;
 
     /**
      * 任务描述

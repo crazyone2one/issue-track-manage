@@ -2,11 +2,13 @@ package cn.master.track.controller;
 
 
 import cn.master.track.config.Constants;
+import cn.master.track.entity.IssueProject;
 import cn.master.track.entity.TestCase;
+import cn.master.track.service.IssueModuleService;
 import cn.master.track.service.IssueProjectService;
 import cn.master.track.service.TestCaseService;
 import cn.master.track.util.ExcelUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -32,11 +36,13 @@ public class TestCaseController {
 
     private final TestCaseService caseService;
     private final IssueProjectService projectService;
+    private final IssueModuleService moduleService;
 
     @Autowired
-    public TestCaseController(TestCaseService caseService, IssueProjectService projectService) {
+    public TestCaseController(TestCaseService caseService, IssueProjectService projectService, IssueModuleService moduleService) {
         this.caseService = caseService;
         this.projectService = projectService;
+        this.moduleService = moduleService;
     }
 
     /**
@@ -67,10 +73,20 @@ public class TestCaseController {
     public String caseList(@ModelAttribute @Validated TestCase testCase, Model model, String proId,
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
-        if (StringUtils.isNotBlank(proId)) {
+        if (Objects.nonNull(proId)) {
             testCase.setCaseProjectId(proId);
         }
-        model.addAttribute("casePageList", caseService.searchCase(testCase, pn, pc));
+        final Page<TestCase> testCasePage = caseService.searchCase(testCase, pn, pc);
+        final List<TestCase> records = testCasePage.getRecords();
+        List<TestCase> recordList = new LinkedList<>();
+        for (TestCase record : records) {
+            final IssueProject projectById = projectService.getProjectById(record.getCaseProjectId());
+            record.setCaseProjectId(projectById.getProjectName());
+            record.setCaseModuleId(moduleService.getModuleById(record.getCaseModuleId()).getModuleName());
+            recordList.add(record);
+        }
+        model.addAttribute("records", recordList);
+        model.addAttribute("casePageList", testCasePage);
         model.addAttribute("proMap", projectService.projectsMap());
         model.addAttribute("monthList", Constants.MONTH_LIST);
         return "testCase/case_list";

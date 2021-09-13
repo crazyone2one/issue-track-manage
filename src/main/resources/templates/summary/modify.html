@@ -28,13 +28,13 @@
                             <div class="col-12">
                                 <h5 class="form-title">任务信息</h5>
                             </div>
-                            <input name="summaryId" type="hidden" class="form-control" th:value="*{getSummaryId}">
+                            <input name="summaryId" type="hidden" class="form-control" th:value="*{getId}">
                             <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
                                     <span class="input-group-text">项目名称</span>
                                 </div>
                                 <input th:type="text" th:class="form-control" name="projectId" id="proName" readonly
-                                       th:value="${proMap.get(summaryVo.getProjectId()).projectName}">
+                                       th:value="${proMap.get(summaryVo.getProjectCode()).projectName}">
                             </div>
                             <div class="input-group mb-3" style="width: 50%">
                                 <div class="form-group">
