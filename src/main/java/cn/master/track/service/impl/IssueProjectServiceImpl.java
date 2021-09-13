@@ -12,7 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -65,29 +68,6 @@ public class IssueProjectServiceImpl extends ServiceImpl<IssueProjectMapper, Iss
     public IssueProject checkProject(String projectName) {
         return baseMapper.selectOne(new QueryWrapper<IssueProject>().lambda()
                 .eq(StringUtils.isNotBlank(projectName), IssueProject::getProjectName, projectName.trim()));
-    }
-
-    @Override
-    public IssueProject getProjectById(String projectId, String moduleId) {
-        QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
-        wrapper.select(" * ")
-                .eq(StringUtils.isNotBlank(projectId), "project_code", projectId.trim())
-                .eq(StringUtils.isNotBlank(moduleId), "module_id", moduleId.trim());
-        return baseMapper.selectOne(wrapper);
-    }
-
-    @Override
-    public List<IssueProject> listProject(String name) {
-        QueryWrapper<IssueProject> wrapper = new QueryWrapper<>();
-        wrapper.select("DISTINCT(project_code)").like(StringUtils.isNotBlank(name), "project_name", name);
-        return baseMapper.selectList(wrapper);
-    }
-
-    @Override
-    public List<String> listProjectsId(String name) {
-        List<String> tempList = new ArrayList<>();
-        listProject(name).forEach(temp -> tempList.add(temp.getProjectCode()));
-        return tempList;
     }
 
     @Override

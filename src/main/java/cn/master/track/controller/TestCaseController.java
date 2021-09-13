@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -109,19 +111,11 @@ public class TestCaseController {
         return "redirect:/case/list";
     }
 
-    @GetMapping("/redirection2CaseList")
-    public String redirection2CaseList(String caseProjectName, String caseSuite, Model model) {
-        model.addAttribute("casePageList", caseService.search4Redirection(caseProjectName, caseSuite));
-        model.addAttribute("proMap", projectService.projectsMap());
-        model.addAttribute("monthList", Constants.MONTH_LIST);
-        return "testCase/case_list";
-    }
-
     @RequestMapping("/export")
     public void exportCase(HttpServletResponse response, @ModelAttribute @Validated TestCase testCase) {
         final List<TestCase> results = caseService.caseList4export(testCase);
         long t1 = System.currentTimeMillis();
-        ExcelUtils.writeExcel("测试用例", response, results, TestCase.class);
+        ExcelUtils.writeExcel("测试用例" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")), response, results, TestCase.class);
         long t2 = System.currentTimeMillis();
         System.out.printf("write over! cost:%sms%n", (t2 - t1));
     }

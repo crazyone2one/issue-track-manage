@@ -37,15 +37,6 @@ public interface TestCaseService extends IService<TestCase> {
     List<TestCase> caseList4export(TestCase testCase);
 
     /**
-     * 数据跳转查询
-     *
-     * @param caseProjectName 项目名
-     * @param caseSuite       模块名称
-     * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<cn.master.track.entity.TestCase>
-     */
-    Page<TestCase> search4Redirection(String caseProjectName, String caseSuite);
-
-    /**
      * 添加测试用例
      *
      * @param testCase testCase

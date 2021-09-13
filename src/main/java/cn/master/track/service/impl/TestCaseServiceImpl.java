@@ -58,21 +58,13 @@ public class TestCaseServiceImpl extends ServiceImpl<TestCaseMapper, TestCase> i
         List<TestCase> caseList = new LinkedList<>();
         QueryWrapper<TestCase> wrapper = new QueryWrapper<>();
         baseMapper.selectList(wrapper).forEach(testCase1 -> {
-            final IssueProject project = projectService.getProjectById(testCase1.getCaseProjectId(), testCase1.getCaseModuleId());
+            final IssueProject project = projectService.getProjectById(testCase1.getCaseProjectId());
             testCase1.setCaseProjectId(project.getProjectName());
-            testCase1.setCaseModuleId(project.getModuleName());
+            final IssueModule module = moduleService.getModuleById(testCase1.getCaseModuleId());
+            testCase1.setCaseModuleId(module.getModuleName());
             caseList.add(testCase1);
         });
         return caseList;
-    }
-
-    @Override
-    public Page<TestCase> search4Redirection(String caseProjectName, String caseSuite) {
-        QueryWrapper<TestCase> wrapper = new QueryWrapper<>();
-        wrapper.lambda().in(StringUtils.isNotBlank(caseProjectName),
-                TestCase::getCaseProjectId, projectService.listProjectsId(caseProjectName));
-        wrapper.lambda().like(StringUtils.isNotBlank(caseSuite), TestCase::getCaseModuleId, caseSuite);
-        return baseMapper.selectPage(new Page<>(1, 10), wrapper);
     }
 
     @Override
