@@ -6,39 +6,34 @@
         <title>测试用例</title>
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/bootstrap/icons/bootstrap-icons.css}">
+        <link th:href="@{/common/top-bar-4.css}" rel="stylesheet">
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
-        <link th:href="@{/common/common.css}" rel="stylesheet">
         <meta name="author" content="11‘s papa">
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-
-            div > ul {
+            #case-summary > ul {
                 overflow: hidden;
                 padding: 3em;
             }
 
-            div > ul, li {
+            #case-summary > ul, li {
                 list-style: none;
                 float: left;
                 margin: 1em;
             }
 
-            div > ul li h2 {
+            #case-summary > ul li h2 {
                 font-size: 140%;
                 font-weight: bold;
                 padding-bottom: 10px;
             }
 
-            div > ul li p {
+            #case-summary > ul li p {
                 font-family: "Reenie Beanie", Arial sans-serif, 微软雅黑;
                 font-size: 110%;
             }
 
-            div > ul li a {
+            #case-summary > ul li a {
                 display: block;
                 width: 10em;
                 height: 10em;
@@ -55,7 +50,7 @@
                 -webkit-transition: 1.5s linear;
             }
 
-            div > ul li:nth-child(2n) a {
+            #case-summary > ul li:nth-child(2n) a {
                 /*选择器，根据even，选择当前文档选择器选择li下的a超链接标签，选择第2/4/6...的li标签*/
                 -o-transform: rotate(4deg);
                 -webkit-transform: rotate(4deg);
@@ -65,7 +60,7 @@
                 background: #cfc;
             }
 
-            div > ul li:nth-child(3n) a {
+            #case-summary > ul li:nth-child(3n) a {
                 /*选择倍数为3的a超链接*/
                 -o-transform: rotate(-3deg);
                 -webkit-transform: rotate(-3deg);
@@ -75,7 +70,7 @@
                 background: #ccf;
             }
 
-            div > ul li:nth-child(5n) a {
+            #case-summary > ul li:nth-child(5n) a {
                 /*选择倍数为3的a超链接*/
                 -o-transform: rotate(5deg);
                 -webkit-transform: rotate(5deg);
@@ -84,7 +79,7 @@
                 top: -10px;
             }
 
-            div > ul li a:hover, div > ul li a:focus {
+            #case-summary > ul li a:hover, div > ul li a:focus {
                 box-shadow: 10px 10px 7px rgba(0, 0, 0, 7);
                 -webkit-transform: scale(1.25);
                 -o-transform: scale(1.25);
@@ -96,7 +91,7 @@
     </head>
     <body>
         <!-- 顶部导航 -->
-        <div th:replace="~{common/common::topbar}"></div>
+        <div th:replace="~{common/common::top-bar-4}"></div>
         <div class="section-body mt-4">
             <div class="container-fluid">
                 <div class="tab-content">
@@ -133,7 +128,7 @@
                             </form>
                         </div>
                         <!-- 统计展示-->
-                        <div class="mb-3">
+                        <div class="mb-3" id="case-summary">
                             <ul>
                                 <!-- 系统中没有测试用例时显示添加按钮-->
                                 <li th:if="${#lists.isEmpty(caseInfo)}">
@@ -157,5 +152,6 @@
                 </div>
             </div>
         </div>
+        <script th:src="@{/common/js/top-bar-4.js}"></script>
     </body>
 </html>

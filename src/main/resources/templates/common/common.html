@@ -6,11 +6,10 @@
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
-        <link th:href="@{/common/common.css}" rel="stylesheet">
     </head>
     <body>
         <!--顶部导航栏-->
-        <div class="container" th:fragment="topbar">
+        <div class="container" id="nav-1" th:fragment="topbar">
             <header class="d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
@@ -33,7 +32,60 @@
                 </ul>
             </header>
         </div>
+        <nav id="navbar-2" th:fragment="top-bar-2">
+            <ul>
+                <li class="">
+                    <a th:href="@{/}"><i class="bi bi-palette"></i>Dashboard</a>
+                </li>
+                <li class="">
+                    <a th:href="@{/summary/list}"><i class="bi bi-stack"></i>问题汇总</a>
+                </li>
+                <li class="">
+                    <a th:href="@{/items/list}"><i class="bi bi-bug"></i>问题单</a>
+                </li>
+                <li class="">
+                    <a th:href="@{/case/summary}"><i class="bi bi-card-list"></i>测试用例</a>
+                </li>
+                <li class="">
+                    <a th:href="@{/type/list}"><i
+                            class="bi bi-gear-wide-connected"></i></a>
+                </li>
+            </ul>
+        </nav>
         <!--顶部导航栏结束-->
+        <nav class="nav" id="navid" th:fragment="top-bar-3">
+            <a th:class="nav-item" th:href="@{/}" class="nav-link"><i class="bi bi-palette"></i>Dashboard</a>
+            <a th:class="nav-item" th:href="@{/summary/list}" class="nav-link"><i class="bi bi-stack"></i>问题汇总</a>
+            <a th:class="nav-item" th:href="@{/items/list}" class="nav-link"><i class="bi bi-bug"></i>问题单</a>
+            <a th:class="nav-item" th:href="@{/case/summary}" class="nav-link"><i class="bi bi-card-list"></i>测试用例</a>
+            <a th:class="nav-item" th:href="@{/type/list}" class="nav-link"><i
+                    class="bi bi-gear-wide-connected"></i></a>
+            <span class="nav-indicator" style="width: 70px; left: 60px; background-color: orange;"></span>
+        </nav>
+        <!--        导航栏样式4-->
+        <div id="navbar-4" th:fragment="top-bar-4">
+            <ul class="show-dropdown main-navbar">
+                <div class="hori-selector">
+                    <div class="left"></div>
+                    <div class="right"></div>
+                </div>
+                <li class="active">
+                    <a th:href="@{/}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                </li>
+                <li>
+                    <a th:href="@{/summary/list}"><i class="far fa-address-book"></i>问题汇总</a>
+                </li>
+                <li>
+                    <a th:href="@{/items/list}"><i class="far fa-clone"></i>问题单</a>
+                </li>
+                <li>
+                    <a th:href="@{/case/summary}"><i class="far fa-calendar-alt"></i>测试用例</a>
+                </li>
+                <li>
+                    <a th:href="@{/type/list}"><i class="far fa-chart-bar"></i>setting</a>
+                </li>
+            </ul>
+        </div>
         <div th:fragment="uploadModal">
             <div class="modal fade border-0" id="uploadModal" tabindex="-1"
                  aria-labelledby="uploadModal" aria-hidden="true">
