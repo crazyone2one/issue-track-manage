@@ -7,6 +7,7 @@
         <link rel="shortcut icon" href="../static/favicon.ico">
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/bootstrap/icons/bootstrap-icons.css}">
+        <link th:href="@{/common/common.css}" rel="stylesheet">
         <link th:href="@{/common/top-bar-4.css}" rel="stylesheet">
         <script th:src="@{/echarts/dist/echarts.min.js}"></script>
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
@@ -14,43 +15,47 @@
         <meta name="author" content="11‘s papa">
     </head>
     <body>
-        <!-- 顶部导航 -->
-        <div th:replace="~{common/common::top-bar-4}"></div>
-        <div class="page-information">
-            <div class="container-fluid">
-                <div class="d-flex justify-content-between flex-wrap pt-3 mb-3 border-bottom">
-                    <h1 class="h2">coming soon...</h1>
+        <div class="wrapper">
+            <!-- 顶部导航 -->
+            <div th:replace="~{common/common::top-bar-4}"></div>
+            <div class="page-information">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between flex-wrap pt-3 mb-3 border-bottom">
+                        <h1 class="h2">coming soon...</h1>
+                    </div>
                 </div>
-            </div>
-            <!--            <canvas class="row col-lg card card-body" id="issueStatistics"-->
-            <!--                    style="display: block;width: 826px; height: 335px;"></canvas>-->
-            <div class="main-wrapper">
-                <div class="row">
-                    <div class="col-sm-6 stretch-card grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <span class="text-muted font-13">cccccc</span>
-                                <div class="line-chart-wrapper">
-                                    <div id="issueStatistics" style="display:block;width: 722px; height: 192px;"></div>
+                <!--            <canvas class="row col-lg card card-body" id="issueStatistics"-->
+                <!--                    style="display: block;width: 826px; height: 335px;"></canvas>-->
+                <div class="main-wrapper">
+                    <div class="row">
+                        <div class="col-sm-6 stretch-card grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <span class="text-muted font-13">cccccc</span>
+                                    <div class="line-chart-wrapper">
+                                        <div id="issueStatistics"
+                                             style="display:block;width: 722px; height: 192px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 stretch-card grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <span class="text-muted font-13">cccccc</span>
+                                    <div class="line-chart-wrapper">
+                                        <div id="demo1" style="display:block;width: 722px; height: 192px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 stretch-card grid-margin">
-                        <div class="card">
-                            <div class="card-body">
-                                <span class="text-muted font-13">cccccc</span>
-                                <div class="line-chart-wrapper">
-                                    <div id="demo1" style="display:block;width: 722px; height: 192px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+            <input type="hidden" th:value="${xAxisList}" id="xAxisList">
+            <input type="hidden" th:value="${newSeries}" id="yAxisList">
         </div>
-        <input type="hidden" th:value="${xAxisList}" id="xAxisList">
-        <input type="hidden" th:value="${newSeries}" id="yAxisList">
+
         <script type="text/javascript">
             const chart1 = echarts.init(document.getElementById('issueStatistics'));
             const chart2 = echarts.init(document.getElementById('demo1'));

@@ -64,11 +64,11 @@
         </nav>
         <!--        导航栏样式4-->
         <div id="navbar-4" th:fragment="top-bar-4">
+            <div class="hori-selector">
+                <div class="left"></div>
+                <div class="right"></div>
+            </div>
             <ul class="show-dropdown main-navbar">
-                <div class="hori-selector">
-                    <div class="left"></div>
-                    <div class="right"></div>
-                </div>
                 <li class="active">
                     <a th:href="@{/}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
@@ -106,6 +106,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal-header" th:fragment="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+        </div>
+        <!--        modal-footer-->
+        <div class="modal-footer" th:fragment="modal-footer">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
         </div>
     </body>
 </html>

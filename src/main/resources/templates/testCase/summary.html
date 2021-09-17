@@ -6,6 +6,7 @@
         <title>测试用例</title>
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/bootstrap/icons/bootstrap-icons.css}">
+        <link th:href="@{/common/common.css}" rel="stylesheet">
         <link th:href="@{/common/top-bar-4.css}" rel="stylesheet">
         <script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
@@ -90,64 +91,67 @@
         </style>
     </head>
     <body>
-        <!-- 顶部导航 -->
-        <div th:replace="~{common/common::top-bar-4}"></div>
-        <div class="section-body mt-4">
-            <div class="container-fluid">
-                <div class="tab-content">
-                    <div class="tab-pane active">
-                        <!-- 搜索操作栏-->
-                        <div class="card">
-                            <form th:action="@{/summary/list}" class="pe-md-2">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <div class="input-group">
-                                                <label for="projectName" class="form-label"
-                                                       style="display: none"></label>
-                                                <input type="text" class="form-control" name="caseProjectId"
-                                                       id="projectName" list="proList"
-                                                       placeholder="请输入项目名称">
-                                                <datalist id="proList">
-                                                    <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
-                                                            th:text="${pro.value.projectName}"></option>
-                                                </datalist>
+        <div class="wrapper">
+            <!-- 顶部导航 -->
+            <div th:replace="~{common/common::top-bar-4}"></div>
+            <div class="section-body mt-4">
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <!-- 搜索操作栏-->
+                            <div class="card">
+                                <form th:action="@{/summary/list}" class="pe-md-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                                <div class="input-group">
+                                                    <label for="projectName" class="form-label"
+                                                           style="display: none"></label>
+                                                    <input type="text" class="form-control" name="caseProjectId"
+                                                           id="projectName" list="proList"
+                                                           placeholder="请输入项目名称">
+                                                    <datalist id="proList">
+                                                        <option th:each="pro:${proMap}"
+                                                                th:value="${pro.value.projectName}"
+                                                                th:text="${pro.value.projectName}"></option>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                                <button type="submit" class="btn disabled">
+                                                    <i class="bi bi-search"></i>
+                                                </button>
+                                                <!-- 导出功能-->
+                                                <button href="#" class="btn disabled">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <button type="submit" class="btn disabled">
-                                                <i class="bi bi-search"></i>
-                                            </button>
-                                            <!-- 导出功能-->
-                                            <button href="#" class="btn disabled">
-                                                <i class="bi bi-download"></i>
-                                            </button>
-                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+                            <!-- 统计展示-->
+                            <div class="mb-3" id="case-summary">
+                                <ul>
+                                    <!-- 系统中没有测试用例时显示添加按钮-->
+                                    <li th:if="${#lists.isEmpty(caseInfo)}">
+                                        <!--                    <div><h3>开始<a data-bs-toggle="modal" data-bs-target="#addCaseModal">添加</a>测试用例</h3></div>-->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#addCaseModal">
+                                            添加测试用例
+                                        </button>
+                                    </li>
+                                    <li th:each="m,mStat:${caseInfo}">
+                                        <a th:href="@{/case/list(proId=${m.get('project')})}">
+                                            <h2>[[${m.get('project')}]]</h2>
+                                            <p>涉及[[${m.get('sc')}]]个模块，涉及[[${m.get('cc')}]]条用例</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- 添加问题单Modal弹框 -->
+                            <div th:replace="~{testCase/add_case_modal::addCaseFragment}"></div>
                         </div>
-                        <!-- 统计展示-->
-                        <div class="mb-3" id="case-summary">
-                            <ul>
-                                <!-- 系统中没有测试用例时显示添加按钮-->
-                                <li th:if="${#lists.isEmpty(caseInfo)}">
-                                    <!--                    <div><h3>开始<a data-bs-toggle="modal" data-bs-target="#addCaseModal">添加</a>测试用例</h3></div>-->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#addCaseModal">
-                                        添加测试用例
-                                    </button>
-                                </li>
-                                <li th:each="m,mStat:${caseInfo}">
-                                    <a th:href="@{/case/list(proId=${m.get('project')})}">
-                                        <h2>[[${m.get('project')}]]</h2>
-                                        <p>涉及[[${m.get('sc')}]]个模块，涉及[[${m.get('cc')}]]条用例</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- 添加问题单Modal弹框 -->
-                        <div th:replace="~{testCase/add_case_modal::addCaseFragment}"></div>
                     </div>
                 </div>
             </div>

@@ -24,42 +24,43 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-md-4">
-                                        <label for="projectId" class="form-label">项目名称</label>
-                                        <input name="caseProjectId" id="projectId" type="text"
-                                               class="form-control" placeholder value
-                                               list="proList" required>
-                                        <datalist id="proList">
-                                            <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
-                                                    th:text="${pro.value.projectName}"></option>
-                                        </datalist>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="caseSuiteId" class="form-label">用例集名称</label>
-                                        <input name="caseModuleId" id="caseSuiteId" type="text" class="form-control"
-                                               placeholder value
-                                               required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="caseTitle" class="form-label">测试用例标题</label>
-                                        <input name="caseTitle" id="caseTitle" type="text"
-                                               class="form-control" placeholder
-                                               value
-                                               required>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="caseSummary" class="form-label">摘要</label>
-                                        <textarea name="caseSummary" id="caseSummary" type="text"
-                                                  class="form-control" rows="2"></textarea>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <label for="casePrecondition" class="form-label">前提条件</label>
-                                        <textarea name="casePrecondition" id="casePrecondition" type="text"
-                                                  class="form-control"
-                                                  rows="2"></textarea>
-                                    </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">项目名称</span>
+                                    <input name="caseProjectId" id="projectId" type="text"
+                                           class="form-control" placeholder="输入项目名称"
+                                           list="proList" required aria-label="项目名称"
+                                           aria-describedby="basic-addon1">
+                                    <datalist id="proList">
+                                        <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
+                                                th:text="${pro.value.projectName}"></option>
+                                    </datalist>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="suite-span">用例集名称</span>
+                                    <input name="caseModuleId" id="caseSuiteId" type="text" class="form-control"
+                                           placeholder="输入测试用例集名称"
+                                           required aria-label="用例集名称"
+                                           aria-describedby="suite-span">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="title-span">测试用例标题</span>
+                                    <input name="caseTitle" id="caseTitle" type="text"
+                                           class="form-control" placeholder="测试用例标题"
+                                           aria-label="测试用例标题"
+                                           aria-describedby="title-span"
+                                           required>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="summary-span">摘要</span>
+                                    <input class="form-control" name="caseSummary" id="caseSummary"
+                                           placeholder="摘要" aria-label="摘要" aria-describedby="summary-span">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="pre-span">前提条件</span>
+                                    <input class="form-control" name="casePrecondition" id="casePrecondition"
+                                           placeholder="前提条件" aria-label="前提条件" aria-describedby="pre-span">
+                                </div>
+                                <div class="row">
                                     <div class="col-md-3">
                                         <label for="monthDate" class="form-label"></label>
                                         <select class="form-select" name="issueDate" id="monthDate"
@@ -71,37 +72,39 @@
                                             >
                                         </select>
                                     </div>
-                                    <a href="#" id="AddMoreFileBox" class="btn btn-info" onclick="addCaseStep()">添加</a>
-                                    <input id="caseSteps" name="caseSteps" type="hidden" class="form-control">
-                                    <input id="caseExpectedResults" name="caseExpectedResults" type="hidden"
-                                           class="form-control">
-                                    <div id="caseStepArea">
-                                        <div class="row" id="row_1">
-                                            <div class="col-md-6">
-                                                <label for="caseSteps_1" class="form-label">测试步骤</label>
-                                                <textarea name="caseSteps[]" id="caseSteps_1" type="text"
-                                                          class="form-control"
-                                                          rows="2"></textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="caseExpectedResults_1" class="form-label">预期结果</label>
-                                                <textarea name="caseExpectedResults[]" id="caseExpectedResults_1"
-                                                          type="text"
-                                                          class="form-control"></textarea>
-                                            </div>
-                                            <a href="#" class="removeclass"><input type='button' id="del"
-                                                                                   onclick="removeCaseStep(this)"
-                                                                                   value='删除'></a>
+                                    <div>
+                                        <a href="#" id="AddMoreFileBox" class="btn btn-info"
+                                           onclick="addCaseStep()">添加</a>
+                                    </div>
+                                </div>
+                                <input id="caseSteps" name="caseSteps" type="hidden" class="form-control">
+                                <input id="caseExpectedResults" name="caseExpectedResults" type="hidden"
+                                       class="form-control">
+                                <div id="caseStepArea">
+                                    <div class="position-relative" id="alertPlaceholder"></div>
+                                    <div class="row" id="row_1">
+                                        <div class="col-md-5">
+                                            <label for="caseSteps_1" class="form-label">测试步骤</label>
+                                            <textarea name="caseSteps[]" id="caseSteps_1" type="text"
+                                                      class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="caseExpectedResults_1" class="form-label">预期结果</label>
+                                            <textarea name="caseExpectedResults[]" id="caseExpectedResults_1"
+                                                      type="text"
+                                                      class="form-control"></textarea>
+                                        </div>
+                                        <div class="position-relative col-md-1">
+                                            <a class="position-absolute top-50 start-50">
+                                                <i class="bi bi-backspace" style="color: #bb2d3b" id="del"
+                                                   onclick="removeCaseStep(this)"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    取消
-                                </button>
-                                <button type="submit" class="btn btn-primary" onclick="sub()">保存</button>
-                            </div>
+                            <div th:replace="~{common/common::modal-footer}"></div>
                         </div>
                     </div>
                 </div>
@@ -113,19 +116,24 @@
                     let div_index = caseStepArea.getElementsByClassName("row").length;
                     div_index++;
                     $(caseStepArea).append('<div class="row" id="row_' + div_index + '">\n' +
-                        '                                            <div class="col-md-6">\n' +
+                        '                                            <div class="col-md-5">\n' +
                         '                                                <label for="caseSteps_' + div_index + '" class="form-label">测试步骤</label>\n' +
                         '                                                <textarea name="caseSteps[]" id="caseSteps_' + div_index + '" type="text"\n' +
                         '                                                          class="form-control"\n' +
                         '                                                          rows="2"></textarea>\n' +
                         '                                            </div>\n' +
-                        '                                            <div class="col-md-6">\n' +
+                        '                                            <div class="col-md-5">\n' +
                         '                                                <label for="caseExpectedResults_' + div_index + '" class="form-label">预期结果</label>\n' +
                         '                                                <textarea name="caseExpectedResults[]" id="caseExpectedResults_' + div_index + '"\n' +
                         '                                                          type="text"\n' +
                         '                                                          class="form-control"></textarea>\n' +
                         '                                            </div>\n' +
-                        '                                            <a href="#" class="removeclass"><input id="del" type=\'button\' onclick="removeCaseStep(this)" value=\'删除\'></a>\n' +
+                        '                                            <div class="position-relative col-md-1">\n' +
+                        '                                                <a class="position-absolute top-50 start-50">\n' +
+                        '                                                    <i class="bi bi-backspace" style="color: #bb2d3b" id="del"\n' +
+                        '                                                       onclick="removeCaseStep(this)"></i>\n' +
+                        '                                                </a>\n' +
+                        '                                            </div>\n' +
                         '                                        </div>')
                 }
 
@@ -133,7 +141,9 @@
                     const caseStepArea = document.getElementById("caseStepArea");
                     const x = caseStepArea.getElementsByClassName("row");
                     if (x.length > 1) {
-                        $(obj).parent("a").parent("div").remove();
+                        $(obj).parent("a").parent("div").parent("div").remove();
+                    } else {
+                        alter("至少保留一条", 'warning')
                     }
                 }
 
@@ -152,6 +162,14 @@
                     cer.setAttribute("value", temp_results.toString());
                     console.log(c_s);
                     console.log(cer);
+                }
+
+                const alterDiv = document.getElementById('alertPlaceholder');
+
+                function alter(message, type) {
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible position-absolute top-0 end-0" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                    alterDiv.append(wrapper)
                 }
             </script>
         </div>

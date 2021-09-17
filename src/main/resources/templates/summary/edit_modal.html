@@ -17,14 +17,10 @@
                      aria-hidden="true">
                     <div class="modal-dialog modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content needs-validation">
-                            <div class="modal-header">
-                                <h5 class="modal-title bg-light" id="editSummaryModalLabel">任务汇总数据信息修改</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
+                            <div th:replace="~{common/common::modal-header}"></div>
                             <div class="modal-body">
                                 <div class="row g-3 align-items-center">
-                                    <input name="summaryId" type="hidden" class="form-control"
+                                    <input name="id" type="hidden" class="form-control"
                                            id="id_edit">
                                 </div>
                                 <div class="input-group mb-3">
@@ -42,7 +38,7 @@
                                               id="summary_edit"></textarea>
                                 </div>
                                 <div class="row">
-                                    <div class="input-group mb-3 col-sm-3" style="width: 50%">
+                                    <div class="input-group mb-3 col-sm-3" style="width: 20%">
                                         <div class="form-group">
                                             <span class="input-group-text">编写用例</span>
                                         </div>
@@ -50,7 +46,7 @@
                                                id="createCaseCount"
                                                readonly>
                                     </div>
-                                    <div class="input-group mb-3 col-sm-3" style="width: 50%">
+                                    <div class="input-group mb-3 col-sm-3" style="width: 20%">
                                         <div class="form-group">
                                             <span class="input-group-text">执行用例</span>
                                         </div>
@@ -58,9 +54,7 @@
                                                id="executeCaseCount"
                                                readonly>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6 input-group mb-3" style="width: 50%">
+                                    <div class="input-group mb-3 col-sm-3" style="width: 30%">
                                         <div class="form-group">
                                             <span class="input-group-text">完成状态</span>
                                         </div>
@@ -70,7 +64,7 @@
                                                     th:text="${temp.getTypeName()}">
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 input-group mb-3" style="width: 50%">
+                                    <div class="input-group mb-3 col-sm-3" style="width: 30%">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">测试人员</span>
                                         </div>
@@ -85,28 +79,25 @@
                                     </div>
                                 </div>
                                 <div class="row">
+
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="card">
                                             <div class="card-body">
-                                                <span class="position-absolute top-0 start-90 translate-middle bg-danger border-light rounded-circle">
-    <a data-bs-toggle="tooltip"
-       data-bs-placement="right" title="有bug，多选择几次"><i
-            class="bi bi-info-circle"></i></a>
-  </span>
-
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="bugDoc"
-                                                           id="bugDoc" onclick="check(this.id)">
+                                                           id="bugDoc">
                                                     <label class="form-check-label" for="bugDoc">有无bug文档</label>
                                                 </div>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="reportDoc"
-                                                           id="reportDoc" onclick="check(this.id)">
+                                                           id="reportDoc">
                                                     <label class="form-check-label" for="reportDoc">测试报告</label>
                                                 </div>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="hasDoc"
-                                                           id="hasDoc" onclick="check(this.id)">
+                                                           id="hasDoc">
                                                     <label class="form-check-label" for="hasDoc">需求文档</label>
                                                 </div>
                                             </div>
@@ -133,16 +124,12 @@
                                 <input name="issueDate" type="hidden" class="form-control"
                                        id="issue_date_edit">
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    取消
-                                </button>
-                                <button type="submit" class="btn btn-primary">保存</button>
-                            </div>
+                            <div th:replace="~{common/common::modal-footer}"></div>
                         </div>
                     </div>
                 </div>
             </form>
+            <!--            修改框字段赋值-->
             <script>
                 const editModal = document.getElementById('editSummaryModal');
                 // 修改modal中赋值
@@ -172,21 +159,21 @@
                                 if (Object.is(tempContent1, "true")) {
                                     modal.find('#bugDoc').attr("checked", true);
                                 }
-                                modal.find('#bugDoc').val(tempContent1);
+                                // modal.find('#bugDoc').val(tempContent1);
                                 break;
                             case 16:
                                 const tempReportDoc = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
                                 if (Object.is(tempReportDoc, "true")) {
                                     modal.find('#reportDoc').attr("checked", true);
                                 }
-                                modal.find('#reportDoc').val(tempReportDoc);
+                                // modal.find('#reportDoc').val(tempReportDoc);
                                 break;
                             case 17:
                                 const tempHasDoc = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
                                 if (Object.is(tempHasDoc, "true")) {
                                     modal.find('#hasDoc').attr("checked", true);
                                 }
-                                modal.find('#hasDoc').val(tempHasDoc);
+                                // modal.find('#hasDoc').val(tempHasDoc);
                                 break;
                             case 18:
                                 const tempJobStatus = button.closest('tr').find('td').eq(i)[0].getAttribute('value');
@@ -219,20 +206,6 @@
                         }
                     }
                 });
-
-                // 保存数据时验证 fixme 优化false时往后台传值为null问题
-                function check(x) {
-                    const tempBugDoc = document.getElementById(x);
-                    tempBugDoc.onclick = function (element) {
-                        if (Object.is(tempBugDoc.checked, true)) {
-                            tempBugDoc.setAttribute("checked", "true");
-                            tempBugDoc.setAttribute("value", "true");
-                        } else {
-                            tempBugDoc.setAttribute("checked", "false");
-                            tempBugDoc.setAttribute("value", "false");
-                        }
-                    }
-                }
             </script>
         </div>
     </body>
