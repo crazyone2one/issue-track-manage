@@ -3,8 +3,11 @@ package cn.master.track.controller;
 
 import cn.master.track.config.Constants;
 import cn.master.track.entity.IssueItem;
+import cn.master.track.entity.IssueProject;
 import cn.master.track.service.IssueItemService;
+import cn.master.track.service.IssueModuleService;
 import cn.master.track.service.IssueProjectService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>
@@ -30,22 +36,33 @@ public class IssueItemController {
 
     private final IssueItemService itemService;
     private final IssueProjectService projectService;
+    private final IssueModuleService moduleService;
 
     @Autowired
-    public IssueItemController(IssueItemService itemService, IssueProjectService projectService) {
+    public IssueItemController(IssueItemService itemService, IssueProjectService projectService, IssueModuleService moduleService) {
         this.itemService = itemService;
         this.projectService = projectService;
+        this.moduleService = moduleService;
     }
 
     @GetMapping("/list")
     public String itemList(@ModelAttribute @Validated IssueItem issueItem,Model model,
                            @RequestParam(value = "pn", defaultValue = "1") Integer pn,
                            @RequestParam(value = "pc", defaultValue = "10") Integer pc) {
+        final Page<IssueItem> issueItemPage = itemService.pageItems(issueItem, pn, pc);
+        final List<IssueItem> records = issueItemPage.getRecords();
+        List<IssueItem> recordList = new LinkedList<>();
+        for (IssueItem record : records) {
+            final IssueProject projectById = projectService.getProjectById(record.getProjectCode());
+            record.setProjectCode(projectById.getProjectName());
+            record.setModuleCode(moduleService.getModuleById(record.getModuleCode()).getModuleName());
+            recordList.add(record);
+        }
         model.addAttribute("issueStatusList", Constants.allTypes.get("issue_status"));
         model.addAttribute("severityList", Constants.allTypes.get("severity_level"));
         model.addAttribute("ownerList", Constants.allTypes.get("owner_list"));
-        model.addAttribute("issueListPage", itemService.pageItems(issueItem, pn, pc));
-        model.addAttribute("issueList", itemService.issueItems(issueItem));
+        model.addAttribute("issueListPage", issueItemPage);
+        model.addAttribute("records", recordList);
         model.addAttribute("proMap", projectService.projectsMap());
         model.addAttribute("statusList", Constants.allTypes.get("issue_status"));
         model.addAttribute("monthList", Constants.MONTH_LIST);

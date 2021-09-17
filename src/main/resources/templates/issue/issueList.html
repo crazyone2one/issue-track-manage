@@ -12,184 +12,188 @@
         <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
     </head>
     <body>
-        <!-- 顶部导航 -->
-        <div th:replace="~{common/common::top-bar-4}"></div>
-        <div class="section-body mt-4">
-            <div class="container-fluid">
-                <div class="tab-content">
-                    <div class="tab-pane active">
-                        <!--查询-->
-                        <div class="card">
-                            <form th:action="@{/items/list}" class="row g-3" style="width: 75%">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="input-group mb-3" style="width: 15%">
-                                            <label for="projectName" class="form-label"
-                                                   style="display: none"></label>
-                                            <input name="projectCode" class="form-control" id="projectName" type="text"
-                                                   placeholder="请输入项目名称" list="proList">
-                                            <datalist id="proList">
-                                                <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
-                                                        th:text="${pro.value.projectName}"></option>
-                                            </datalist>
-                                        </div>
-                                        <div class="input-group mb-3" style="width: 12%">
-                                            <!--                                            <div class="form-group">-->
-                                            <!--                                                <span class="input-group-text">严重程度</span>-->
-                                            <!--                                            </div>-->
-                                            <select id="severity-search" name="severity" class="form-select">
-                                                <option th:value="''" selected>--严重程度--</option>
-                                                <option th:each="temp:${severityList}"
-                                                        th:value="${temp.getTypeCode()}"
-                                                        th:text="${temp.getTypeName()}">
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="input-group mb-3" style="width: 13%">
-                                            <!--                                            <div class="form-group">-->
-                                            <!--                                                <span class="input-group-text">严重程度</span>-->
-                                            <!--                                            </div>-->
-                                            <select id="status-search" name="status" class="form-select">
-                                                <option th:value="''" selected>--问题单状态--</option>
-                                                <option th:each="temp:${issueStatusList}"
-                                                        th:value="${temp.getTypeCode()}"
-                                                        th:text="${temp.getTypeName()}">
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-2 col-md-4 col-sm-6" style="width: 10%">
-                                            <div class="input-group">
-                                                <label for="monthDate" class="form-label"></label>
-                                                <select class="form-select" name="issueDate" id="monthDate"
-                                                        required>
-                                                    <option th:each="m:${monthList}"
-                                                            th:value="${m}"
-                                                            th:text="${m}"
-                                                            th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
-                                                    >
+        <div class="wrapper">
+            <!-- 顶部导航 -->
+            <div th:replace="~{common/common::top-bar-4}"></div>
+            <div class="section-body mt-4">
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <!--查询-->
+                            <div class="card pt-2">
+                                <form th:action="@{/items/list}" class="row g-3" style="width: 75%">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="input-group mb-3" style="width: 15%">
+                                                <label for="projectName" class="form-label"
+                                                       style="display: none"></label>
+                                                <input name="projectCode" class="form-control" id="projectName"
+                                                       type="text"
+                                                       placeholder="请输入项目名称" list="proList">
+                                                <datalist id="proList">
+                                                    <option th:each="pro:${proMap}" th:value="${pro.value.projectName}"
+                                                            th:text="${pro.value.projectName}"></option>
+                                                </datalist>
+                                            </div>
+                                            <div class="input-group mb-3" style="width: 12%">
+                                                <!--                                            <div class="form-group">-->
+                                                <!--                                                <span class="input-group-text">严重程度</span>-->
+                                                <!--                                            </div>-->
+                                                <select id="severity-search" name="severity" class="form-select">
+                                                    <option th:value="''" selected>--严重程度--</option>
+                                                    <option th:each="temp:${severityList}"
+                                                            th:value="${temp.getTypeCode()}"
+                                                            th:text="${temp.getTypeName()}">
+                                                    </option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-2 col-md-4 col-sm-6">
-                                            <button type="submit" class="btn">
-                                                <i class="bi bi-search"></i>
-                                            </button>
+                                            <div class="input-group mb-3" style="width: 13%">
+                                                <!--                                            <div class="form-group">-->
+                                                <!--                                                <span class="input-group-text">严重程度</span>-->
+                                                <!--                                            </div>-->
+                                                <select id="status-search" name="status" class="form-select">
+                                                    <option th:value="''" selected>--问题单状态--</option>
+                                                    <option th:each="temp:${issueStatusList}"
+                                                            th:value="${temp.getTypeCode()}"
+                                                            th:text="${temp.getTypeName()}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4 col-sm-6" style="width: 10%">
+                                                <div class="input-group">
+                                                    <label for="monthDate" class="form-label"></label>
+                                                    <select class="form-select" name="issueDate" id="monthDate"
+                                                            required>
+                                                        <option th:each="m:${monthList}"
+                                                                th:value="${m}"
+                                                                th:text="${m}"
+                                                                th:selected="${#dates.format(#dates.createToday(),'yyyy-MM') eq m}"
+                                                        >
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4 col-sm-6">
+                                                <button type="submit" class="btn">
+                                                    <i class="bi bi-search"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <!--跳转至页面，添加问题单-->
-                                <!--                                <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0 disabled">-->
-                                <!--                                    <i class="bx bxs-plus-square">添加问题单</i>-->
-                                <!--                                </a>-->
-                                <!--弹框的方式添加问题单-->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#issueAddModal">
-                                    添加问题单
-                                </button>
-                                <!--导出功能-->
-                                <button href="#" class="btn disabled">
-                                    <i class="bi bi-download"></i>
-                                </button>
+                                </form>
                             </div>
-                        </div>
-                        <!--列表数据-->
-                        <div class="table-responsive card">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="border-end" th:width="80px">issue#</th>
-                                    <th class="border-end" th:width="150px">项目名称</th>
-                                    <th class="border-end" th:width="100px">所属模块</th>
-                                    <th class="border-end" th:width="100px">功能点</th>
-                                    <th class="border-end align-content-center" th:width="200px">问题描述</th>
-                                    <th class="border-end" th:width="100px">严重程度</th>
-                                    <th class="border-end" th:width="100px">测试人员</th>
-                                    <th class="border-end" th:width="100px">状态</th>
-                                    <th class="border-end" th:width="200px">备注</th>
-                                    <th class="border-end" th:width="100px">月份</th>
-                                    <th class="border-end" th:width="50px"><i class="bi-tools"></i>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="tempItem,stat:${issueListPage.records}">
-                                    <input name="id" type="hidden" class="form-control"
-                                           th:value="${tempItem.id}" id="issueId">
-                                    <td th:text="${stat.index+1}"></td>
-                                    <td th:text="${proMap.get(tempItem.projectCode).projectName}"></td>
-                                    <td th:text="${proMap.get(tempItem.projectCode).moduleName}"></td>
-                                    <td th:text="${tempItem.getFunctionDesc()}"></td>
-                                    <td th:text="${tempItem.getTitleDesc()}">
-                                    <td>
+                            <div class="row py-2">
+                                <div class="col-sm-10">
+                                    <!--跳转至页面，添加问题单-->
+                                    <!--                                <a th:href="@{/items/goAdd}" class="btn btn-primary mb-3 mb-lg-0 disabled">-->
+                                    <!--                                    <i class="bx bxs-plus-square">添加问题单</i>-->
+                                    <!--                                </a>-->
+                                    <!--弹框的方式添加问题单-->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#issueAddModal">
+                                        添加问题单
+                                    </button>
+                                    <!--导出功能-->
+                                    <button href="#" class="btn disabled">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!--列表数据-->
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-end" th:width="50px">issue#</th>
+                                        <th class="border-end" th:width="100px">项目名称</th>
+                                        <th class="border-end" th:width="100px">所属模块</th>
+                                        <th class="border-end" th:width="100px">功能点</th>
+                                        <th class="border-end align-content-center" th:width="200px">问题描述</th>
+                                        <th class="border-end" th:width="80px">严重程度</th>
+                                        <th class="border-end" th:width="80px">测试人员</th>
+                                        <th class="border-end" th:width="50px">状态</th>
+                                        <th class="border-end" th:width="100px">备注</th>
+                                        <th class="border-end" th:width="90px">月份</th>
+                                        <th class="border-end" th:width="60px"><i class="bi-tools"></i>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="tempItem,stat:${records}">
+                                        <input name="id" type="hidden" class="form-control"
+                                               th:value="${tempItem.id}" id="issueId">
+                                        <td th:text="${stat.index+1}"></td>
+                                        <td th:text="${tempItem.projectCode}"></td>
+                                        <td th:text="${tempItem.moduleCode}"></td>
+                                        <td th:text="${tempItem.functionDesc}"></td>
+                                        <td th:text="${tempItem.titleDesc}">
+                                        <td>
                             <span th:each="c:${severityList}">
                                 <span th:if="${#strings.equals(tempItem.severity,c.typeCode)}"
                                       th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
                                 <span th:each="c:${ownerList}">
                                     <span th:if="${#strings.equals(tempItem.tester,c.typeCode)}"
                                           th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
                         <span th:each="c:${issueStatusList}">
                             <span th:if="${#strings.equals(tempItem.status,c.typeCode)}"
                                   th:value="${c.typeCode}" th:text="${c.typeName}"></span>
                         </span>
-                                    </td>
-                                    <td th:text="${tempItem.getRemark()}"></td>
-                                    <td th:text="${tempItem.getIssueDate()}"></td>
-                                    <td>
-                                        <a class="btn btn-sm"
-                                           data-bs-toggle="modal"
-                                           data-bs-target="#editIssueModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="#" class="disabled">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--分页-->
-                        <div class="row">
-                            <div class="col-sm-12 col-md-3"></div>
-                            <div class="col-sm-12 col-md-9">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end" th:if="${issueListPage.getTotal()} ge 0"
-                                        th:value="${issueListPage.getTotal()}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous"
-                                               th:href="@{/items/list(pn=${issueListPage.hasPrevious()}?${issueListPage.current}-1:1)}">
-                                                <span aria-hidden="true">&laquo;</span>
+                                        </td>
+                                        <td th:text="${tempItem.getRemark()}"></td>
+                                        <td th:text="${tempItem.getIssueDate()}"></td>
+                                        <td>
+                                            <a class="btn btn-sm"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#editIssueModal">
+                                                <i class="bi bi-pencil-square"></i>
                                             </a>
-                                        </li>
-                                        <li class="page-item"
-                                            th:each="num:${#numbers.sequence(1,issueListPage.getPages())}"
-                                            th:class="${num == issueListPage.current}?'active':''">
-                                            <a class="page-link" th:href="@{/items/list(pn=${num})}">[[${num}]]</a>
-                                        </li>
-                                        <li class="page-item" th:if="${issueListPage.hasNext()}">
-                                            <a class="page-link" href="#" aria-label="Next"
-                                               th:href="@{/items/list(pn=${issueListPage.current}+1)}">
-                                                <span aria-hidden="true">&raquo;</span>
+                                            <a href="#" class="disabled">
+                                                <i class="bi bi-trash"></i>
                                             </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                            <!--分页-->
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3"></div>
+                                <div class="col-sm-12 col-md-9">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-end"
+                                            th:if="${issueListPage.getTotal()} ge 0"
+                                            th:value="${issueListPage.getTotal()}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous"
+                                                   th:href="@{/items/list(pn=${issueListPage.hasPrevious()}?${issueListPage.current}-1:1)}">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item"
+                                                th:each="num:${#numbers.sequence(1,issueListPage.getPages())}"
+                                                th:class="${num == issueListPage.current}?'active':''">
+                                                <a class="page-link" th:href="@{/items/list(pn=${num})}">[[${num}]]</a>
+                                            </li>
+                                            <li class="page-item" th:if="${issueListPage.hasNext()}">
+                                                <a class="page-link" href="#" aria-label="Next"
+                                                   th:href="@{/items/list(pn=${issueListPage.current}+1)}">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <!-- 添加问题单Modal弹框 -->
+                            <div th:replace="~{issue/addIssueModal::addIssueFragment}"></div>
+                            <!-- 修改问题单Modal弹框 -->
+                            <div th:replace="~{issue/editIssueModal::editIssueFragment}"></div>
                         </div>
-                        <!-- 添加问题单Modal弹框 -->
-                        <div th:replace="~{issue/addIssueModal::addIssueFragment}"></div>
-                        <!-- 修改问题单Modal弹框 -->
-                        <div th:replace="~{issue/editIssueModal::editIssueFragment}"></div>
                     </div>
                 </div>
             </div>
